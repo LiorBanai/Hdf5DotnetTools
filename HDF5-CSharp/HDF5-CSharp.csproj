@@ -57,7 +57,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="HDF.PInvoke.1.10" Version="1.10.612" />
-		<PackageReference Include="Microsoft.Build.Tasks.Git" Version="1.0.0">
+		<PackageReference Include="Microsoft.Build.Tasks.Git" Version="1.1.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
