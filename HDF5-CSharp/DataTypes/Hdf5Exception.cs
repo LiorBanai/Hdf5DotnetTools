@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace HDF5CSharp.DataTypes
+namespace HDF5CSharp.DataTypes;
+
+public class Hdf5Exception : Exception
 {
-    public class Hdf5Exception : Exception
+
+    public Hdf5Exception(string message) : base(message)
     {
 
-        public Hdf5Exception(string message) : base(message)
-        {
-
-        }
-
-
     }
+
+
 }

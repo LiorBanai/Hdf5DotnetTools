@@ -2,9 +2,56 @@ HDF5-CSharp helps in reading and writing hdf5 files for .net environments
 
 ## Usage
 
+### Input sanitation on filenames
+The filename parameter to the methods ```OpenFile(string filename, bool readonly)``` and ```CreateFile(string filename)``` are now input sanitized. This means that you should encapsulate these methods in a try-catch block to ensure any errors are caught.
+
+```csharp
+    var filename = @"C:\temp\file.h5"; // will not throw exception
+    var anotherFilename = @"c:\temp\זרו.h5"; // will throw exception
+
+    long fileId = 0L;
+
+    try
+    {
+        fileId = Hdf5.OpenFile(filename);
+        fileid = Hdf5.OpenFile(anotherFilename); // throws an exception
+    }
+    catch(ArgumentOutOfRangeException ex)
+    {
+        // This is what is thrown when you have illegal charactes in
+        // the filename
+    }
+    catch(ArgumentNullException ex)
+    {
+        // This is what is thrown if you pass in a null or whitespace
+        // string as filename
+    }
+```
+
+Note that you can catch the ```ArugmentException``` base class if you don't care about distinguishing between these two error cases.
+
+```csharp
+    var filename = @"C:\temp\file.h5"; // will not throw exception
+    var anotherFilename = @"c:\temp\זרו.h5"; // will throw exception
+
+    long fileId = 0L;
+
+    try
+    {
+        fileId = Hdf5.OpenFile(filename);
+        fileid = Hdf5.OpenFile(anotherFilename); // throws an exception
+    }
+    catch(ArgumentException ex)
+    {
+        // This also works. You will not be able to distinguish between 
+        // which error this is unless you inspect the message property of
+        // the exception.
+    }
+```
+
 ### write an object to an HDF5 file
 In the example below an object is created with some arrays and other variables
-The object is written to a file and than read back in a new object.
+The object is written to a file and then read back in a new object.
 
 
 ```csharp
