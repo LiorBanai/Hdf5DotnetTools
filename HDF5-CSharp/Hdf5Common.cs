@@ -63,9 +63,13 @@ public static partial class Hdf5
     public static long OpenFile(string filename, bool readOnly = false)
     {
         if (string.IsNullOrWhiteSpace(filename))
-            throw new ArgumentNullException(nameof(filename), "Argument cannot be null or whitespace.");
-        if(_illegalCharacterValidator.IsMatch(filename))
+        {
+            throw new ArgumentNullException(nameof(filename), "Argument cannot be null, empty or whitespace.");
+        }
+        if (_illegalCharacterValidator.IsMatch(filename))
+        {
             throw new ArgumentOutOfRangeException(nameof(filename), "Argument contains illegal characters. HDF5.PInvoke cannot handle file paths with non-ascii characters.");
+        }
         uint access = (readOnly) ? H5F.ACC_RDONLY : H5F.ACC_RDWR;
         var fileId = H5F.open(filename, access);
         return fileId;
@@ -81,9 +85,13 @@ public static partial class Hdf5
     public static long CreateFile(string filename)
     {
         if (string.IsNullOrWhiteSpace(filename))
+        {
             throw new ArgumentNullException(nameof(filename), "Argument cannot be null, empty or whitespace.");
+        }
         if (_illegalCharacterValidator.IsMatch(filename))
+        {
             throw new ArgumentOutOfRangeException(nameof(filename), "Argument contains illegal characters. HDF5.PInvoke cannot handle file paths with non-ascii characters.");
+        }
         return H5F.create(filename, H5F.ACC_TRUNC);
     }
 
