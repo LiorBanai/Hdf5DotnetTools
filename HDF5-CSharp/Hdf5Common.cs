@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using HDF5CSharp.DataTypes;
+using System.Text.RegularExpressions;
 
 namespace HDF5CSharp
 {
@@ -49,21 +50,51 @@ namespace HDF5CSharp
             return arr;
         }
 
+        [GeneratedRegex("[æøåöäï€]+", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant)]
+        private static partial Regex _generateValidatorRegex();
+
+        private static Regex _illegalCharacterValidator = _generateValidatorRegex();
+
         /// <summary>
         /// Opens a Hdf-5 file
         /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="readOnly"></param>
-        /// <returns></returns>
+        /// <param name="filename">Filename</param>
+        /// <param name="readOnly">Wether or not to open readonly</param>
+        /// <returns>File Id</returns>
+        /// <exception cref="ArgumentNullException">When filename is null or whitespace</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When filename contains illegal characters.</exception>
         public static long OpenFile(string filename, bool readOnly = false)
         {
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                throw new ArgumentNullException(nameof(filename), "Argument cannot be null, empty or whitespace.");
+            }
+            if (_illegalCharacterValidator.IsMatch(filename))
+            {
+                throw new ArgumentOutOfRangeException(nameof(filename), "Argument contains illegal characters. HDF5.PInvoke cannot handle file paths with non-ascii characters.");
+            }
             uint access = (readOnly) ? H5F.ACC_RDONLY : H5F.ACC_RDWR;
             var fileId = H5F.open(filename, access);
             return fileId;
         }
 
+        /// <summary>
+        /// Creates a Hdf-5 file
+        /// </summary>
+        /// <param name="filename">Filename</param>
+        /// <returns>File Id</returns>
+        /// <exception cref="ArgumentNullException">When filename is null or whitespace</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When filename contains illegal characters.</exception>
         public static long CreateFile(string filename)
         {
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                throw new ArgumentNullException(nameof(filename), "Argument cannot be null, empty or whitespace.");
+            }
+            if (_illegalCharacterValidator.IsMatch(filename))
+            {
+                throw new ArgumentOutOfRangeException(nameof(filename), "Argument contains illegal characters. HDF5.PInvoke cannot handle file paths with non-ascii characters.");
+            }
             return H5F.create(filename, H5F.ACC_TRUNC);
         }
 
