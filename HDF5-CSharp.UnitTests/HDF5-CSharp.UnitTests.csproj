@@ -1,8 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net48;net472;net6.0-windows;net7.0-windows</TargetFrameworks>
 		<IsPackable>false</IsPackable>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
 		<AssemblyName>HDF5CSharp.UnitTests</AssemblyName>
 		<RootNamespace>HDF5CSharp.UnitTests</RootNamespace>
 	</PropertyGroup>
