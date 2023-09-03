@@ -77,7 +77,9 @@ namespace HDF5CSharp
                     throw new ArgumentOutOfRangeException(nameof(filename), "Argument contains illegal characters. HDF5.PInvoke cannot handle file paths with non-ascii characters.");
                 }
             }
-            return OpenFile(filename, readOnly);
+            uint access = (readOnly) ? H5F.ACC_RDONLY : H5F.ACC_RDWR;
+            var fileId = H5F.open(filename, access);
+            return fileId;
         }
 
         /// <summary>
@@ -111,24 +113,6 @@ namespace HDF5CSharp
                     throw new ArgumentOutOfRangeException(nameof(filename), "Argument contains illegal characters. HDF5.PInvoke cannot handle file paths with non-ascii characters.");
                 }
             }
-            return CreateFile(filename);
-        }
-
-        /// <summary>
-        /// Opens a Hdf-5 file
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="readOnly"></param>
-        /// <returns></returns>
-        public static long OpenFile(string filename, bool readOnly = false)
-        {
-            uint access = (readOnly) ? H5F.ACC_RDONLY : H5F.ACC_RDWR;
-            var fileId = H5F.open(filename, access);
-            return fileId;
-        }
-
-        public static long CreateFile(string filename)
-        {
             return H5F.create(filename, H5F.ACC_TRUNC);
         }
 
