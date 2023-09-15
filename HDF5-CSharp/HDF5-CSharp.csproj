@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net7.0;net6.0;netstandard20;netstandard21</TargetFrameworks>
@@ -162,7 +162,7 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="HDF.PInvoke.1.10" Version="1.10.612" />
-		<PackageReference Include="PureHDF" Version="1.0.0-beta.1" />
+		<PackageReference Include="PureHDF" Version="1.0.0-beta.2" />
 		<PackageReference Include="System.Resources.Extensions" Version="7.0.0" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)'=='netstandard20'">
