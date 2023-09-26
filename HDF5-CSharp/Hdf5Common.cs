@@ -174,6 +174,12 @@ namespace HDF5CSharp
                     dataType = H5T.C_S1;
                     break;
                 default:
+                    if (type.IsValueType)
+                    {
+                        dataType = CreateType(type);
+                        break;
+                    }
+
                     throw new ArgumentOutOfRangeException(type.Name, $"Data Type {type} not supported");
             }
             return dataType;
