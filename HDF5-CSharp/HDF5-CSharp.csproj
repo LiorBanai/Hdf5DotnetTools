@@ -163,7 +163,7 @@
 		</PackageReference>
 		<PackageReference Include="HDF.PInvoke.1.10" Version="1.10.612" />
 		<PackageReference Include="PureHDF" Version="1.0.0-beta.2" />
-		<PackageReference Include="System.Resources.Extensions" Version="7.0.0" />
+		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)'=='netstandard20'">
 		<PackageReference Include="System.Memory" Version="4.5.5" />
