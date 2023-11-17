@@ -271,27 +271,41 @@ namespace HDF5CSharp
             return dsetRW.ReadArray<T>(groupId, name, alternativeName, mandatory);
         }
 
-        /// <summary>
-        /// Writes one value to a hdf5 file
-        /// </summary>
-        /// <typeparam name="T">Generic parameter strings or primitive type</typeparam>
-        /// <param name="groupId">id of the group. Can also be a file Id</param>
-        /// <param name="name">name of the dataset</param>
-        /// <param name="dset">The dataset</param>
-        /// <returns>status of the write method</returns>
-        public static (int success, long CreatedgroupId) WriteOneValue<T>(long groupId, string name, T dset, Dictionary<string, List<string>> attributes)
-        {
-            if (typeof(T) == typeof(string))
-            //WriteStrings(groupId, name, new string[] { dset.ToString() });
-            {
-                return dsetRW.WriteArray(groupId, name, new T[1] { dset }, attributes);
-            }
+		/// <summary>
+		/// Writes one value to a hdf5 file
+		/// </summary>
+		/// <typeparam name="T">Generic parameter strings or primitive type</typeparam>
+		/// <param name="groupId">id of the group. Can also be a file Id</param>
+		/// <param name="name">name of the dataset</param>
+		/// <param name="dset">The dataset</param>
+		/// <returns>status of the write method</returns>
+		public static (int success, long CreatedgroupId) WriteOneValue<T>(long groupId, string name, T value, Dictionary<string, List<string>> attributes)
+		{
+			var spaceId = H5S.create(H5S.class_t.SCALAR);
+			var datatype = GetDatatype(typeof(T));
+			var typeId = H5T.copy(datatype);
+			if (datatype == H5T.C_S1)
+			{
+				H5T.set_size(typeId, new IntPtr(2));
+			}
 
-            Array oneVal = new T[1, 1] { { dset } };
-            return dsetRW.WriteArray(groupId, name, oneVal, attributes);
-        }
+			string normalizedName = Hdf5Utils.NormalizedName(name);
+			var datasetId = Hdf5Utils.GetDatasetId(groupId, normalizedName, datatype, spaceId, H5P.DEFAULT);
+			if (datasetId == -1L)
+			{
+				return (-1, -1L);
+			}
 
-        public static void WriteDataset(long groupId, string name, Array collection)
+			GCHandle hnd = GCHandle.Alloc(value, GCHandleType.Pinned);
+			var result = H5D.write(datasetId, datatype, H5S.ALL, H5S.ALL, H5P.DEFAULT, hnd.AddrOfPinnedObject());
+			hnd.Free();
+			H5D.close(datasetId);
+			H5S.close(spaceId);
+			H5T.close(typeId);
+			return (result, datasetId);
+		}
+
+		public static void WriteDataset(long groupId, string name, Array collection)
         {
             dsetRW.WriteArray(groupId, name, collection, new Dictionary<string, List<string>>());
         }

@@ -110,21 +110,13 @@ namespace HDF5CSharp
 
         public static int WriteAsciiString(long groupId, string name, string str)
         {
-            var spaceNullId = H5S.create(H5S.class_t.NULL);
             var spaceScalarId = H5S.create(H5S.class_t.SCALAR);
-
-            // create two datasets of the extended ASCII character set
-            // store as H5T.FORTRAN_S1 -> space padding
 
             int strLength = str.Length;
             ulong[] dims = { (ulong)strLength, 1 };
 
-            /* Create the dataset. */
-            //name = ToHdf5Name(name);
-
-            var spaceId = H5S.create_simple(1, dims, null);
-            var datasetId = H5D.create(groupId, Hdf5Utils.NormalizedName(name), H5T.FORTRAN_S1, spaceId);
-            H5S.close(spaceId);
+            var datasetId = H5D.create(groupId, Hdf5Utils.NormalizedName(name), H5T.FORTRAN_S1, spaceScalarId);
+            H5S.close(spaceScalarId);
 
             // we write from C and must provide null-terminated strings
 
