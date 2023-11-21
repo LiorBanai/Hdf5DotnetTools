@@ -284,20 +284,35 @@ namespace HDF5CSharp
 			var spaceId = H5S.create(H5S.class_t.SCALAR);
 			var datatype = GetDatatype(typeof(T));
 			var typeId = H5T.copy(datatype);
-			if (datatype == H5T.C_S1)
+
+			GCHandle hnd;
+			if (datatype == H5T.C_S1 || datatype == H5T.FORTRAN_S1)
 			{
-				H5T.set_size(typeId, new IntPtr(2));
+				int stringLen = (value as string).Length;
+
+				H5T.set_size(typeId, new IntPtr(stringLen));
+
+				byte[] strByteArray = new byte[stringLen + 1];
+				// Write the string to the buffer, with the last element being 0 as the string terminator
+				for (int i = 0; i < stringLen; ++i)
+				{
+					strByteArray[i] = Convert.ToByte((value as string)[i]);
+				}
+				hnd = GCHandle.Alloc(strByteArray, GCHandleType.Pinned);
+			}
+			else
+			{
+				hnd = GCHandle.Alloc(value, GCHandleType.Pinned);
 			}
 
 			string normalizedName = Hdf5Utils.NormalizedName(name);
-			var datasetId = Hdf5Utils.GetDatasetId(groupId, normalizedName, datatype, spaceId, H5P.DEFAULT);
+			var datasetId = Hdf5Utils.GetDatasetId(groupId, normalizedName, typeId, spaceId, H5P.DEFAULT);
 			if (datasetId == -1L)
 			{
 				return (-1, -1L);
 			}
 
-			GCHandle hnd = GCHandle.Alloc(value, GCHandleType.Pinned);
-			var result = H5D.write(datasetId, datatype, H5S.ALL, H5S.ALL, H5P.DEFAULT, hnd.AddrOfPinnedObject());
+			var result = H5D.write(datasetId, typeId, H5S.ALL, H5S.ALL, H5P.DEFAULT, hnd.AddrOfPinnedObject());
 			hnd.Free();
 			H5D.close(datasetId);
 			H5S.close(spaceId);

@@ -110,33 +110,32 @@ namespace HDF5CSharp
 
         public static int WriteAsciiString(long groupId, string name, string str)
         {
-            var spaceScalarId = H5S.create(H5S.class_t.SCALAR);
+			var spaceScalarId = H5S.create(H5S.class_t.SCALAR);
 
-            int strLength = str.Length;
-            ulong[] dims = { (ulong)strLength, 1 };
+			int strLength = str.Length;
 
-            var datasetId = H5D.create(groupId, Hdf5Utils.NormalizedName(name), H5T.FORTRAN_S1, spaceScalarId);
-            H5S.close(spaceScalarId);
+			var memId = H5T.copy(H5T.C_S1);
+			// Set the size needed for the string. Leave one extra space for a null-terminated string
+			H5T.set_size(memId, new IntPtr(strLength + 1));
 
-            // we write from C and must provide null-terminated strings
+			var datasetId = H5D.create(groupId, Hdf5Utils.NormalizedName(name), memId, spaceScalarId);
 
-            byte[] wdata = new byte[strLength * 2];
-            
-            for (int i = 0; i < strLength; ++i)
-            {
-                wdata[2 * i] = Convert.ToByte(str[i]);
-            }
+			byte[] wdata = new byte[strLength];
+			// Write the string to the buffer, with the last element being 0 as the string terminator
+			for (int i = 0; i < strLength; ++i)
+			{
+				wdata[i] = Convert.ToByte(str[i]);
+			}
 
-            var memId = H5T.copy(H5T.C_S1);
-            H5T.set_size(memId, new IntPtr(2));
-            GCHandle hnd = GCHandle.Alloc(wdata, GCHandleType.Pinned);
-            int result = H5D.write(datasetId, memId, H5S.ALL,
-                        H5S.ALL, H5P.DEFAULT, hnd.AddrOfPinnedObject());
-            hnd.Free();
-            H5T.close(memId);
-            H5D.close(datasetId);
-            return result;
-        }
+			GCHandle hnd = GCHandle.Alloc(wdata, GCHandleType.Pinned);
+
+			int result = H5D.write(datasetId, memId, H5S.ALL, H5S.ALL, H5P.DEFAULT, hnd.AddrOfPinnedObject());
+			hnd.Free();
+			H5S.close(spaceScalarId);
+			H5T.close(memId);
+			H5D.close(datasetId);
+			return result;
+		}
 
         public static string ReadAsciiString(long groupId, string name)
         {
