@@ -139,30 +139,22 @@ namespace HDF5CSharp
 
         public static string ReadAsciiString(long groupId, string name)
         {
-            var datatype = H5T.FORTRAN_S1;
-
-            //name = ToHdf5Name(name);
-
             var datasetId = H5D.open(groupId, Hdf5Utils.NormalizedName(name));
             var spaceId = H5D.get_space(datasetId);
-            int rank = H5S.get_simple_extent_ndims(spaceId);
-            ulong[] maxDims = new ulong[rank];
-            ulong[] dims = new ulong[rank];
-            ulong[] chunkDims = new ulong[rank];
-            var memId_n = H5S.get_simple_extent_dims(spaceId, dims, null);
-            // we write from C and must provide null-terminated strings
+            
+            ulong spaceNeeded = H5D.get_storage_size(datasetId);
+			byte[] wdata = new byte[spaceNeeded];
 
-            byte[] wdata = new byte[dims[0] * 2];
-
-            var memId = H5T.copy(H5T.C_S1);
-            H5T.set_size(memId, new IntPtr(2));
             GCHandle hnd = GCHandle.Alloc(wdata, GCHandleType.Pinned);
-            int resultId = H5D.read(datasetId, memId, H5S.ALL,
+			var memId = H5T.copy(H5T.C_S1);
+			H5T.set_size(memId, new IntPtr((int)spaceNeeded));
+
+			int resultId = H5D.read(datasetId, memId, H5S.ALL,
                         H5S.ALL, H5P.DEFAULT, hnd.AddrOfPinnedObject());
             hnd.Free();
 
-            wdata = wdata.Where((b, i) => i % 2 == 0).
-                Select(b => (b == 0) ? (byte)32 : b).ToArray();
+            // Remove the null termination of the string
+            wdata = wdata.Where(b => b != 0).ToArray();
             string result = Encoding.ASCII.GetString(wdata);
 
             H5T.close(memId);
