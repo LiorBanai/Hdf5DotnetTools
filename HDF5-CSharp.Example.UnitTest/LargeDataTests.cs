@@ -18,7 +18,6 @@ namespace HDF5_CSharp.Example.UnitTest
         {
             string meanContent = File.ReadAllText("SingleMeanResult.txt", Encoding.UTF8);
 
-
             // 1- we will load the h5 file and create a new one base on this one 
 
             string filename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test3.h5");
@@ -34,7 +33,7 @@ namespace HDF5_CSharp.Example.UnitTest
                 {
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
-                    PatientAge = 26
+                    PatientAge = 26,
                 },
             };
 
@@ -46,7 +45,6 @@ namespace HDF5_CSharp.Example.UnitTest
             var parameters = AcquisitionProtocolParameters.FromJson(data);
             await kama.StartLogging(parameters);
 
-
             for (int i = 0; i < 25000; i++)
             {
                 string txt = meanContent.Replace("ZZZZZZZZZZZZZZ", i.ToString());
@@ -56,7 +54,6 @@ namespace HDF5_CSharp.Example.UnitTest
 
             kama.StopRecording();
             await kama.StopProcedure();
-
 
             using (KamaAcquisitionReadOnlyFile readFile = new KamaAcquisitionReadOnlyFile(filename))
             {
@@ -68,6 +65,7 @@ namespace HDF5_CSharp.Example.UnitTest
                 for (int i = 0; i < 25000; i++)
                 {
                     Assert.IsTrue(readEvents[i].timestamp == i);
+
                     // Assert.IsTrue(events[i].data == i);
                 }
             }

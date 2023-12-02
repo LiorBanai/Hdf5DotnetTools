@@ -38,7 +38,6 @@ namespace HDF5CSharp.Example.DataTypes
                    EndDateTime.EqualsUpToMilliseconds(other.EndDateTime) &&
                    SamplingRate == other.SamplingRate &&
 
-
                    UnfilteredSignal.Rank == other.UnfilteredSignal.Rank &&
                    Enumerable.Range(0, UnfilteredSignal.Rank).All(dimension =>
                        UnfilteredSignal.GetLength(dimension) == other.UnfilteredSignal.GetLength(dimension)) &&

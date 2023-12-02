@@ -20,7 +20,6 @@ namespace HDF5CSharp
         public string displayName;
     }
 
-
     public static partial class Hdf5
     {
         private static readonly IEnumerable<TypeCode> primitiveTypes = Enum.GetValues(typeof(TypeCode)).Cast<TypeCode>().Except(new[] { TypeCode.Empty, TypeCode.DBNull, TypeCode.Object });
@@ -51,6 +50,7 @@ namespace HDF5CSharp
             Marshal.FreeHGlobal(ptr);
             return arr;
         }
+
         /// <summary>
         /// Opens a Hdf-5 file
         /// </summary>
@@ -118,11 +118,11 @@ namespace HDF5CSharp
         {
             return H5F.flush(objectId, scope);
         }
+
         //internal static string ToHdf5Name(string name)
         //{
         //    return string.Concat(@"/", name);
         //}
-
 
         internal static long GetDatatype(Type type)
         {
@@ -161,6 +161,7 @@ namespace HDF5CSharp
                 case TypeCode.Double:
                     dataType = H5T.NATIVE_DOUBLE;
                     break;
+
                 //case TypeCode.DateTime:
                 //    dataType = H5T.Native_t;
                 //    break;
@@ -310,7 +311,6 @@ namespace HDF5CSharp
             }
             return output;
         }
-
 
         public static bool Similar(this IEnumerable<double> first, IEnumerable<double> second, double precision = 1e-2)
         {

@@ -22,6 +22,7 @@ namespace HDF5CSharp.Example.DataTypes
     public class ProcedureInfo
     {
         public Guid Guid { get; set; }
+
         /// <summary>
         /// Patient Info
         /// </summary>
@@ -38,7 +39,6 @@ namespace HDF5CSharp.Example.DataTypes
         public string GeolocationData { get; set; }
         public DateTime StartTimeUtc { get; set; }
         public DateTime EndTimeUtc { get; set; }
-
 
         // Timezone information
         public string LocalTimeZone { get; set; }

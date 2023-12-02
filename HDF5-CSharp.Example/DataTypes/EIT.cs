@@ -71,8 +71,9 @@ namespace HDF5CSharp.Example.DataTypes
             float[,] cImData = new float[length, samples[0].ComplexCurrentMatrix.Length];
             ulong[,] saturationData = new ulong[length, 1];
             long[,] timestampData = new long[length, 1];
+
             // Write packet id, kalpa clock only if exist => value != Uint64.MaxValue (default value)
-            ulong[,] packetIdData = samples[0].PacketId == UInt64.MaxValue ? null : new ulong[length, 1];
+            ulong[,] packetIdData = samples[0].PacketId == ulong.MaxValue ? null : new ulong[length, 1];
 
             for (var i = 0; i < length; i++)
             {

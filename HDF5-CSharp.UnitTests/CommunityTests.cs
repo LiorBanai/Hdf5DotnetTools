@@ -72,11 +72,11 @@ namespace HDF5CSharp.UnitTests
             string folder = AppDomain.CurrentDomain.BaseDirectory;
             string filename = Path.Combine(folder, "files", "table.H5");
 
-
             var fileId = Hdf5.OpenFile(filename);
             Assert.IsTrue(fileId > 0);
             var cmpList = Hdf5.Read2DTable<Data>(fileId, "/SurfaceCurrent/SurfaceCurrent.01/Group_009/values");
             Hdf5.CloseFile(fileId);
+
             // CollectionAssert.AreEqual(wData2List, cmpList);
         }
 
@@ -101,8 +101,10 @@ namespace HDF5CSharp.UnitTests
             PC.InstanceName = Process.GetCurrentProcess().ProcessName;
             */
             List<HDF5DataClass> fromH5File = TestReadFile(fn);
+
             //Console.WriteLine($"After Read {i}: {Convert.ToInt32(PC.NextValue()) / 1024}");
             Assert.IsTrue(original.SequenceEqual(fromH5File));
+
             // PC.Close();
             // PC.Dispose();
         }
@@ -156,7 +158,8 @@ namespace HDF5CSharp.UnitTests
                 {
                     readOK = false;
                 }
-            } while (readOK);
+            }
+            while (readOK);
 
             Hdf5.CloseFile(fileID);
             return read;
@@ -213,12 +216,12 @@ namespace HDF5CSharp.UnitTests
             long waterLevelGroupId = Hdf5.CreateOrOpenGroup(fileId, "Waterlevel");
             Hdf5.WriteAttribute(waterLevelGroupId, "commonPointRule", (byte)4);
             Hdf5.WriteAttribute(waterLevelGroupId, "dataCodingFormat", (byte)1);
-            Hdf5.WriteAttribute(waterLevelGroupId, "dimension", (Int16)2);
+            Hdf5.WriteAttribute(waterLevelGroupId, "dimension", (short)2);
             Hdf5.WriteAttribute(waterLevelGroupId, "horizontalPositionUncertainty", (int)-1);
             Hdf5.WriteAttribute(waterLevelGroupId, "maxDatasetHeight", (float)2.898);
             Hdf5.WriteAttribute(waterLevelGroupId, "methodWaterLevelProduct", "pred, obsv, hcst, or fcst");
             Hdf5.WriteAttribute(waterLevelGroupId, "minDatasetHeight", (float)0.039);
-            Hdf5.WriteAttribute(waterLevelGroupId, "numInstances", (Int16)1);
+            Hdf5.WriteAttribute(waterLevelGroupId, "numInstances", (short)1);
             Hdf5.WriteAttribute(waterLevelGroupId, "timeUncertainty", (float)-1.0);
             Hdf5.WriteAttribute(waterLevelGroupId, "verticalUncertainty", (float)-1.0);
 
@@ -227,8 +230,8 @@ namespace HDF5CSharp.UnitTests
             Hdf5.WriteAttribute(wlGroup01, "dateTimeOfLastRecord", "20190704T000000Z");
             Hdf5.WriteAttribute(wlGroup01, "eastBoundLongitude", (double)3.5);
             Hdf5.WriteAttribute(wlGroup01, "northBoundLatitude", (double)53.2);
-            Hdf5.WriteAttribute(wlGroup01, "numGRP", (Int16)4);
-            Hdf5.WriteAttribute(wlGroup01, "numberOfStations", (Int16)4);
+            Hdf5.WriteAttribute(wlGroup01, "numGRP", (short)4);
+            Hdf5.WriteAttribute(wlGroup01, "numberOfStations", (short)4);
             Hdf5.WriteAttribute(wlGroup01, "southBoundLatitude", (double)50.2);
             Hdf5.WriteAttribute(wlGroup01, "typeOfWaterLevelData", (byte)2);
             Hdf5.WriteAttribute(wlGroup01, "westBoundLongitude", (double)1.1);
@@ -275,9 +278,9 @@ namespace HDF5CSharp.UnitTests
             long groupFId = Hdf5.CreateOrOpenGroup(fileId, "GROUP_F");
 
             var featureCodeDs = new Hdf5Dataset();
-            featureCodeDs.WriteNumericAttributes(groupFId, "Int32Attribute", new int[] { 1,2,3 });
+            featureCodeDs.WriteNumericAttributes(groupFId, "Int32Attribute", new int[] { 1, 2, 3 });
             featureCodeDs.WriteNumericAttributes(groupFId, "Int16Attribute", new short[] { 1, 2, 3 });
-            featureCodeDs.WriteNumericAttributes(groupFId, "DoubleAttribute", new Double[] { 1.1f, 2.2f, 3.3f });
+            featureCodeDs.WriteNumericAttributes(groupFId, "DoubleAttribute", new double[] { 1.1f, 2.2f, 3.3f });
             featureCodeDs.WriteNumericAttributes(groupFId, "longAttribute", new long[] { 10, 20, 30 });
 
             Hdf5.CloseGroup(groupFId);

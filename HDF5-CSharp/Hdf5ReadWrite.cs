@@ -8,18 +8,18 @@ namespace HDF5CSharp
 {
     public class Hdf5ReaderWriter
     {
-        IHdf5ReaderWriter rw;
-        public Hdf5ReaderWriter(IHdf5ReaderWriter _rw)
+        private readonly IHdf5ReaderWriter rw;
+        public Hdf5ReaderWriter(IHdf5ReaderWriter rw)
         {
-            rw = _rw;
+            this.rw = rw;
         }
 
-        public (int success, long CreatedId) WriteArray(long groupId, string name, Array collection, Dictionary<string, List<string>> attributes)
+        public (int Success, long CreatedId) WriteArray(long groupId, string name, Array collection, Dictionary<string, List<string>> attributes)
         {
             Type type = collection.GetType();
             Type elementType = type.GetElementType();
             TypeCode typeCode = Type.GetTypeCode(elementType);
-            (int success, long CreatedId) result;
+            (int Success, long CreatedId) result;
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -118,7 +118,7 @@ namespace HDF5CSharp
                     break;
             }
 
-            if (result.success == 0)//append attributes
+            if (result.Success == 0)//append attributes
             {
                 foreach (KeyValuePair<string, List<string>> entry in attributes)
                 {
@@ -129,13 +129,12 @@ namespace HDF5CSharp
             return result;
         }
 
-
-        public (bool success, Array result) ReadArray<T>(long groupId, string name, string alternativeName, bool mandatoryElement)
+        public (bool Success, Array Result) ReadArray<T>(long groupId, string name, string alternativeName, bool mandatoryElement)
         {
             return ReadArray(typeof(T), groupId, name, alternativeName, mandatoryElement);
         }
 
-        public (bool success, Array result) ReadArray(Type elementType, long groupId, string name, string alternativeName, bool mandatoryElement)
+        public (bool Success, Array Result) ReadArray(Type elementType, long groupId, string name, string alternativeName, bool mandatoryElement)
         {
             TypeCode typeCode = Type.GetTypeCode(elementType);
             bool success;

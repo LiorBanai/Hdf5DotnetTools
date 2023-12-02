@@ -50,12 +50,11 @@ namespace HDF5CSharp.UnitTests
             Hdf5Utils.LogError = (s) => Errors.Add(s);
             string fileName = Path.Combine(folder, "files", "testFile.H5");
             var fileId = Hdf5.OpenFile(fileName, true);
-            var result = Hdf5Utils.ItemExists(fileId, "/A/B/C",Hdf5ElementType.Dataset);
+            var result = Hdf5Utils.ItemExists(fileId, "/A/B/C", Hdf5ElementType.Dataset);
             Assert.IsFalse(result);
-            var id = Hdf5.OpenDatasetIfExists(fileId, "/A/B/C","");
+            var id = Hdf5.OpenDatasetIfExists(fileId, "/A/B/C", "");
             Assert.IsTrue(id==-1);
         }
-
 
         //[TestMethod]
         public void TestLoops()
@@ -81,10 +80,11 @@ namespace HDF5CSharp.UnitTests
                 {
                     readOK = false;
                 }
-            } while (readOK);
+            }
+            while (readOK);
 
             Hdf5.CloseGroup(groupId);
-            Assert.IsTrue(data.Count == 10,$"Actual: {data.Count}");
+            Assert.IsTrue(data.Count == 10, $"Actual: {data.Count}");
             Hdf5.CloseFile(fileId);
             File.Delete(fileName);
         }

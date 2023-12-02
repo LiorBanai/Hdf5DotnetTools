@@ -37,24 +37,23 @@ namespace HDF5CSharp.UnitTests
                 Hdf5.CloseGroup(groupId);
                 Hdf5.CloseFile(fileId);
 
-
                 fileId = Hdf5.OpenFile(filename);
                 Assert.IsTrue(fileId > 0);
                 fileId = Hdf5.OpenFile(filename);
 
                 groupId = H5G.open(fileId, Hdf5Utils.NormalizedName("/A/B"));
-                double[,] dset2 = (double[,])Hdf5.ReadDataset<double>(groupId, Hdf5Utils.NormalizedName( "test")).result;
+                double[,] dset2 = (double[,])Hdf5.ReadDataset<double>(groupId, Hdf5Utils.NormalizedName("test")).Result;
                 CompareDatasets(dset, dset2);
                 Assert.IsTrue(Hdf5.CloseGroup(groupId) >= 0);
                 groupId = H5G.open(fileId, Hdf5Utils.NormalizedName("/A/C"));
-                dset2 = (double[,])Hdf5.ReadDataset<double>(groupId, Hdf5Utils.NormalizedName("test2")).result;
+                dset2 = (double[,])Hdf5.ReadDataset<double>(groupId, Hdf5Utils.NormalizedName("test2")).Result;
                 CompareDatasets(dset, dset2);
                 Assert.IsTrue(Hdf5.CloseGroup(groupId) >= 0);
                 bool same = dset == dset2;
                 dset = dsets.First();
-                dset2 = (double[,])Hdf5.ReadDataset<double>(fileId, Hdf5Utils.NormalizedName("/A/test")).result;
+                dset2 = (double[,])Hdf5.ReadDataset<double>(fileId, Hdf5Utils.NormalizedName("/A/test")).Result;
                 CompareDatasets(dset, dset2);
-                Assert.IsTrue(Hdf5Utils.ItemExists(fileId, Hdf5Utils.NormalizedName( "A/B/C/D/E/F/I"),DataTypes.Hdf5ElementType.Dataset));
+                Assert.IsTrue(Hdf5Utils.ItemExists(fileId, Hdf5Utils.NormalizedName("A/B/C/D/E/F/I"), DataTypes.Hdf5ElementType.Dataset));
 
                 Assert.IsTrue(Hdf5.CloseFile(fileId) == 0);
             }

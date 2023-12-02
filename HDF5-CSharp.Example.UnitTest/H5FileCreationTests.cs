@@ -16,7 +16,7 @@ namespace HDF5_CSharp.Example.UnitTest
     public class BaseClass
     {
         protected ILogger Logger { get; }
-        protected KamaAcquisitionFile kama { get; set; }
+        protected KamaAcquisitionFile Kama { get; set; }
         protected string AcquisitionScanProtocolPath { get; set; }
         private List<string> Errors { get; set; }
         protected BaseClass()
@@ -40,7 +40,7 @@ namespace HDF5_CSharp.Example.UnitTest
         [TestCleanup]
         public void TestCleanup()
         {
-            Assert.IsTrue(Errors.Count == 0, $"Errors were found: {String.Join(",",Errors)}");
+            Assert.IsTrue(Errors.Count == 0, $"Errors were found: {string.Join(",", Errors)}");
             Errors.Clear();
         }
     }
@@ -60,7 +60,7 @@ namespace HDF5_CSharp.Example.UnitTest
                 File.Delete(filename);
             }
 
-            kama = new KamaAcquisitionFile(filename, AcquisitionInterface.Simulator, Logger);
+            Kama = new KamaAcquisitionFile(filename, AcquisitionInterface.Simulator, Logger);
             ProcedureInfo info = new ProcedureInfo
             {
                 ExamDate = DateTime.Now,
@@ -69,35 +69,34 @@ namespace HDF5_CSharp.Example.UnitTest
                 {
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
-                    PatientAge = 26
+                    PatientAge = 26,
                 },
             };
 
-            kama.SavePatientInfo(info.Patient, info.ExamDate);
-            kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
-            kama.SetProcedureInformation(info);
+            Kama.SavePatientInfo(info.Patient, info.ExamDate);
+            Kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
+            Kama.SetProcedureInformation(info);
             string data = File.ReadAllText(AcquisitionScanProtocolPath);
             AcquisitionProtocolParameters parameters = AcquisitionProtocolParameters.FromJson(data);
-            await kama.StartLogging(parameters);
-            var ecgTask = WriteECGData(kama, 2, 1);
-            var eitTask = WriteEITData(parameters, kama, 5, 1);
-            var seTask = WriteSystemEvents(kama);
+            await Kama.StartLogging(parameters);
+            var ecgTask = WriteECGData(Kama, 2, 1);
+            var eitTask = WriteEITData(parameters, Kama, 5, 1);
+            var seTask = WriteSystemEvents(Kama);
             await Task.WhenAll(ecgTask, eitTask, seTask);
             var ecgTestData = await ecgTask;
             var eitsTestData = await eitTask;
 
-            kama.StopRecording();
-            await kama.StopProcedure();
-
+            Kama.StopRecording();
+            await Kama.StopProcedure();
 
             using (KamaAcquisitionReadOnlyFile readFile = new KamaAcquisitionReadOnlyFile(filename))
             {
                 readFile.ReadSystemInformation();
                 readFile.ReadProcedureInformation();
                 readFile.ReadPatientInformation();
-                Assert.IsTrue(readFile.PatientInformation.Equals(kama.PatientInfo));
-                Assert.IsTrue(readFile.ProcedureInformation.Equals(kama.ProcedureInformation));
-                Assert.IsTrue(readFile.SystemInformation.Equals(kama.SystemInformation));
+                Assert.IsTrue(readFile.PatientInformation.Equals(Kama.PatientInfo));
+                Assert.IsTrue(readFile.ProcedureInformation.Equals(Kama.ProcedureInformation));
+                Assert.IsTrue(readFile.SystemInformation.Equals(Kama.SystemInformation));
 
                 readFile.ReadECGData();
 
@@ -120,7 +119,7 @@ namespace HDF5_CSharp.Example.UnitTest
                 File.Delete(filename);
             }
 
-            kama = new KamaAcquisitionFile(filename, AcquisitionInterface.Simulator, Logger);
+            Kama = new KamaAcquisitionFile(filename, AcquisitionInterface.Simulator, Logger);
             ProcedureInfo info = new ProcedureInfo
             {
                 ExamDate = DateTime.Now,
@@ -129,16 +128,16 @@ namespace HDF5_CSharp.Example.UnitTest
                 {
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
-                    PatientAge = 26
+                    PatientAge = 26,
                 },
             };
 
-            kama.SavePatientInfo(info.Patient, info.ExamDate);
-            kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
+            Kama.SavePatientInfo(info.Patient, info.ExamDate);
+            Kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
             string data = File.ReadAllText(calibrationPath);
             CalibrationsSystemInformation calib = CalibrationsSystemInformation.FromJson(data);
-            kama.AddCalibrationsData(calib);
-            await kama.StopProcedure();
+            Kama.AddCalibrationsData(calib);
+            await Kama.StopProcedure();
             File.Delete(filename);
         }
 
@@ -152,7 +151,7 @@ namespace HDF5_CSharp.Example.UnitTest
                 File.Delete(filename);
             }
 
-            kama = new KamaAcquisitionFile(filename, AcquisitionInterface.Simulator, Logger);
+            Kama = new KamaAcquisitionFile(filename, AcquisitionInterface.Simulator, Logger);
             ProcedureInfo info = new ProcedureInfo
             {
                 ExamDate = DateTime.Now,
@@ -161,12 +160,12 @@ namespace HDF5_CSharp.Example.UnitTest
                 {
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
-                    PatientAge = 26
+                    PatientAge = 26,
                 },
             };
-            kama.SavePatientInfo(info.Patient, info.ExamDate);
-            kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
-            await kama.StopProcedure();
+            Kama.SavePatientInfo(info.Patient, info.ExamDate);
+            Kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
+            await Kama.StopProcedure();
             File.Delete(filename);
         }
 
@@ -180,7 +179,7 @@ namespace HDF5_CSharp.Example.UnitTest
                 {
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
-                    PatientAge = 26
+                    PatientAge = 26,
                 },
             };
 
@@ -189,7 +188,7 @@ namespace HDF5_CSharp.Example.UnitTest
 
         private void UpdateSystemInformation(KamaAcquisitionFile file)
         {
-            kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
+            Kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
         }
 
         private async Task<List<ECGFrame>> WriteECGData(KamaAcquisitionFile file, int loop,
@@ -315,17 +314,18 @@ namespace HDF5_CSharp.Example.UnitTest
         {
             //string filename = @"D:\Data\9_pig.h5";
             string filename = @"c:\kalpa\test.h5";
+
             //string filename = @"d:\data\test2400.h5";
             var fileId = Hdf5.OpenFile(filename);
             Stopwatch st = Stopwatch.StartNew();
             var ds = Hdf5.ReadDatasetToArray<float>(fileId, "/eit/d1/voltages.im");
             st.Stop();
-            Console.WriteLine(ds.result.Length);
+            Console.WriteLine(ds.Result.Length);
             Console.WriteLine("read time im: " + st.ElapsedMilliseconds);
             st.Restart();
             ds = Hdf5.ReadDatasetToArray<float>(fileId, "/eit/d1/voltages.re");
             st.Stop();
-            Console.WriteLine(ds.result.Length);
+            Console.WriteLine(ds.Result.Length);
             Console.WriteLine("read time re: " + st.ElapsedMilliseconds);
             Hdf5.CloseFile(fileId);
         }
@@ -339,7 +339,7 @@ namespace HDF5_CSharp.Example.UnitTest
                 File.Delete(filename);
             }
 
-            kama = new KamaAcquisitionFile(filename, AcquisitionInterface.Simulator, Logger);
+            Kama = new KamaAcquisitionFile(filename, AcquisitionInterface.Simulator, Logger);
             ProcedureInfo info = new ProcedureInfo
             {
                 ExamDate = DateTime.Now,
@@ -348,23 +348,20 @@ namespace HDF5_CSharp.Example.UnitTest
                 {
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
-                    PatientAge = 26
+                    PatientAge = 26,
                 },
             };
 
-            kama.SavePatientInfo(info.Patient, info.ExamDate);
-            kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
+            Kama.SavePatientInfo(info.Patient, info.ExamDate);
+            Kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
             string data = File.ReadAllText(AcquisitionScanProtocolPath);
             AcquisitionProtocolParameters parameters = AcquisitionProtocolParameters.FromJson(data);
-            await kama.StartLogging(parameters);
+            await Kama.StartLogging(parameters);
 
-
-
-            kama.StopRecording();
-            await kama.StopProcedure();
+            Kama.StopRecording();
+            await Kama.StopProcedure();
             File.Delete(filename);
         }
-
 
         [TestMethod]
         public void WriteAndReadUserSystemEvents()
@@ -373,7 +370,7 @@ namespace HDF5_CSharp.Example.UnitTest
 
             var userEventsData = new List<UserEventRecord>()
             {
-                new UserEventRecord("research1", "button1", "none",DateTimeOffset.Now.ToUnixTimeMilliseconds()),
+                new UserEventRecord("research1", "button1", "none", DateTimeOffset.Now.ToUnixTimeMilliseconds()),
                 new UserEventRecord("research1", "button2", "none", DateTimeOffset.Now.ToUnixTimeMilliseconds() + 10),
             };
             var fileId = Hdf5.CreateFile(filename);

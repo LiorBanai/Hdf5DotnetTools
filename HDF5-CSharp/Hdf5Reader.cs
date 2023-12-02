@@ -230,6 +230,7 @@ namespace HDF5CSharp
                         if (success)
                         {
                             Type genericClass = typeof(List<>);
+
                             // MakeGenericType is badly named
                             Type constructedClass = genericClass.MakeGenericType(elType);
 
@@ -253,6 +254,7 @@ namespace HDF5CSharp
                 else if (ty == typeof(Half) || ty == typeof(TimeOnly) || ty == typeof(DateOnly))
                 {
                     (success, values) = dsetRW.ReadArray(ty, groupId, name, alternativeName, mandatoryElement);
+
                     // get first value depending on rank of the matrix
                     int[] first = new int[values.Rank].Select(f => 0).ToArray();
                     if (success)
@@ -264,6 +266,7 @@ namespace HDF5CSharp
                 else if (primitiveTypes.Contains(code) || ty == typeof(TimeSpan))
                 {
                     (success, values) = dsetRW.ReadArray(ty, groupId, name, alternativeName, mandatoryElement);
+
                     // get first value depending on rank of the matrix
                     int[] first = new int[values.Rank].Select(f => 0).ToArray();
                     if (success)
@@ -298,8 +301,7 @@ namespace HDF5CSharp
 
         private static void ReadProperties(Type tyObject, object targetObjectToFill, long groupId)
         {
-            PropertyInfo[] miMembers = tyObject.GetProperties( /*BindingFlags.DeclaredOnly |*/
-                BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo[] miMembers = tyObject.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 
             foreach (PropertyInfo info in miMembers)
             {
@@ -355,6 +357,7 @@ namespace HDF5CSharp
                         if (success)
                         {
                             Type genericClass = typeof(List<>);
+
                             // MakeGenericType is badly named
                             Type constructedClass = genericClass.MakeGenericType(elType);
 
@@ -437,7 +440,7 @@ namespace HDF5CSharp
 
         public static Hdf5Element ReadTreeFileStructure(string fileName)
         {
-            var tree = ReadFileStructure(fileName).tree;
+            var tree = ReadFileStructure(fileName).Tree;
             try
             {
                 using (var root = H5File.OpenRead(fileName))
@@ -459,7 +462,7 @@ namespace HDF5CSharp
             {
                 using (var root = H5File.OpenRead(fileName))
                 {
-                    AddAttributes(result.tree, root, true);
+                    AddAttributes(result.Tree, root, true);
                 }
             }
             catch (Exception e)
@@ -467,11 +470,11 @@ namespace HDF5CSharp
                 Hdf5Utils.LogMessage($"Error Reading file attributes: {e.Message}", Hdf5LogLevel.Error);
             }
 
-            return result.flat;
+            return result.Flat;
         }
         public static List<Hdf5Element> ReadFlatFileStructureWithoutAttributes(string fileName)
         {
-            var flat = ReadFileStructure(fileName).flat;
+            var flat = ReadFileStructure(fileName).Flat;
             return flat;
         }
         private static void AddAttributes(Hdf5Element element, NativeFile file, bool recursive)
@@ -533,6 +536,7 @@ namespace HDF5CSharp
                 (H5DataTypeClass.VariableLength, _) => attribute.Read<string[]>(),
                 (H5DataTypeClass.String, _) => attribute.Read<string[]>(),
                 (H5DataTypeClass.Compound, _) => attribute.Read<Dictionary<string, object>>(),
+
                 // Other types might currently be a bit difficult to read automatically.
                 // However, in future it will be possible to also read unknown data by simply
                 // calling attribute.Read(). This method will be part of the final release.
@@ -546,8 +550,7 @@ namespace HDF5CSharp
             };
         }
 
-
-        internal static (Hdf5Element tree, List<Hdf5Element> flat) ReadFileStructure(string fileName)
+        internal static (Hdf5Element Tree, List<Hdf5Element> Flat) ReadFileStructure(string fileName)
         {
             var elements = new List<Hdf5Element>();
             if (!File.Exists(fileName))
@@ -601,6 +604,7 @@ namespace HDF5CSharp
                 var userData = Marshal.PtrToStringAnsi(intPtrUserData);
                 var fullName = CombinePath(userData, name);
                 Hdf5ElementType elementType = Hdf5ElementType.Unknown;
+
                 // this is necessary, since H5Oget_info_by_name is slow because it wants verbose object header data 
                 // and H5G_loc_info is not directly accessible
                 // only chance is to modify source code (H5Oget_info_by_name)
@@ -627,7 +631,6 @@ namespace HDF5CSharp
                         elementType = Hdf5ElementType.CommitedDatatype;
                     }
                 }
-
 
                 var parent = elements.FirstOrDefault(e =>
                 {
@@ -665,7 +668,6 @@ namespace HDF5CSharp
             }
             return (rootGroup, elements);
         }
-
 
         private static string CombinePath(string path1, string path2)
         {

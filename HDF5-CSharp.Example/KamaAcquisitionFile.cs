@@ -11,8 +11,9 @@ namespace HDF5CSharp.Example
     public class KamaAcquisitionFile
     {
         private long fileId;
-        long groupRoot;
+        private long groupRoot;
         private long groupEIT;
+
         //h5 data
         public ProcedureInformation ProcedureInformation { get; set; }
         public SystemInformation SystemInformation { get; set; }
@@ -25,6 +26,7 @@ namespace HDF5CSharp.Example
         public RPositionGroup RPosition { get; set; }
         public TagsGroup Tags { get; set; }
         private UserEventsGroup UserEventsGroup { get; set; }
+
         //end h5 data
         private static ILogger Logger { get; set; }
 
@@ -69,6 +71,7 @@ namespace HDF5CSharp.Example
 
             SystemInformation = new SystemInformation(fileId, groupRoot, logger);
             SystemInformation.SystemType = acquisitionInterface.ToString();
+
             //  InjectionGroup = new InjectionGroup(fileId, groupRoot);
             CalibrationGroup = new CalibrationGroup(fileId, groupRoot, logger);
             SystemEvents = new SystemEventGroup(fileId, groupRoot, logger);
@@ -102,6 +105,7 @@ namespace HDF5CSharp.Example
         public Task StartLogging(AcquisitionProtocolParameters acquisitionProtocol)
         {
             EIT = new EIT(RecordNumber++, EITDefaultChunkSize, acquisitionProtocol.AsJson(), fileId, groupEIT, Logger);
+
             //var acquisitionInformation = new AcquisitionInformation(acquisitionProtocol, fileId, groupEIT, Logger);
             //acquisitionInformation.FlushDataAndCloseObject();
             ECG = new ECG(fileId, groupRoot, ECGDefaultChunkSize, (int)acquisitionProtocol.ScanDescription.EcgParams.SampleRate, Logger);
@@ -118,6 +122,7 @@ namespace HDF5CSharp.Example
             ProcedureInformation.FlushDataAndCloseObject();
             SystemInformation.FlushDataAndCloseObject();
             CalibrationGroup.FlushDataAndCloseObject();
+
             //wait for writing all data before resetting
             if (EIT != null)
             {
@@ -237,7 +242,6 @@ namespace HDF5CSharp.Example
 
         public void AppendSystemEvent(SystemEventModel systemEvent) => SystemEvents.Enqueue(systemEvent);
 
-
         public void AddCalibrationsData(CalibrationsSystemInformation calibrationsSystemInformation)
         {
             CalibrationGroup.AddCalibrationsData(calibrationsSystemInformation);
@@ -259,6 +263,6 @@ namespace HDF5CSharp.Example
 
         public void AppendRPosition(RPositionsMessagePack rPositions) => RPosition.Enqueue(rPositions);
         public void AppendMean(long timestamp, string data) => MeansData.Enqueue(timestamp, data);
-        public void AppendMeans(List<(long timestamp, string data)> data) => MeansData.EnqueueRange(data);
+        public void AppendMeans(List<(long Timestamp, string Data)> data) => MeansData.EnqueueRange(data);
     }
 }

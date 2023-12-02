@@ -48,7 +48,6 @@ namespace HDF5CSharp.Example.DataTypes
             }
         }
 
-
         public void Enqueue(RPositionsMessagePack rPosition)
         {
             if (record)
@@ -70,7 +69,6 @@ namespace HDF5CSharp.Example.DataTypes
                 }
             }
         }
-
 
         public Task WaitForDataWritten()
         {
@@ -100,8 +98,6 @@ namespace HDF5CSharp.Example.DataTypes
             }
             return Task.CompletedTask;
         }
-
-
 
         public void StopRecording() => record = false;
 

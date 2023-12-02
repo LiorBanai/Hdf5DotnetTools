@@ -8,7 +8,6 @@ namespace HDF5CSharp
     {
         public static Settings Settings { get; set; }
 
-
         static Hdf5()
         {
             Settings = new Settings();
@@ -25,10 +24,12 @@ namespace HDF5CSharp
         public bool OverrideExistingData { get; set; }
         public float Version { get; set; }
         public bool GlobalLoggingEnabled { get; private set; }
+
         /// <summary>
         /// Character set to use for text strings.
         /// </summary>
         public CharacterSetType CharacterSetType { get; set; }
+
         /// <summary>
         /// Type of padding to use in character strings.
         /// </summary>
@@ -52,8 +53,7 @@ namespace HDF5CSharp
             OverrideExistingData = overrideExistingData;
         }
 
-
-        public Settings(DateTimeType dateTimeType, bool lowerCaseNaming, bool throwOnError, bool overrideExistingData, CharacterSetType characterSetType, CharacterPaddingType characterPaddingType) :this(dateTimeType,lowerCaseNaming, throwOnError, overrideExistingData)
+        public Settings(DateTimeType dateTimeType, bool lowerCaseNaming, bool throwOnError, bool overrideExistingData, CharacterSetType characterSetType, CharacterPaddingType characterPaddingType) : this(dateTimeType, lowerCaseNaming, throwOnError, overrideExistingData)
         {
             CharacterPaddingType = characterPaddingType;
             CharacterSetType = characterSetType;
@@ -81,7 +81,7 @@ namespace HDF5CSharp
 
         public void EnableThrowOnNonExistNameWhenReading(bool enable)
         {
-            ThrowOnNonExistNameWhenReading= enable;
+            ThrowOnNonExistNameWhenReading = enable;
         }
     }
 

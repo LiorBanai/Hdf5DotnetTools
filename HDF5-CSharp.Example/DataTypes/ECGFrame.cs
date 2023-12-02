@@ -9,12 +9,11 @@ namespace HDF5CSharp.Example.DataTypes
 
     public class ECGFrame
     {
-        [Key("packetId")] public UInt64 PacketId { get; set; }
+        [Key("packetId")] public ulong PacketId { get; set; }
         [Key("timestamp")] public long Timestamp { get; set; }
-        [Key("KalpaClock")] public UInt64 KalpaClock { get; set; }
+        [Key("KalpaClock")] public ulong KalpaClock { get; set; }
         [Key("Data")] public List<List<float>> FrameData { get; set; }
         [Key("DataFiltered")] public List<List<float>> FilteredFrameData { get; set; }
-
 
         [IgnoreMember] public bool IsValid;// Prior the stabilization (normalization need to be done), the frame will be raised as invalid
         [IgnoreMember] public bool IsTriggerToInjection;
@@ -25,7 +24,7 @@ namespace HDF5CSharp.Example.DataTypes
             FilteredFrameData = new List<List<float>>();
             IsValid = true;
         }
-        public ECGFrame(List<List<float>> filteredData, List<List<float>> unFilteredData, long timestamp, UInt64 packetId)
+        public ECGFrame(List<List<float>> filteredData, List<List<float>> unFilteredData, long timestamp, ulong packetId)
         {
             PacketId = packetId;
             FilteredFrameData = filteredData;

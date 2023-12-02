@@ -16,7 +16,6 @@ namespace HDF5CSharp.Example.DataTypes
             TagsData = new List<string>();
         }
 
-
         public void Enqueue(string tagJson)
         {
             if (record)
@@ -24,7 +23,6 @@ namespace HDF5CSharp.Example.DataTypes
                 TagsData.Add(string.IsNullOrEmpty(tagJson) ? "[]" : tagJson);
             }
         }
-
 
         public Task WaitForDataWritten()
         {

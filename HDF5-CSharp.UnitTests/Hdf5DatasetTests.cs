@@ -27,7 +27,7 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 Hdf5.WriteDataset(fileId, "/test", times);
 
-                var timesRead = (DateTime[,])Hdf5.ReadDataset<DateTime>(fileId, "/test").result;
+                var timesRead = (DateTime[,])Hdf5.ReadDataset<DateTime>(fileId, "/test").Result;
                 CompareDatasets(times, timesRead);
 
                 Hdf5.CloseFile(fileId);
@@ -56,7 +56,7 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 Hdf5.WriteDataset(fileId, "/test", times);
 
-                TimeSpan[,] timesRead = (TimeSpan[,])Hdf5.ReadDataset<TimeSpan>(fileId, "/test").result;
+                TimeSpan[,] timesRead = (TimeSpan[,])Hdf5.ReadDataset<TimeSpan>(fileId, "/test").Result;
                 CompareDatasets(times, timesRead);
 
                 Hdf5.CloseFile(fileId);
@@ -89,7 +89,7 @@ namespace HDF5CSharp.UnitTests
             {
                 var fileId = Hdf5.OpenFile(filename);
                 Assert.IsTrue(fileId > 0);
-                double[,] dset2 = (double[,])Hdf5.ReadDataset<double>(fileId, "/test").result;
+                double[,] dset2 = (double[,])Hdf5.ReadDataset<double>(fileId, "/test").Result;
                 CompareDatasets(dset, dset2);
                 bool same = dset == dset2;
 
@@ -155,6 +155,7 @@ namespace HDF5CSharp.UnitTests
         public void WriteAndReadAllPrimitives()
         {
             string filename = Path.Combine(folder, "testAllPrimitives.H5");
+
             //var groupStr = "/test";
             //string concatFunc(string x) => string.Concat(groupStr, "/", x);
             try
@@ -186,6 +187,7 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 var groupId = Hdf5.CreateOrOpenGroup(fileId, groupName);
                 Assert.IsTrue(groupId >= 0);
+
                 //var chunkSize = new ulong[] { 5, 5 };
                 using (var chunkedDset = new ChunkedDataset<double>(datasetName, groupId, dsets.First()))
                 {
@@ -204,17 +206,18 @@ namespace HDF5CSharp.UnitTests
             try
             {
                 var fileId = Hdf5.OpenFile(filename);
+
                 //var groupId = H5G.open(fileId, groupName);
                 //var dset = Hdf5.ReadDatasetToArray<double>(groupId, datasetName);
                 var dset = Hdf5.ReadDatasetToArray<double>(fileId, string.Concat(groupName, "/", datasetName));
 
-                Assert.IsTrue(dset.result.Rank == dsets.First().Rank);
+                Assert.IsTrue(dset.Result.Rank == dsets.First().Rank);
                 var xSum = dsets.Select(d => d.GetLength(0)).Sum();
-                Assert.IsTrue(xSum == dset.result.GetLength(0));
+                Assert.IsTrue(xSum == dset.Result.GetLength(0));
                 var testRange = Enumerable.Range(0, 30).Select(t => (double)t);
 
                 // get every 5th element in the matrix
-                var x0Range = dset.result.Cast<double>().Where((d, i) => i % 5 == 0);
+                var x0Range = dset.Result.Cast<double>().Where((d, i) => i % 5 == 0);
                 Assert.IsTrue(testRange.SequenceEqual(x0Range));
 
                 Hdf5.CloseFile(fileId);
@@ -238,6 +241,7 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 var groupId = Hdf5.CreateOrOpenGroup(fileId, groupName);
                 Assert.IsTrue(groupId >= 0);
+
                 //var chunkSize = new ulong[] { 5, 5 };
                 using (var chunkedDset = new ChunkedDataset<double>(datasetName, groupId, dsets.First()))
                 {
@@ -258,17 +262,18 @@ namespace HDF5CSharp.UnitTests
             try
             {
                 var fileId = Hdf5.OpenFile(filename);
+
                 //var groupId = H5G.open(fileId, groupName);
                 //var dset = Hdf5.ReadDatasetToArray<double>(groupId, datasetName);
                 var dset = Hdf5.ReadDatasetToArray<double>(fileId, string.Concat(groupName, "/", datasetName));
 
-                Assert.IsTrue(dset.result.Rank == dsets.First().Rank);
+                Assert.IsTrue(dset.Result.Rank == dsets.First().Rank);
                 var xSum = dsets.Select(d => d.GetLength(0)).Sum();
-                Assert.IsTrue(xSum == dset.result.GetLength(0));
+                Assert.IsTrue(xSum == dset.Result.GetLength(0));
                 var testRange = Enumerable.Range(0, 30).Select(t => (double)t);
 
                 // get every 5th element in the matrix
-                var x0Range = dset.result.Cast<double>().Where((d, i) => i % 5 == 0);
+                var x0Range = dset.Result.Cast<double>().Where((d, i) => i % 5 == 0);
                 Assert.IsTrue(testRange.SequenceEqual(x0Range));
 
                 Hdf5.CloseFile(fileId);
@@ -301,12 +306,10 @@ namespace HDF5CSharp.UnitTests
             //read
             fileId = Hdf5.OpenFile(filename);
 
-
             var dataRead = Hdf5.ReadDatasetToArray<double>(fileId, string.Concat(groupName, "/", datasetName));
             Hdf5.CloseFile(fileId);
-            CompareDatasets(dataRead.result as double[,], data);
+            CompareDatasets(dataRead.Result as double[,], data);
         }
-
 
         [TestMethod]
         public void WriteAndReadSubsetOfDataset()
@@ -340,10 +343,10 @@ namespace HDF5CSharp.UnitTests
                 var dset = Hdf5.ReadDataset<double>(fileId, "/test", begIndex, endIndex);
                 Hdf5.CloseFile(fileId);
 
-
                 Assert.IsTrue(dset.Rank == dsets.First().Rank);
                 int count = Convert.ToInt32(endIndex - begIndex + 1);
                 Assert.IsTrue(count == dset.GetLength(0));
+
                 // Creat a range from number 8 to 21
                 var testRange = Enumerable.Range((int)begIndex, count).Select(t => (double)t);
 
@@ -370,6 +373,7 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 var groupId = Hdf5.CreateOrOpenGroup(fileId, groupName);
                 Assert.IsTrue(groupId >= 0);
+
                 //var chunkSize = new ulong[] { 5, 5 };
                 using (var chunkedDset = new ChunkedDataset<double>(datasetName, groupId))
                 {
@@ -388,17 +392,18 @@ namespace HDF5CSharp.UnitTests
             try
             {
                 var fileId = Hdf5.OpenFile(filename);
+
                 //var groupId = H5G.open(fileId, groupName);
                 //var dset = Hdf5.ReadDatasetToArray<double>(groupId, datasetName);
                 var dset = Hdf5.ReadDatasetToArray<double>(fileId, string.Concat(groupName, "/", datasetName));
 
-                Assert.IsTrue(dset.result.Rank == dsets.First().Rank);
+                Assert.IsTrue(dset.Result.Rank == dsets.First().Rank);
                 var xSum = dsets.Select(d => d.GetLength(0)).Sum();
-                Assert.IsTrue(xSum == dset.result.GetLength(0));
+                Assert.IsTrue(xSum == dset.Result.GetLength(0));
                 var testRange = Enumerable.Range(0, 30).Select(t => (double)t);
 
                 // get every 5th element in the matrix
-                var x0Range = dset.result.Cast<double>().Where((d, i) => i % 5 == 0);
+                var x0Range = dset.Result.Cast<double>().Where((d, i) => i % 5 == 0);
                 Assert.IsTrue(testRange.SequenceEqual(x0Range));
 
                 Hdf5.CloseFile(fileId);
@@ -422,6 +427,7 @@ namespace HDF5CSharp.UnitTests
             var (success, result) = Hdf5.ReadDataset<int>(tef2, "blah");
             Assert.IsTrue(success);
             Assert.IsTrue(result.Cast<int>().SequenceEqual(blah));
+
             // loading the hdf5 file shows it only has {1, 2, 4, 5, 0} stored.
             return tef2;
         }

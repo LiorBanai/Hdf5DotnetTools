@@ -10,13 +10,18 @@ namespace HDF5CSharp
 {
     public class ChunkedCompound<T> : IDisposable where T : struct
     {
-        ulong[] _currentDims;
-        readonly ulong[] _maxDims = { H5S.UNLIMITED, H5S.UNLIMITED };
-        long _status, _spaceId, _datasetId, _propId;
-        readonly long _typeId, _datatype;
+        private ulong[] currentDims;
+        private readonly ulong[] maxDims = { H5S.UNLIMITED, H5S.UNLIMITED };
+        private long status;
+        private long spaceId;
+        private long datasetId;
+        private long propId;
+        private readonly long typeId;
+        private readonly long datatype;
         public string GroupName { get; private set; }
         public int Rank { get; private set; }
         public long GroupId { get; private set; }
+
         /// <summary>
         /// Constructor to create a chuncked Compound object
         /// </summary>
@@ -26,8 +31,8 @@ namespace HDF5CSharp
         {
             GroupName = name;
             GroupId = groupId;
-            _datatype = Hdf5.CreateType(typeof(T));
-            _typeId = H5T.copy(_datatype);
+            datatype = Hdf5.CreateType(typeof(T));
+            typeId = H5T.copy(datatype);
         }
 
         /// <summary>
@@ -48,7 +53,7 @@ namespace HDF5CSharp
                 throw new Hdf5Exception("cannot call FirstDataset because group or file couldn't be created");
             }
 
-            if (Hdf5Utils.GetRealName(GroupId, GroupName, string.Empty).valid)
+            if (Hdf5Utils.GetRealName(GroupId, GroupName, string.Empty).Valid)
             {
                 throw new Hdf5Exception("cannot call FirstDataset because dataset already exists");
             }
@@ -72,11 +77,10 @@ namespace HDF5CSharp
 
             // Create dataspace.  Setting maximum size to NULL sets the maximum
             // size to be the current size.
-            _spaceId = H5S.create_simple(dims.Length, dims, _maxDims);
+            spaceId = H5S.create_simple(dims.Length, dims, maxDims);
 
             // Create the dataset and write the compound data to it.
-            _datasetId = Hdf5Utils.GetDatasetId(GroupId, Hdf5Utils.NormalizedName(GroupName), typeId, _spaceId, dcpl);
-
+            datasetId = Hdf5Utils.GetDatasetId(GroupId, Hdf5Utils.NormalizedName(GroupName), typeId, spaceId, dcpl);
 
             var ms = new MemoryStream();
             BinaryWriter writer = new BinaryWriter(ms);
@@ -88,9 +92,9 @@ namespace HDF5CSharp
             var bytes = ms.ToArray();
 
             GCHandle hnd = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-            var statusId = H5D.write(_datasetId, typeId, _spaceId, H5S.ALL,
+            var statusId = H5D.write(datasetId, typeId, spaceId, H5S.ALL,
                 H5P.DEFAULT, hnd.AddrOfPinnedObject());
-            _currentDims = new[] { (ulong)items.LongCount(), (ulong)1 };
+            currentDims = new[] { (ulong)items.LongCount(), (ulong)1 };
             if (statusId < 0)
             {
                 Hdf5Utils.LogMessage("Error creating compound", Hdf5LogLevel.Error);
@@ -100,10 +104,9 @@ namespace HDF5CSharp
              */
 
             hnd.Free();
-            H5S.close(_spaceId);
-            _spaceId = -1;
+            H5S.close(spaceId);
+            spaceId = -1;
         }
-
 
         public void AppendOrCreateCompound(IEnumerable<T> items)
         {
@@ -112,7 +115,7 @@ namespace HDF5CSharp
                 Hdf5Utils.LogMessage($"Empty list in {nameof(AppendOrCreateCompound)}", Hdf5LogLevel.Warning);
                 return;
             }
-            if (_currentDims == null)
+            if (currentDims == null)
             {
                 if (items.LongCount() < 1)
                 {
@@ -134,7 +137,7 @@ namespace HDF5CSharp
                 Hdf5Utils.LogMessage($"Empty list in {nameof(AppendCompound)}", Hdf5LogLevel.Warning);
                 return;
             }
-            if (!Hdf5Utils.GetRealName(GroupId, GroupName, string.Empty).valid)
+            if (!Hdf5Utils.GetRealName(GroupId, GroupName, string.Empty).Valid)
             {
                 string msg = $"call constructor or {nameof(FirstCompound)} first before appending.";
                 Hdf5Utils.LogMessage(msg, Hdf5LogLevel.Error);
@@ -144,18 +147,18 @@ namespace HDF5CSharp
                 }
             }
 
-            var _oldDims = this._currentDims.ToArray();
+            var _oldDims = this.currentDims.ToArray();
             var _ListDims = new ulong[] { (ulong)list.LongCount(), 1 };
             ulong[] zeros = Enumerable.Range(0, 2).Select(z => (ulong)0).ToArray();
 
             /* Extend the dataset. Dataset becomes 10 x 3  */
             var size = new ulong[] { _oldDims[0] + _ListDims[0], 1 };
 
-            var _status = H5D.set_extent(_datasetId, size);
+            var _status = H5D.set_extent(datasetId, size);
             ulong[] offset = new[] { _oldDims[0] }.Concat(zeros.Skip(1)).ToArray();
 
             /* Select a hyperslab in extended portion of dataset  */
-            var filespaceId = H5D.get_space(_datasetId);
+            var filespaceId = H5D.get_space(datasetId);
             if (filespaceId < 0)
             {
                 string msg = $"error creating file space.";
@@ -184,10 +187,10 @@ namespace HDF5CSharp
                 writer.Write(Hdf5.GetBytes(strct));
             }
             var bytes = ms.ToArray();
-            _currentDims = size;
+            currentDims = size;
             /* Write the data to the extended portion of dataset  */
             GCHandle hnd = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-            _status = H5D.write(_datasetId, _datatype, memId, filespaceId,
+            _status = H5D.write(datasetId, datatype, memId, filespaceId,
                 H5P.DEFAULT, hnd.AddrOfPinnedObject());
 
             hnd.Free();
@@ -199,13 +202,14 @@ namespace HDF5CSharp
         {
             try
             {
-                H5D.flush(_datasetId);
+                H5D.flush(datasetId);
             }
             catch (Exception e)
             {
-                Hdf5Utils.LogMessage($"Unable to flash {nameof(ChunkedCompound<T>)}: {e}",Hdf5LogLevel.Error);
+                Hdf5Utils.LogMessage($"Unable to flash {nameof(ChunkedCompound<T>)}: {e}", Hdf5LogLevel.Error);
             }
         }
+
         /// <summary>
         /// Finalizer of object
         /// </summary>
@@ -221,24 +225,24 @@ namespace HDF5CSharp
         /// <param name="itIsSafeToAlsoFreeManagedObjects"></param>
         protected virtual void Dispose(bool itIsSafeToAlsoFreeManagedObjects)
         {
-            if (!Hdf5Utils.GetRealName(GroupId, GroupName, string.Empty).valid)
+            if (!Hdf5Utils.GetRealName(GroupId, GroupName, string.Empty).Valid)
             {
                 Hdf5Utils.LogMessage($"Dataset {GroupName} does not exist.", Hdf5LogLevel.Warning);
             }
 
-            if (_datasetId >= 0)
+            if (datasetId >= 0)
             {
-                H5D.close(_datasetId);
+                H5D.close(datasetId);
             }
 
-            if (_propId >= 0)
+            if (propId >= 0)
             {
-                H5P.close(_propId);
+                H5P.close(propId);
             }
 
-            if (_spaceId >= 0)
+            if (spaceId >= 0)
             {
-                H5S.close(_spaceId);
+                H5S.close(spaceId);
             }
 
             if (itIsSafeToAlsoFreeManagedObjects)

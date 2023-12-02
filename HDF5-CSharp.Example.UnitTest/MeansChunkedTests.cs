@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace HDF5_CSharp.Example.UnitTest
 {
     [TestClass]
@@ -25,7 +24,7 @@ namespace HDF5_CSharp.Example.UnitTest
                 File.Delete(filename);
             }
 
-            kama = new KamaAcquisitionFile(filename, AcquisitionInterface.Simulator, Logger);
+            Kama = new KamaAcquisitionFile(filename, AcquisitionInterface.Simulator, Logger);
             ProcedureInfo info = new ProcedureInfo
             {
                 ExamDate = DateTime.Now,
@@ -34,29 +33,28 @@ namespace HDF5_CSharp.Example.UnitTest
                 {
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
-                    PatientAge = 26
+                    PatientAge = 26,
                 },
             };
 
-            kama.SavePatientInfo(info.Patient, info.ExamDate);
-            kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
-            kama.SetProcedureInformation(info);
+            Kama.SavePatientInfo(info.Patient, info.ExamDate);
+            Kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
+            Kama.SetProcedureInformation(info);
             string data = File.ReadAllText(AcquisitionScanProtocolPath);
             AcquisitionProtocolParameters parameters = AcquisitionProtocolParameters.FromJson(data);
-            await kama.StartLogging(parameters);
+            await Kama.StartLogging(parameters);
             var meansData = await GenerateMeans();
-            kama.StopRecording();
-            await kama.StopProcedure();
-
+            Kama.StopRecording();
+            await Kama.StopProcedure();
 
             using (KamaAcquisitionReadOnlyFile readFile = new KamaAcquisitionReadOnlyFile(filename))
             {
                 readFile.ReadSystemInformation();
                 readFile.ReadProcedureInformation();
                 readFile.ReadPatientInformation();
-                Assert.IsTrue(readFile.PatientInformation.Equals(kama.PatientInfo));
-                Assert.IsTrue(readFile.ProcedureInformation.Equals(kama.ProcedureInformation));
-                Assert.IsTrue(readFile.SystemInformation.Equals(kama.SystemInformation));
+                Assert.IsTrue(readFile.PatientInformation.Equals(Kama.PatientInfo));
+                Assert.IsTrue(readFile.ProcedureInformation.Equals(Kama.ProcedureInformation));
+                Assert.IsTrue(readFile.SystemInformation.Equals(Kama.SystemInformation));
 
                 var means = readFile.ReadMeansEvents();
                 CheckMeans(meansData, means);
@@ -65,14 +63,14 @@ namespace HDF5_CSharp.Example.UnitTest
             File.Delete(filename);
         }
 
-        private void CheckMeans(List<(long timestamp, string data)> meansData, List<MeansFullECGEvent> means)
+        private void CheckMeans(List<(long Timestamp, string Data)> meansData, List<MeansFullECGEvent> means)
         {
             Assert.IsTrue(meansData.Count == means.Count);
             for (var i = 0; i < means.Count; i++)
             {
                 MeansFullECGEvent mean = means[i];
-                Assert.IsTrue(meansData[i].timestamp == mean.timestamp);
-                Assert.IsTrue(meansData[i].data == mean.data);
+                Assert.IsTrue(meansData[i].Timestamp == mean.timestamp);
+                Assert.IsTrue(meansData[i].Data == mean.data);
                 Assert.IsTrue(mean.index == i + 1);
             }
         }
@@ -83,17 +81,17 @@ namespace HDF5_CSharp.Example.UnitTest
                 .Select(i => (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), i.ToString())).ToList();
 
             var d1 = data.Take(10);
-            foreach ((long timestamp, string data) d in d1)
+            foreach ((long Timestamp, string Data) d in d1)
             {
-                kama.AppendMean(d.timestamp, d.data);
+                Kama.AppendMean(d.Timestamp, d.Data);
             }
 
             await Task.Delay(5000);
             var d2 = data.Skip(10).Take(10).ToList();
-            kama.AppendMeans(d2);
+            Kama.AppendMeans(d2);
             await Task.Delay(5000);
             var d3 = data.Skip(20).ToList();
-            kama.AppendMeans(d3);
+            Kama.AppendMeans(d3);
             return data;
         }
     }

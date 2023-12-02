@@ -86,27 +86,27 @@ namespace HDF5CSharp
             return attributes;
         }
 
-        public static (bool success, Array result) ReadAttributes<T>(long groupId, string name, bool mandatory)
+        public static (bool Success, Array Result) ReadAttributes<T>(long groupId, string name, bool mandatory)
         {
             return attrRW.ReadArray<T>(groupId, name, string.Empty, mandatory);
         }
         public static T ReadAttribute<T>(long groupId, string name)
         {
             var attrs = attrRW.ReadArray<T>(groupId, name, string.Empty, false);
-            if (!attrs.success)
+            if (!attrs.Success)
             {
                 Hdf5Utils.LogMessage($"{name} was not found", Hdf5LogLevel.Error);
                 return default;
             }
-            int[] first = new int[attrs.result.Rank].Select(f => 0).ToArray();
-            T result = (T)attrs.result.GetValue(first);
+            int[] first = new int[attrs.Result.Rank].Select(f => 0).ToArray();
+            T result = (T)attrs.Result.GetValue(first);
             return result;
         }
 
-        public static (bool success, IEnumerable<string> items) ReadStringAttributes(long groupId, string name, string alternativeName, bool mandatory)
+        public static (bool Success, IEnumerable<string> Items) ReadStringAttributes(long groupId, string name, string alternativeName, bool mandatory)
         {
             var nameToUse = Hdf5Utils.GetRealAttributeName(groupId, name, alternativeName);
-            if (!nameToUse.valid)
+            if (!nameToUse.Valid)
             {
                 Hdf5Utils.LogMessage($"Error reading {groupId}. Name:{name}. AlternativeName:{alternativeName}", Hdf5LogLevel.Warning);
                 if (mandatory || Settings.ThrowOnNonExistNameWhenReading)
@@ -117,7 +117,7 @@ namespace HDF5CSharp
                 return (false, Array.Empty<string>());
             }
 
-            var datasetId = H5A.open(groupId, nameToUse.name);
+            var datasetId = H5A.open(groupId, nameToUse.Name);
             long typeId = H5A.get_type(datasetId);
             long spaceId = H5A.get_space(datasetId);
             long count = H5S.get_simple_extent_npoints(spaceId);
@@ -150,9 +150,7 @@ namespace HDF5CSharp
             return (true, strs);
         }
 
-
-
-        public static (bool success, Array result) ReadPrimitiveAttributes<T>(long groupId, string name, string alternativeName, bool mandatory)
+        public static (bool Success, Array Result) ReadPrimitiveAttributes<T>(long groupId, string name, string alternativeName, bool mandatory)
         {
             Type type = typeof(T);
             var datatype = GetDatatype(type);
@@ -179,6 +177,7 @@ namespace HDF5CSharp
             Array attributes = Array.CreateInstance(type, lengths);
 
             var typeId = H5A.get_type(attributeId);
+
             //var mem_type = H5T.copy(datatype);
             if (datatype == H5T.C_S1)
             {
@@ -193,17 +192,18 @@ namespace HDF5CSharp
             H5T.close(typeId);
             H5A.close(attributeId);
             H5S.close(spaceId);
+
             //H5S.close(memId);
             //H5P.close(propId);
 
             return (true, attributes);
         }
 
-        public static (int success, long attributeId) WriteStringAttribute(long groupId, string name, string val, string groupOrDatasetName)
+        public static (int Success, long AttributeId) WriteStringAttribute(long groupId, string name, string val, string groupOrDatasetName)
         {
             return WriteStringAttributes(groupId, name, new[] { val }, groupOrDatasetName);
         }
-        public static (int success, long CreatedId) WriteIntegerAttributes<T>(long groupId, string name, IEnumerable<T> values, string groupOrDatasetName = null) where T : struct
+        public static (int Success, long CreatedId) WriteIntegerAttributes<T>(long groupId, string name, IEnumerable<T> values, string groupOrDatasetName = null) where T : struct
         {
             long tmpId = groupId;
             if (!string.IsNullOrWhiteSpace(groupOrDatasetName))
@@ -214,6 +214,7 @@ namespace HDF5CSharp
                     groupId = datasetId;
                 }
             }
+
             // create UTF-8 encoded attributes
             long datatype = GetDatatype(typeof(T));
 
@@ -253,7 +254,7 @@ namespace HDF5CSharp
             return (result, attributeId);
         }
 
-        public static (int success, long CreatedId) WriteAsciiStringAttributes(long groupId, string name,
+        public static (int Success, long CreatedId) WriteAsciiStringAttributes(long groupId, string name,
             IEnumerable<string> values, string groupOrDatasetName = null)
         {
             var str = values.ToArray();
@@ -317,7 +318,7 @@ namespace HDF5CSharp
             return (result, attributeId);
         }
 
-        public static (int success, long CreatedId) WriteStringAttributes(long groupId, string name, IEnumerable<string> values, string groupOrDatasetName = null)
+        public static (int Success, long CreatedId) WriteStringAttributes(long groupId, string name, IEnumerable<string> values, string groupOrDatasetName = null)
         {
             long tmpId = groupId;
             if (!string.IsNullOrWhiteSpace(groupOrDatasetName))
@@ -328,6 +329,7 @@ namespace HDF5CSharp
                     groupId = datasetId;
                 }
             }
+
             // create UTF-8 encoded attributes
             long datatype = H5T.create(H5T.class_t.STRING, H5T.VARIABLE);
             H5T.set_cset(datatype, Hdf5Utils.GetCharacterSet(Settings.CharacterSetType));
@@ -371,21 +373,22 @@ namespace HDF5CSharp
             return (result, attributeId);
         }
 
-        public static (int success, long CreatedId) WriteAttribute<T>(long groupId, string name, T attribute) //where T : struct
+        public static (int Success, long CreatedId) WriteAttribute<T>(long groupId, string name, T attribute) //where T : struct
         {
             return WriteAttributes<T>(groupId, name, new T[1] { attribute });
         }
 
-        public static (int success, long CreatedId) WriteAttributes<T>(long groupId, string name, Array attributes) //
+        public static (int Success, long CreatedId) WriteAttributes<T>(long groupId, string name, Array attributes) //
         {
             return attrRW.WriteArray(groupId, name, attributes, new Dictionary<string, List<string>>());
+
             //if (attributes.GetType().GetElementType() == typeof(string))
             //     WriteStringAttributes(groupId, name, attributes.Cast<string>(), attributeName);
             //else
             //    WritePrimitiveAttribute<T>(groupId, name, attributes, attributeName);
         }
 
-        public static (int success, long CreatedgroupId) WritePrimitiveAttribute<T>(long groupId, string name, Array attributes) //where T : struct
+        public static (int Success, long CreatedgroupId) WritePrimitiveAttribute<T>(long groupId, string name, Array attributes) //where T : struct
         {
             var tmpId = groupId;
             int rank = attributes.Rank;
@@ -395,6 +398,7 @@ namespace HDF5CSharp
             var datatype = GetDatatype(typeof(T));
             var typeId = H5T.copy(datatype);
             string nameToUse = Hdf5Utils.NormalizedName(name);
+
             //var attributeId = H5A.create(groupId, nameToUse, datatype, spaceId);
             var attributeId = Hdf5Utils.GetAttributeId(groupId, nameToUse, datatype, spaceId);
             GCHandle hnd = GCHandle.Alloc(attributes, GCHandleType.Pinned);

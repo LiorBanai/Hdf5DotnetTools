@@ -66,7 +66,6 @@ namespace HDF5CSharp.Example.DataTypes
                             Saturation.GetLength(dimension) == other.Saturation.GetLength(dimension)) &&
                         Saturation.Cast<ulong>().SequenceEqual(other.Saturation.Cast<ulong>()) &&
 
-
                         Timestamps.Rank == other.Timestamps.Rank &&
                         Enumerable.Range(0, Timestamps.Rank).All(dimension =>
                             Timestamps.GetLength(dimension) == other.Timestamps.GetLength(dimension)) &&

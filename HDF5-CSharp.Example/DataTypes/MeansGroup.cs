@@ -22,7 +22,6 @@ namespace HDF5CSharp.Example.DataTypes
         [Hdf5ReadWrite(Hdf5ReadWrite.DoNothing)] private ChunkedCompound<MeansFullECGEvent> ChunkedMeansSystemEvents { get; set; }
         private CancellationTokenSource cts;
 
-
         public MeansGroup(long fileId, long groupRoot, ILogger logger) : base(fileId, groupRoot, "means", logger)
         {
             MeansSamplesData = new List<MeansFullECGEvent>();
@@ -72,7 +71,6 @@ namespace HDF5CSharp.Example.DataTypes
             }
         }
 
-
         public void Dispose()
         {
             try
@@ -89,7 +87,6 @@ namespace HDF5CSharp.Example.DataTypes
                 Logger.LogError(e, $"Error closing Means group: {e.Message}");
             }
         }
-
 
         public void Enqueue(long timestamp, string data)
         {
@@ -113,7 +110,6 @@ namespace HDF5CSharp.Example.DataTypes
             }
         }
 
-
         public Task WaitForDataWritten()
         {
             cts.Cancel(false);
@@ -126,7 +122,7 @@ namespace HDF5CSharp.Example.DataTypes
 
         public void StartLogging() => record = true;
 
-        public void EnqueueRange(List<(long timestamp, string data)> data)
+        public void EnqueueRange(List<(long Timestamp, string Data)> data)
         {
             if (record)
             {
@@ -134,10 +130,10 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     LockSlim.EnterWriteLock();
                     List<MeansFullECGEvent> itms = new List<MeansFullECGEvent>(data.Count);
-                    foreach ((long timestamp, string data) d in data)
+                    foreach ((long Timestamp, string Data) d in data)
                     {
                         Interlocked.Increment(ref index);
-                        var mse = new MeansFullECGEvent(index, d.timestamp, d.data);
+                        var mse = new MeansFullECGEvent(index, d.Timestamp, d.Data);
                         itms.Add(mse);
                     }
                     MeansSamplesData.AddRange(itms);

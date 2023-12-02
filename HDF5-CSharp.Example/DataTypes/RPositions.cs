@@ -64,7 +64,6 @@ namespace HDF5CSharp.Example.DataTypes
         public void AddPoint(float x, float y, float z) => Points.Add(new Vector3(x, y, z));
     }
 
-
     [Serializable]
     [MessagePackObject(keyAsPropertyName: false)]
     internal class RPositionsOld
@@ -72,6 +71,7 @@ namespace HDF5CSharp.Example.DataTypes
         [Key("timestamp")] internal ulong Timestamp { get; set; }
 
         [Key("nav")] //keys are coming from Python code
+
         //public Dictionary<string, float[][]> Data { get; set; }
         internal List<RpositionsDataPoints> Data;
 
@@ -81,7 +81,6 @@ namespace HDF5CSharp.Example.DataTypes
         //public string AsJson => JsonConvert.SerializeObject(this);
         internal static RPositionsOld Deserialize(byte[] data) =>
             TranslateDictionary(MessagePackSerializer.Deserialize<Dictionary<object, object>>(data));
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static RPositionsOld TranslateDictionary(Dictionary<object, object> data)

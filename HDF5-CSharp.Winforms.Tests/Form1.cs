@@ -44,7 +44,8 @@ namespace HDF5CSharp.Winforms.Tests
                 {
                     readOK = false;
                 }
-            } while (readOK);
+            }
+            while (readOK);
 
             if (cbPopup.Checked)
             {

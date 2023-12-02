@@ -35,7 +35,6 @@ namespace HDF5CSharp.Example.DataTypes
             return JsonConvert.DeserializeObject<AcquisitionProtocolParameters>(data);
         }
 
-
         public ElectrodeAcquisitionProtocolParameters GenerateElectrodeAcquisitionParameters()
         {
             (double[] Amplitude, double[] Frequency, double[] Phases) GenerateArrayData(int size,
@@ -54,7 +53,6 @@ namespace HDF5CSharp.Example.DataTypes
 
                 return (amp, freq, phases);
             }
-
 
             var ElectrodeParams = new ElectrodeAcquisitionProtocolParameters();
 
@@ -82,6 +80,7 @@ namespace HDF5CSharp.Example.DataTypes
             }
 
             ElectrodeParams.UseBodySurfacePadCalibration = ScanDescription.ElectrodeParams.UseBodySurfacePadCalibration;
+
             // Added button ignore - button channels if exist shouldn't be check, always in saturation (hack for now) ///////////
             var buttonDevice = ScanDescription.DevicesDescription.Find(dd => dd.Subtype.ToLower() == "button");
             if (buttonDevice != null)
@@ -102,45 +101,45 @@ namespace HDF5CSharp.Example.DataTypes
                         {
                             (double[] amplitude, double[] frequency, double[] phases) =
                                 GenerateArrayData(ElectrodeAcquisitionProtocolParameters.ASize, sorted);
-                            ElectrodeParams.A_Amplitude = amplitude;
-                            ElectrodeParams.A_Frequencies = frequency;
-                            ElectrodeParams.A_Phase = phases;
+                            ElectrodeParams.AAmplitude = amplitude;
+                            ElectrodeParams.AFrequencies = frequency;
+                            ElectrodeParams.APhase = phases;
                         }
                         continue;
                     case ElectrodeAcquisitionProtocolParameters.BId:
                         {
                             (double[] amplitude, double[] frequency, double[] phases) =
                                 GenerateArrayData(ElectrodeAcquisitionProtocolParameters.BSize, sorted);
-                            ElectrodeParams.B_Amplitude = amplitude;
-                            ElectrodeParams.B_Frequencies = frequency;
-                            ElectrodeParams.B_Phase = phases;
+                            ElectrodeParams.BAmplitude = amplitude;
+                            ElectrodeParams.BFrequencies = frequency;
+                            ElectrodeParams.BPhase = phases;
                         }
                         continue;
                     case ElectrodeAcquisitionProtocolParameters.CId:
                         {
                             (double[] amplitude, double[] frequency, double[] phases) =
                                 GenerateArrayData(ElectrodeAcquisitionProtocolParameters.CSize, sorted);
-                            ElectrodeParams.C_Amplitude = amplitude;
-                            ElectrodeParams.C_Frequencies = frequency;
-                            ElectrodeParams.C_Phase = phases;
+                            ElectrodeParams.CAmplitude = amplitude;
+                            ElectrodeParams.CFrequencies = frequency;
+                            ElectrodeParams.CPhase = phases;
                         }
                         continue;
                     case ElectrodeAcquisitionProtocolParameters.DId:
                         {
                             (double[] amplitude, double[] frequency, double[] phases) =
                                 GenerateArrayData(ElectrodeAcquisitionProtocolParameters.DSize, sorted);
-                            ElectrodeParams.D_Amplitude = amplitude;
-                            ElectrodeParams.D_Frequencies = frequency;
-                            ElectrodeParams.D_Phase = phases;
+                            ElectrodeParams.DAmplitude = amplitude;
+                            ElectrodeParams.DFrequencies = frequency;
+                            ElectrodeParams.DPhase = phases;
                         }
                         continue;
                     case ElectrodeAcquisitionProtocolParameters.EId:
                         {
                             (double[] amplitude, double[] frequency, double[] phases) =
                                 GenerateArrayData(ElectrodeAcquisitionProtocolParameters.ESize, sorted);
-                            ElectrodeParams.E_Amplitude = amplitude;
-                            ElectrodeParams.E_Frequencies = frequency;
-                            ElectrodeParams.E_Phase = phases;
+                            ElectrodeParams.EAmplitude = amplitude;
+                            ElectrodeParams.EFrequencies = frequency;
+                            ElectrodeParams.EPhase = phases;
                         }
                         continue;
                     default:
@@ -196,9 +195,11 @@ namespace HDF5CSharp.Example.DataTypes
             // Take first in order the BS signals
             var bsSignals = ScanDescription.BodySensorDescription.Signals.GroupBy(
                 s => Regex.Match(s.Channel, "([a-zA-Z]+)").Value);
+
             // Then take other signals (catheters, cardiac devices)
             var otherSignals = ScanDescription.DevicesDescription.SelectMany(d => d.Signals).GroupBy(
                 s => Regex.Match(s.Channel, "([a-zA-Z]+)").Value);
+
             //var signals = ScanDescription.Signals.GroupBy(s => Regex.Match(s.Channel, "([a-zA-Z]+)").Value);
             // Unite all signals
             var signals = bsSignals.Union(otherSignals);
@@ -220,6 +221,7 @@ namespace HDF5CSharp.Example.DataTypes
                         ElectrodeID = $"{group.Key}{chIdx}",
                         Frequency = (int)elecData.Frequency,
                         Phase = (float)elecData.Phase,
+
                         // Currently calculate amplitude only on kx
                         VoltageAmplitudeMilliVolt = isKalpa
                             ? (float)CalculateAmpKalpa(elecData.Channel, elecData.Frequency, elecData.Amplitude)
@@ -247,18 +249,19 @@ namespace HDF5CSharp.Example.DataTypes
 
         private double CalculateAmp(ElectrodeAmpCalcConfig ampCalcConfig, string chName, double freq, double amp)
         {
-            double limit = ampCalcConfig.CF_Limit;
+            double limit = ampCalcConfig.CFLimit;
             double amplitudeScalingFactor = 1;
-            double currentAt_0_4 = ampCalcConfig.CurrentAt_0_4_CF;
+            double currentAt_0_4 = ampCalcConfig.CurrentAt04CF;
+
             // need to check if it is a BF or CF Channel and execute the formula
             //if (std::find(configBFChannels.begin(), configBFChannels.end(), i + 1) != configBFChannels.end())
             var bfChannels = new List<string>() { "A1", "A2", "A3", "A4", "A5", "A6", "B6" };
             if (bfChannels.Contains(chName))
             {
                 // BF
-                limit = ampCalcConfig.BF_Limit;
+                limit = ampCalcConfig.BFLimit;
                 amplitudeScalingFactor = 1;
-                currentAt_0_4 = ampCalcConfig.CurrentAt_0_4_BF;
+                currentAt_0_4 = ampCalcConfig.CurrentAt04BF;
             }
 
             double power = (-20 * (Math.Log10(freq) - Math.Log10(Math.Pow(10, 4))) - 19.5) / 20;
@@ -274,7 +277,6 @@ namespace HDF5CSharp.Example.DataTypes
 
             var currentValue = amp * (8e-6 / (Math.Pow(10.0,
                                           ((-20.0 * (Math.Log10(usedFreq) - Math.Log10(Math.Pow(10, 4))) - 19.5) / 20)))) * Math.Sqrt(2.0);
-
 
             // Conversion from current in uA to Voltage in DAC
             var dacVoltage = currentValue /*/ 1000000.0 /* uA to A (Amper)*/ / 25.0;
@@ -369,35 +371,35 @@ namespace HDF5CSharp.Example.DataTypes
         public const int ESize = 6;
         public bool UseAmplitudeFormula { get; set; }
 
-        public double[] A_Amplitude { get; set; }
+        public double[] AAmplitude { get; set; }
 
-        public double[] A_Frequencies { get; set; }
+        public double[] AFrequencies { get; set; }
 
-        public double[] A_Phase { get; set; }
+        public double[] APhase { get; set; }
 
-        public double[] B_Amplitude { get; set; }
+        public double[] BAmplitude { get; set; }
 
-        public double[] B_Frequencies { get; set; }
+        public double[] BFrequencies { get; set; }
 
-        public double[] B_Phase { get; set; }
+        public double[] BPhase { get; set; }
 
-        public double[] C_Amplitude { get; set; }
+        public double[] CAmplitude { get; set; }
 
-        public double[] C_Frequencies { get; set; }
+        public double[] CFrequencies { get; set; }
 
-        public double[] C_Phase { get; set; }
+        public double[] CPhase { get; set; }
 
-        public double[] D_Amplitude { get; set; }
+        public double[] DAmplitude { get; set; }
 
-        public double[] D_Frequencies { get; set; }
+        public double[] DFrequencies { get; set; }
 
-        public double[] D_Phase { get; set; }
+        public double[] DPhase { get; set; }
 
-        public double[] E_Amplitude { get; set; }
+        public double[] EAmplitude { get; set; }
 
-        public double[] E_Frequencies { get; set; }
+        public double[] EFrequencies { get; set; }
 
-        public double[] E_Phase { get; set; }
+        public double[] EPhase { get; set; }
 
         public float SampleRate { get; set; }
 
@@ -436,26 +438,25 @@ namespace HDF5CSharp.Example.DataTypes
             AmplitudeScalingFactorCF = 1;
             UseAmplitudeFormula = true;
             UseBodySurfacePadCalibration = true;
-            A_Amplitude = new double[ASize];
-            A_Frequencies = Enumerable.Range(0, ASize).Select(i => double.MaxValue).ToArray();
-            A_Phase = Enumerable.Range(0, ASize).Select(i => 0.0).ToArray();
+            AAmplitude = new double[ASize];
+            AFrequencies = Enumerable.Range(0, ASize).Select(i => double.MaxValue).ToArray();
+            APhase = Enumerable.Range(0, ASize).Select(i => 0.0).ToArray();
 
+            BAmplitude = new double[BSize];
+            BFrequencies = Enumerable.Range(0, BSize).Select(i => double.MaxValue).ToArray();
+            BPhase = Enumerable.Range(0, BSize).Select(i => 0.0).ToArray();
 
-            B_Amplitude = new double[BSize];
-            B_Frequencies = Enumerable.Range(0, BSize).Select(i => double.MaxValue).ToArray();
-            B_Phase = Enumerable.Range(0, BSize).Select(i => 0.0).ToArray();
+            CAmplitude = new double[CSize];
+            CFrequencies = Enumerable.Range(0, CSize).Select(i => double.MaxValue).ToArray();
+            CPhase = Enumerable.Range(0, CSize).Select(i => 0.0).ToArray();
 
-            C_Amplitude = new double[CSize];
-            C_Frequencies = Enumerable.Range(0, CSize).Select(i => double.MaxValue).ToArray();
-            C_Phase = Enumerable.Range(0, CSize).Select(i => 0.0).ToArray();
+            DAmplitude = new double[DSize];
+            DFrequencies = Enumerable.Range(0, DSize).Select(i => double.MaxValue).ToArray();
+            DPhase = Enumerable.Range(0, DSize).Select(i => 0.0).ToArray();
 
-            D_Amplitude = new double[DSize];
-            D_Frequencies = Enumerable.Range(0, DSize).Select(i => double.MaxValue).ToArray();
-            D_Phase = Enumerable.Range(0, DSize).Select(i => 0.0).ToArray();
-
-            E_Amplitude = new double[ESize];
-            E_Frequencies = Enumerable.Range(0, ESize).Select(i => double.MaxValue).ToArray();
-            E_Phase = Enumerable.Range(0, ESize).Select(i => 0.0).ToArray();
+            EAmplitude = new double[ESize];
+            EFrequencies = Enumerable.Range(0, ESize).Select(i => double.MaxValue).ToArray();
+            EPhase = Enumerable.Range(0, ESize).Select(i => 0.0).ToArray();
         }
 
         public string AsJson() => JsonConvert.SerializeObject(this);
@@ -464,7 +465,7 @@ namespace HDF5CSharp.Example.DataTypes
     public class ScanDescription
     {
         public MetaData GeneralInformation { get; set; }
-        public bool IsKalpa { get; set; } = false;
+        public bool IsKalpa { get; set; }
         public ElectrodeParams ElectrodeParams { get; set; }
         public BodySensorDescription BodySensorDescription { get; set; }
         public List<DeviceDescription> DevicesDescription { get; set; }
@@ -534,7 +535,6 @@ namespace HDF5CSharp.Example.DataTypes
         }
     }
 
-
     [Serializable]
     public class ElectrodeParams
     {
@@ -546,8 +546,10 @@ namespace HDF5CSharp.Example.DataTypes
         public List<string> GroundChannels { get; set; }
         public List<string> DebugChannels { get; set; }
         public bool UseBodySurfacePadCalibration { get; set; }
+
         // TODO: not active
         public bool UseCableCalibration { get; set; }
+
         // TODO: not active
         public List<string> TestChannels { get; set; }
         public List<string> CrossTalkChannels { get; set; }
@@ -696,7 +698,6 @@ namespace HDF5CSharp.Example.DataTypes
         public DateTime Time { get; set; }
         public string HostName { get; set; }
 
-
         public MetaData(string version)
         {
             Version = version;
@@ -708,13 +709,12 @@ namespace HDF5CSharp.Example.DataTypes
     {
         public float PowerLineNoiseFreq { get; set; }
 
-        public float BS_HPFilterFreq { get; set; }
-        public float BS_LPFilterFreq { get; set; }
+        public float BSHPFilterFreq { get; set; }
+        public float BSLPFilterFreq { get; set; }
 
-        public float IC_Unipolar_HPFilterFreq { get; set; }
-        public float IC_Unipolar_LPFilterFreq { get; set; }
-        public bool IC_UseUnipolarFilter { get; set; }
-
+        public float ICUnipolarHPFilterFreq { get; set; }
+        public float ICUnipolarLPFilterFreq { get; set; }
+        public bool ICUseUnipolarFilter { get; set; }
 
         public string AsJson() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public static ECGFilterParamsDef FromJson(string data)
@@ -733,7 +733,6 @@ namespace HDF5CSharp.Example.DataTypes
         [JsonIgnore]
         public IEnumerable<(string Channel, double Amplitude, double Frequency, double Phases)> Signals
         => Channels.Select((channel, index) => (channel, Amplitudes[index], Frequencies[index], index < Phases.Count ? Phases[index] : 0));
-
 
         public BodySensorDescription()
         {
@@ -806,7 +805,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public string Subtype { get; set; }
 
-
         public List<string> Channels { get; set; }
 
         public List<double> Amplitudes { get; set; }
@@ -820,11 +818,8 @@ namespace HDF5CSharp.Example.DataTypes
 
         public float ElectrodeSize;
 
-
-
-        public IEnumerable<(string Channel, double Amplitude, double Frequency, double phases)> Signals
+        public IEnumerable<(string Channel, double Amplitude, double Frequency, double Phases)> Signals
             => Channels.Select((channel, index) => (channel, Amplitudes[index], Frequencies[index], index < Phases.Count ? Phases[index] : 0));
-
 
         public DeviceDescription()
         {

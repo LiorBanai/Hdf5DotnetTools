@@ -19,7 +19,7 @@ namespace HDF5CSharp.DataTypes
         public string Name { get; set; }
         public object Values { get; set; }
         public string ElementType { get; set; }
-        public Hdf5AttributeElement(string name, object values,string elementType)
+        public Hdf5AttributeElement(string name, object values, string elementType)
         {
             Name = name;
             Values = values;
@@ -28,7 +28,7 @@ namespace HDF5CSharp.DataTypes
 
         public override string ToString()
         {
-            return $"{nameof(Name)}: {Name}, {nameof(Values)}: {string.Join(Environment.NewLine,Values)}, {nameof(ElementType)}: {ElementType}";
+            return $"{nameof(Name)}: {Name}, {nameof(Values)}: {string.Join(Environment.NewLine, Values)}, {nameof(ElementType)}: {ElementType}";
         }
     }
     public abstract class Hdf5ElementBase
@@ -45,7 +45,7 @@ namespace HDF5CSharp.DataTypes
         protected abstract long GetId(long fileId);
         protected abstract void CloseId(long id);
 
-        public Hdf5ElementBase(string name, Hdf5ElementType type, Hdf5ElementBase parent, long id)
+        protected Hdf5ElementBase(string name, Hdf5ElementType type, Hdf5ElementBase parent, long id)
         {
             Name = name;
             Type = type;
@@ -68,9 +68,9 @@ namespace HDF5CSharp.DataTypes
 
         public bool HasChildren => Children.Any();
 
-        public void AddAttribute(string attrName, object value,string type)
+        public void AddAttribute(string attrName, object value, string type)
         {
-            Attributes.Add(new Hdf5AttributeElement(attrName,value,type));
+            Attributes.Add(new Hdf5AttributeElement(attrName, value, type));
         }
         public override string GetPath()
         {
@@ -105,7 +105,6 @@ namespace HDF5CSharp.DataTypes
             Children.Add(child);
         }
 
-     
         public Hdf5Element GetChildWithName(string childName)
         {
             var child = Children.FirstOrDefault(c => c.Name == childName);

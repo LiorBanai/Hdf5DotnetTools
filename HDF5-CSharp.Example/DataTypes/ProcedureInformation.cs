@@ -32,7 +32,6 @@ namespace HDF5CSharp.Example.DataTypes
         [Hdf5EntryName("procedure_protocol")]
         public string ProcedureProtocol;
 
-
         // Timezone information
         [Hdf5EntryName("local_timezone")]
         public string LocalTimeZone { get; set; }
@@ -45,10 +44,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         [Hdf5EntryName("reviewer")]
         public string Reviewer { get; set; }
-
-
-
-
 
         public ProcedureInformation(long fileId, long groupRoot, ILogger logger) : base(fileId, groupRoot, "procedure_information", logger)
         {

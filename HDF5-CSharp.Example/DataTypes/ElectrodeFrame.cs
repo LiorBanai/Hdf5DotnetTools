@@ -13,9 +13,9 @@ namespace HDF5CSharp.Example.DataTypes
 
         public long timestamp;  // timestamp in unix time (milliseconds since 1.1.1970 00:00:00 -  less accurate)
 
-        public UInt64 PacketId = UInt64.MaxValue; // serial number of packet
+        public ulong PacketId = ulong.MaxValue; // serial number of packet
 
-        public UInt64 SaturationMask;
+        public ulong SaturationMask;
 
         public void GenerateDummyData(int electrodeNum)
         {

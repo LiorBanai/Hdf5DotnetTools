@@ -76,7 +76,6 @@ namespace HDF5CSharp.UnitTests
         {
             string filename = Path.Combine(folder, "testObjectWithStructArray.H5");
 
-
             try
             {
                 var fileId = Hdf5.CreateFile(filename);
@@ -135,14 +134,12 @@ namespace HDF5CSharp.UnitTests
             }
         }
 
-
         public struct SystemEvent
         {
             [Hdf5EntryName("timestamp")] public long timestamp;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)] [Hdf5EntryName("type")] public string type;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 200)] [Hdf5EntryName("data")] public string data;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 200)] [Hdf5EntryName("description")] public string description;
-
 
             public SystemEvent(long timestamp, string type, string description, string data)
             {
@@ -228,6 +225,7 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 var cmpList = Hdf5.ReadCompounds<WData3>(fileId, "/test", "", true).ToArray();
                 Hdf5.CloseFile(fileId);
+
                 // CollectionAssert.AreEqual(wData2List, cmpList);
             }
             catch (Exception ex)
@@ -303,13 +301,11 @@ namespace HDF5CSharp.UnitTests
             }
         }
 
-
-
         [StructLayout(LayoutKind.Sequential)]
         public struct Compound
         {
             public double timestamp;
-            public Int32 id;
+            public int id;
             [MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_R8)]
             public double[] double_array;
 
@@ -332,7 +328,7 @@ namespace HDF5CSharp.UnitTests
             try
             {
                 var timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                var id = Int32.MaxValue;
+                var id = int.MaxValue;
                 var double_array = new[] { 10.0, 20, 30 };
                 var name = "test";
                 var c = new Compound(timestamp, id, double_array, name);

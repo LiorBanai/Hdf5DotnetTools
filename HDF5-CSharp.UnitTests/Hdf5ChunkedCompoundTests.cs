@@ -20,6 +20,7 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 var groupId = Hdf5.CreateOrOpenGroup(fileId, groupName);
                 Assert.IsTrue(groupId >= 0);
+
                 //var chunkSize = new ulong[] { 5, 5 };
                 using (var chunkedDset = new ChunkedCompound<WData>(datasetName, groupId, wDataList.Take(2)))
                 {
@@ -35,7 +36,7 @@ namespace HDF5CSharp.UnitTests
             try
             {
                 var fileId = Hdf5.OpenFile(filename);
-                var dset = Hdf5.ReadCompounds<WData>(fileId, string.Concat(groupName, "/", datasetName),"", true).ToList();
+                var dset = Hdf5.ReadCompounds<WData>(fileId, string.Concat(groupName, "/", datasetName), "", true).ToList();
 
                 Assert.IsTrue(dset.LongCount() == wDataList.LongLength);
                 Hdf5.CloseFile(fileId);
@@ -59,6 +60,7 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 var groupId = Hdf5.CreateOrOpenGroup(fileId, groupName);
                 Assert.IsTrue(groupId >= 0);
+
                 //var chunkSize = new ulong[] { 5, 5 };
                 using (var chunkedDset = new ChunkedCompound<WData>(datasetName, groupId))
                 {

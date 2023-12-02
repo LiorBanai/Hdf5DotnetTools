@@ -15,6 +15,7 @@ namespace HDF5CSharp.Example.DataTypes
         public EventGroup(long fileId, long groupRoot, ILogger logger) : base(fileId, groupRoot, "events", logger)
         {
             SystemEventSamplesData = new List<SystemEvent>();
+
             // SystemEvents = new ChunkedDataset<SystemEvent>("system_events", GroupId);
             // UserTags = new ChunkedDataset<UserTag>("user_tags", GroupId);
             // SystemTaskWriter = Task.Factory.StartNew(() =>
@@ -30,7 +31,6 @@ namespace HDF5CSharp.Example.DataTypes
             //    Flush(); //end of data sample. flush data
             //});
         }
-
 
         public void Dispose()
         {
@@ -55,7 +55,6 @@ namespace HDF5CSharp.Example.DataTypes
                 SystemEventSamplesData.Add(hdf5SystemEvent);
             }
         }
-
 
         public Task WaitForDataWritten()
         {

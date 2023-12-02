@@ -6,9 +6,9 @@ namespace HDF5CSharp.Example.DataTypes
 {
     public class ElectrodeAmpCalcConfig
     {
-        public double BF_Limit { get; set; }
-        public double CF_Limit { get; set; }
-        public double CurrentAt_0_4_BF { get; set; }
-        public double CurrentAt_0_4_CF { get; set; }
+        public double BFLimit { get; set; }
+        public double CFLimit { get; set; }
+        public double CurrentAt04BF { get; set; }
+        public double CurrentAt04CF { get; set; }
     }
 }

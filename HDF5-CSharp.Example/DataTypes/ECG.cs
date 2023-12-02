@@ -71,8 +71,8 @@ namespace HDF5CSharp.Example.DataTypes
             double[,] unFilteredData = new double[length * sampleForSize.FrameData.First().Count, sampleForSize.FrameData.Count];
             double[,] filteredData = new double[length * sampleForSize.FilteredFrameData.First().Count, sampleForSize.FilteredFrameData.Count];
             long[,] timestampData = new long[length * sampleForSize.FilteredFrameData.First().Count, 1];
-            ulong[,] packetIdData = samples[0].PacketId == UInt64.MaxValue ? null : new ulong[length, 1];
-            ulong[,] kalpaClockData = samples[0].KalpaClock == UInt64.MaxValue ? null : new ulong[length, 1];
+            ulong[,] packetIdData = samples[0].PacketId == ulong.MaxValue ? null : new ulong[length, 1];
+            ulong[,] kalpaClockData = samples[0].KalpaClock == ulong.MaxValue ? null : new ulong[length, 1];
 
             for (var i = 0; i < length; i++)
             {
@@ -127,7 +127,6 @@ namespace HDF5CSharp.Example.DataTypes
                 PacketIds.AppendOrCreateDataset(packetIdData);
             }
         }
-
 
         public void Enqueue(ECGFrame ecgFrame)
         {

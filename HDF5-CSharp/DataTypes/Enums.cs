@@ -25,10 +25,12 @@
         /// null terminate like in C
         /// </summary>
         NULLTERM = 0,
+
         /// <summary>
         /// pad with nulls
         /// </summary>
         NULLPAD = 1,
+
         /// <summary>
         /// pad with spaces like in Fortran
         /// </summary>

@@ -21,7 +21,7 @@ namespace HDF5CSharp
             {
                 groupName = ((Hdf5GroupName)attribute).Name;
             }
-  
+
             bool skip = SkipSaveProcessing(Attribute.GetCustomAttributes(tyObject));
             if (skip)
             {
@@ -40,7 +40,7 @@ namespace HDF5CSharp
             {
                 if (CloseGroup(groupId) != 0)
                 {
-                    Hdf5Utils.LogMessage($"Error closing group: {groupName}({groupId})",Hdf5LogLevel.Error);
+                    Hdf5Utils.LogMessage($"Error closing group: {groupName}({groupId})", Hdf5LogLevel.Error);
                 }
             }
 
@@ -126,8 +126,6 @@ namespace HDF5CSharp
             }
         }
 
-   
-
         private static void WriteField(object infoVal, Dictionary<string, List<string>> attributes, long groupId, string name)
         {
             Type ty = infoVal.GetType();
@@ -158,7 +156,6 @@ namespace HDF5CSharp
                 var elType = Hdf5Utils.GetEnumerableType(ty);
 
                 TypeCode elCode = Type.GetTypeCode(elType);
-              
 
                 if (elCode != TypeCode.Object || ty == typeof(List<TimeSpan>))
                 {
@@ -188,6 +185,7 @@ namespace HDF5CSharp
                 (int success, long CreatedgroupId) =// WriteOneValue(groupId, name, infoVal);
 
                     CallByReflection<(int, long)>(nameof(WriteOneValue), ty, new[] { groupId, name, infoVal, attributes });
+
                 //todo: fix it
                 //add its attributes if there are: 
                 //foreach (Attribute attr in Attribute.GetCustomAttributes(filedInfo))
@@ -211,7 +209,7 @@ namespace HDF5CSharp
             }
         }
 
-        static T CallByReflection<T>(string name, Type typeArg, object[] values)
+        private static T CallByReflection<T>(string name, Type typeArg, object[] values)
         {
             // Just for simplicity, assume it's public etc
             MethodInfo method = typeof(Hdf5).GetMethod(name);

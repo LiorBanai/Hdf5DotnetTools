@@ -24,7 +24,7 @@ namespace HDF5CSharp
         /// <param name="list">the values to write</param>
         /// <param name="attributes">the attributes to create at the compound name (not at the group id)</param>
         /// <returns></returns>
-        public static (int success, long CreatedgroupId) WriteCompounds<T>(long groupId, string name, IEnumerable<T> list, Dictionary<string, List<string>> attributes) //where T : struct
+        public static (int Success, long CreatedgroupId) WriteCompounds<T>(long groupId, string name, IEnumerable<T> list, Dictionary<string, List<string>> attributes) //where T : struct
         {
             Type type = typeof(T);
             if (type.IsValueType)
@@ -69,7 +69,6 @@ namespace HDF5CSharp
                 // size to be the current size.
                 var spaceId = H5S.create_simple(dims.Length, dims, null);
 
-
                 // Create the dataset if it doesn't exist + remove and create otherwise
                 var datasetId = Hdf5Utils.GetDatasetId(groupId, Hdf5Utils.NormalizedName(name), typeId, spaceId, H5P.DEFAULT);
 
@@ -77,12 +76,11 @@ namespace HDF5CSharp
                 var statusId = H5D.write(datasetId, typeId, spaceId, H5S.ALL,
                     H5P.DEFAULT, hnd.AddrOfPinnedObject());
 
-
                 if (attributes != null)
                 {
                     foreach (KeyValuePair<string, List<string>> kvp in attributes)
                     {
-                        WriteStringAttributes(datasetId,kvp.Key, kvp.Value);
+                        WriteStringAttributes(datasetId, kvp.Key, kvp.Value);
                     }
                 }
                 hnd.Free();
@@ -102,7 +100,7 @@ namespace HDF5CSharp
                 return WriteCompounds(groupId, name, rawdata, attributes);
             }
         }
-        public static (int success, long CreatedgroupId) WriteLargeCompounds<T>(long groupId, string name, List<T> list, Dictionary<string, List<string>> attributes) //where T : struct
+        public static (int Success, long CreatedgroupId) WriteLargeCompounds<T>(long groupId, string name, List<T> list, Dictionary<string, List<string>> attributes) //where T : struct
         {
             int current = 0;
             int count = list.Count / 10;
@@ -166,7 +164,7 @@ namespace HDF5CSharp
                 H5S.close(spaceId);
                 H5T.close(typeId);
                 H5P.close(dcpl);
-              
+
                 return (statusId, datasetId);
             }
             else
@@ -244,11 +242,11 @@ namespace HDF5CSharp
 #pragma warning restore SYSLIB0011
 
         }
-        public static long CreateProperty(ulong[] chunk_size)
+        public static long CreateProperty(ulong[] chunkSize)
         {
             var dcpl = H5P.create(H5P.DATASET_CREATE);
             H5P.set_layout(dcpl, H5D.layout_t.CHUNKED);
-            H5P.set_chunk(dcpl, chunk_size.Length, chunk_size);
+            H5P.set_chunk(dcpl, chunkSize.Length, chunkSize);
             H5P.set_deflate(dcpl, 6);
             return dcpl;
         }
@@ -290,7 +288,6 @@ namespace HDF5CSharp
             return array;
         }
 
-
         ///
         private static int CalcCompoundSize(Type type, bool useIEEE, ref long id)
         {
@@ -300,6 +297,7 @@ namespace HDF5CSharp
             var compoundInfo = GetCompoundInfo(type, useIEEE);
             var curCompound = compoundInfo.Last();
             var compoundSize = curCompound.offset + curCompound.size;
+
             //Create the compound datatype for memory.
             id = H5T.create(H5T.class_t.COMPOUND, new IntPtr(compoundSize));
             foreach (var cmp in compoundInfo)
@@ -361,6 +359,7 @@ namespace HDF5CSharp
                     var strtype = H5T.copy(H5T.C_S1);
                     H5T.set_size(strtype, new IntPtr(oi.size));
                     oi.datatype = strtype;
+
                     //  H5T.close(strtype);
                 }
                 if (oi.datatype == H5T.STD_I64BE)
@@ -432,6 +431,7 @@ namespace HDF5CSharp
             if (type.IsValueType)
             {
                 long typeId = 0;
+
                 // open dataset
                 name = Hdf5Utils.NormalizedName(name);
                 alternativeName = Hdf5Utils.NormalizedName(alternativeName);
@@ -461,13 +461,14 @@ namespace HDF5CSharp
                 var ndims = H5S.get_simple_extent_dims(spaceId, dims, null);
                 IEnumerable<T> strcts;
 
-
                 ulong rows = dims[0];
                 ulong datasetStorageSize = (ulong)rows * (ulong)compoundSize;
+
                 // if more than 100 MB
                 if (datasetStorageSize < Hdf5.MaxMemoryAllocationOnRead)
                 {
                     byte[] bytes = new byte[(int)rows * compoundSize];
+
                     // Read the data.
                     GCHandle hnd = GCHandle.Alloc(bytes, GCHandleType.Pinned);
                     IntPtr hndAddr = hnd.AddrOfPinnedObject();
@@ -493,6 +494,7 @@ namespace HDF5CSharp
                     ulong batch = Hdf5.MaxMemoryAllocationOnRead / (ulong)compoundSize;
 
                     ulong startindex = 0;
+
                     // read chunk of 100 line
                     var strcts2 = new List<T>();
                     while (startindex < (ulong)rows)
@@ -506,8 +508,6 @@ namespace HDF5CSharp
                     strcts = strcts2;
                 }
 
-
-
                 H5D.close(datasetId);
                 H5S.close(spaceId);
                 H5T.close(typeId);
@@ -515,7 +515,7 @@ namespace HDF5CSharp
                 return strcts;
             }
 
-            var result = ReadCompounds<byte>(groupId, name, alternativeName,mandatory);
+            var result = ReadCompounds<byte>(groupId, name, alternativeName, mandatory);
             return (IEnumerable<T>)ByteArrayToObject(result.ToArray());
         }
     }

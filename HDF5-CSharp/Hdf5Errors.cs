@@ -19,7 +19,7 @@ namespace HDF5CSharp
         internal static int WalkDelegateMethod(uint n, ref H5E.error_t err_desc, IntPtr client_data)
         {
             string msg = $"{err_desc.desc}. (function: {err_desc.func_name}. Line:{err_desc.line}. File: {err_desc.file_name})";
-            Hdf5Utils.LogMessage(msg,Hdf5LogLevel.Error);
+            Hdf5Utils.LogMessage(msg, Hdf5LogLevel.Error);
             return 0;
         }
     }

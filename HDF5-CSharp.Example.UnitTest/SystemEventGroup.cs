@@ -32,7 +32,6 @@ namespace HDF5CSharp.UnitTests.Core
             LockSlim = new ReaderWriterLockSlim();
         }
 
-
         public void Dispose()
         {
             try
@@ -58,7 +57,6 @@ namespace HDF5CSharp.UnitTests.Core
                 LockSlim.ExitWriteLock();
             }
         }
-
 
         public Task WaitForDataWritten()
         {

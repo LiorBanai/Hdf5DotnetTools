@@ -32,7 +32,6 @@ namespace HDF5CSharp.Example.DataTypes
             LockSlim = new ReaderWriterLockSlim();
         }
 
-
         public void Dispose()
         {
             try
@@ -58,7 +57,6 @@ namespace HDF5CSharp.Example.DataTypes
                 LockSlim.ExitWriteLock();
             }
         }
-
 
         public Task WaitForDataWritten()
         {

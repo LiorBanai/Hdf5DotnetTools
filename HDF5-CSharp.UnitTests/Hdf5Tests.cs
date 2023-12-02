@@ -8,7 +8,7 @@ namespace HDF5CSharp.UnitTests
 {
     public abstract class Hdf5BaseUnitTests
     {
-        protected static int ErrorCountExpected = 0;
+        protected static int ErrorCountExpected;
         private static List<string> Errors { get; set; }
         private static List<string> Warning { get; set; }
 
@@ -46,7 +46,7 @@ namespace HDF5CSharp.UnitTests
         static private Responses[] responseList;
         static private AllTypesClass allTypesObject;
         static private TestClassWithStructs classWithStructs;
-        protected static int ErrorCountExpected = 0;
+        protected static int ErrorCountExpected;
         private static List<string> Errors { get; set; }
         static private string folder;
 
@@ -54,31 +54,37 @@ namespace HDF5CSharp.UnitTests
         public static void ClassInitialize(TestContext context)
         {
             Hdf5.Settings.LowerCaseNaming = true;
+
             //folder = System.IO.Path.GetTempPath();
             folder = AppDomain.CurrentDomain.BaseDirectory;
-            dsets = new List<double[,]> {
+            dsets = new List<double[,]>
+            {
                 CreateDataset(),
                 CreateDataset(10),
-                CreateDataset(20), };
-
-            wDataList = new WData[4] {
-                new WData() { serial_no = 1153, location = "Exterior (static)", temperature = 53.23, pressure = 24.57, Time=new DateTime(2000,1,1) },
-                new WData() { serial_no = 1184, location = "Intake",  temperature = 55.12, pressure = 22.95, Time=new DateTime(2000,1,2) },
-                new WData() { serial_no = 1027, location = "Intake manifold", temperature = 103.55, pressure = 31.23, Time=new DateTime(2000,1,3) },
-                new WData() { serial_no = 1313, location = "Exhaust manifold", temperature = 1252.89, pressure = 84.11, Time=new DateTime(2000,1,4) },
+                CreateDataset(20),
             };
 
-            wData2List = new WData2[4] {
-                new WData2() { serial_no = 1153, location = "Exterior (static)", label="V",temperature = 53.23, pressure = 24.57 },
+            wDataList = new WData[4]
+            {
+                new WData() { serial_no = 1153, location = "Exterior (static)", temperature = 53.23, pressure = 24.57, Time=new DateTime(2000, 1, 1) },
+                new WData() { serial_no = 1184, location = "Intake",  temperature = 55.12, pressure = 22.95, Time=new DateTime(2000, 1, 2) },
+                new WData() { serial_no = 1027, location = "Intake manifold", temperature = 103.55, pressure = 31.23, Time=new DateTime(2000, 1, 3) },
+                new WData() { serial_no = 1313, location = "Exhaust manifold", temperature = 1252.89, pressure = 84.11, Time=new DateTime(2000, 1, 4) },
+            };
+
+            wData2List = new WData2[4]
+            {
+                new WData2() { serial_no = 1153, location = "Exterior (static)", label="V", temperature = 53.23, pressure = 24.57 },
                 new WData2() { serial_no = 1184, location = "Intake", label="uV", temperature = 55.12, pressure = 22.95 },
-                new WData2() { serial_no = 1027, location = "Intake manifold", label="V",temperature = 103.55, pressure = 31.23 },
+                new WData2() { serial_no = 1027, location = "Intake manifold", label="V", temperature = 103.55, pressure = 31.23 },
                 new WData2() { serial_no = 1313, location = "Exhaust manifold", label="mV", temperature = 1252.89, pressure = 84.11 },
             };
-            responseList = new Responses[4] {
-                new Responses() { MCID=1,PanelIdx=5,ResponseValues=new short[4] { 1,2,3,4} },
-                new Responses() { MCID=2,PanelIdx=6,ResponseValues=new short[4] { 5,6,7,8}},
-                new Responses() { MCID=3,PanelIdx=7,ResponseValues=new short[4] { 1,2,3,4}},
-                new Responses() { MCID=4,PanelIdx=8,ResponseValues=new short[4] { 5,6,7,8}},
+            responseList = new Responses[4]
+            {
+                new Responses() { MCID=1, PanelIdx=5, ResponseValues=new short[4] { 1, 2, 3, 4} },
+                new Responses() { MCID=2, PanelIdx=6, ResponseValues=new short[4] { 5, 6, 7, 8}},
+                new Responses() { MCID=3, PanelIdx=7, ResponseValues=new short[4] { 1, 2, 3, 4}},
+                new Responses() { MCID=4, PanelIdx=8, ResponseValues=new short[4] { 5, 6, 7, 8}},
             };
 
             classWithStructs = new TestClassWithStructs { DataList = wDataList };
@@ -142,7 +148,6 @@ namespace HDF5CSharp.UnitTests
                 }
             return dset;
         }
-
 
         private static void CompareDatasets<T>(T[,] dset, T[,] dset2)
         {

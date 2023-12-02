@@ -17,16 +17,16 @@ namespace HDF5CSharp.Example.DataTypes
         [Hdf5EntryName("direction_x")] public float direction_x;
         [Hdf5EntryName("direction_y")] public float direction_y;
         [Hdf5EntryName("direction_z")] public float direction_z;
-        public RPositionEvent(ulong timestamp, string name, float x, float y, float z, float direction_x, float direction_y, float direction_z)
+        public RPositionEvent(ulong timestamp, string name, float x, float y, float z, float directionX, float directionY, float directionZ)
         {
             this.timestamp = timestamp;
             this.name = name;
             this.x = x;
             this.y = y;
             this.z = z;
-            this.direction_x = direction_x;
-            this.direction_y = direction_y;
-            this.direction_z = direction_z;
+            this.direction_x = directionX;
+            this.direction_y = directionY;
+            this.direction_z = directionZ;
         }
     }
 }

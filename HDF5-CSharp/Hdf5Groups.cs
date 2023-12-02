@@ -23,9 +23,6 @@ namespace HDF5CSharp
                 : H5G.create(fileOrGroupId, normalizedName);
         }
 
-
-
-
         /// <summary>
         /// creates a structure of groups at once.
         /// Close all groups except the last one as the user may use it.
@@ -36,7 +33,6 @@ namespace HDF5CSharp
         /// <returns></returns>
         public static long CreateGroupRecursively(long groupOrFileId, string groupName) =>
             CreateGroupRecursively(groupOrFileId, groupName, true, false);
-
 
         /// <summary>
         /// creates a structure of groups at once

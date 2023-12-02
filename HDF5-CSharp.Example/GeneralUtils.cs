@@ -9,7 +9,6 @@ namespace HDF5CSharp.Example
     {
         public bool Equals(DateTime x, DateTime y) => x.EqualsUpToMilliseconds(y);
 
-
         public int GetHashCode(DateTime obj) => (obj.Year * 397) ^ (obj.Month * 397) ^ (obj.Day * 397) ^ (obj.Hour * 397) ^ (obj.Minute * 397) ^ (obj.Second * 397) ^ (obj.Second * 397);
     }
     public static class GeneralUtils

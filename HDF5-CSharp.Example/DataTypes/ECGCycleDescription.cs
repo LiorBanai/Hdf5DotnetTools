@@ -11,25 +11,28 @@ namespace HDF5CSharp.Example.DataTypes
         public double StartOfQRSAmplitude;//QRS onset amplitude
         public double EndOfQRSAmplitude;  //QRS offset amplitude
         public double RPeakAmplitude;     //R-Peak amplitude
+
         //P-Peak
         public double StartOfPWaveAmplitude;//P-wave onset amplitude
         public double EndOfPWaveAmplitude;  //P-wave offset amplitude
         public double PPeakAmplitude;       //P-Peak amplitude
+
         //T-wave
         public double StartOfTWaveAmplitude;//T-wave onset amplitude
         public double EndOfTWaveAmplitude;  //T-wave offset amplitude
         public double TPeakAmplitude;       //T-Peak amplitude
+
         //Internal
         //A
         public byte IsAPeakExist;//0 - false; >0 - true
         public double APeakAmplitude;//A-peak amplitude [mkV]
+
         //V
         public byte IsVPeakExist;//0 - false; >0 - true
         public double VPeakAmplitude;//V-peak amplitude [mkV]
 
         public byte IsLumenMarkerExist;   //0 - false; >0 - true
-        public Int32 LumenPosition;        //Lumen market position.
-
+        public int LumenPosition;        //Lumen market position.
 
         public long TimestampStartOfQRSInterval;
         public long TimestampEndOfQRSInterval;
@@ -41,7 +44,6 @@ namespace HDF5CSharp.Example.DataTypes
         public long TimestampVPeak;
         public long TimestampTPeak;
         public long CurrentTimestamp;
-
 
         public ECGCycleDescription(ECGCycleDescription marshelledData, long currentTimestamp, double samplingRate, long currentIndex, int shiftBS, int shiftIC)
         {
@@ -67,6 +69,7 @@ namespace HDF5CSharp.Example.DataTypes
             TimestampPPeak = ConvertIndexToTimestamp(0, currentTimestamp, samplingRate, currentIndex, shiftBS);
             TimestampAPeak = ConvertIndexToTimestamp(0, currentTimestamp, samplingRate, currentIndex, shiftIC);
             TimestampVPeak = ConvertIndexToTimestamp(0, currentTimestamp, samplingRate, currentIndex, shiftIC);
+
             //todo: check calculation
             TimestampTPeak = ConvertIndexToTimestamp(0, currentTimestamp, samplingRate, currentIndex, shiftIC);
             IsLumenMarkerExist = marshelledData.IsLumenMarkerExist;

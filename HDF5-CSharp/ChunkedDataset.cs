@@ -8,15 +8,21 @@ namespace HDF5CSharp
 {
     public class ChunkedDataset<T> : IDisposable where T : struct
     {
-        ulong[] _currentDims, _oldDims;
-        readonly ulong[] _maxDims = { H5S.UNLIMITED, H5S.UNLIMITED };
-        private ulong[] _chunkDims;
-        long _status, _spaceId, _datasetId, _propId;
-        readonly long _typeId, _datatype;
+        private ulong[] currentDims;
+        private ulong[] oldDims;
+        private readonly ulong[] maxDims = { H5S.UNLIMITED, H5S.UNLIMITED };
+        private ulong[] chunkDims;
+        private long status;
+        private long spaceId;
+        private long datasetId;
+        private long propId;
+        private readonly long typeId;
+        private readonly long datatype;
 
         public string Datasetname { get; private set; }
         public int Rank { get; private set; }
         public long GroupId { get; private set; }
+
         /// <summary>
         /// Constructor to create a chuncked dataset object
         /// </summary>
@@ -26,10 +32,11 @@ namespace HDF5CSharp
         {
             Datasetname = name;
             GroupId = groupId;
-            _datatype = Hdf5.GetDatatype(typeof(T));
-            _typeId = H5T.copy(_datatype);
-            _chunkDims = null;
+            datatype = Hdf5.GetDatatype(typeof(T));
+            typeId = H5T.copy(datatype);
+            chunkDims = null;
         }
+
         /// <summary>
         /// Constructor to create a chuncked dataset object
         /// </summary>
@@ -40,9 +47,9 @@ namespace HDF5CSharp
         {
             Datasetname = name;
             GroupId = groupId;
-            _datatype = Hdf5.GetDatatype(typeof(T));
-            _typeId = H5T.copy(_datatype);
-            _chunkDims = chunkSize;
+            datatype = Hdf5.GetDatatype(typeof(T));
+            typeId = H5T.copy(datatype);
+            chunkDims = chunkSize;
         }
 
         /// <summary>
@@ -63,41 +70,41 @@ namespace HDF5CSharp
                 throw new Hdf5Exception("cannot call FirstDataset because group or file couldn't be created");
             }
 
-            if (Hdf5Utils.GetRealName(GroupId, Datasetname, string.Empty).valid)
+            if (Hdf5Utils.GetRealName(GroupId, Datasetname, string.Empty).Valid)
             {
                 throw new Hdf5Exception("cannot call FirstDataset because dataset already exists");
             }
 
             Rank = dataset.Rank;
-            _currentDims = GetDims(dataset);
+            currentDims = GetDims(dataset);
 
             /* Create the data space with unlimited dimensions. */
-            _spaceId = H5S.create_simple(Rank, _currentDims, _maxDims);
+            spaceId = H5S.create_simple(Rank, currentDims, maxDims);
 
             /* Modify dataset creation properties, i.e. enable chunking  */
-            _propId = H5P.create(H5P.DATASET_CREATE);
-            _status = H5P.set_chunk(_propId, Rank, _chunkDims);
+            propId = H5P.create(H5P.DATASET_CREATE);
+            status = H5P.set_chunk(propId, Rank, chunkDims);
 
             /* Create a new dataset within the file using chunk creation properties.  */
-            _datasetId = Hdf5Utils.GetDatasetId(GroupId, Hdf5Utils.NormalizedName(Datasetname), _datatype, _spaceId,_propId);
+            datasetId = Hdf5Utils.GetDatasetId(GroupId, Hdf5Utils.NormalizedName(Datasetname), datatype, spaceId, propId);
 
             /* Write data to dataset */
             GCHandle hnd = GCHandle.Alloc(dataset, GCHandleType.Pinned);
-            _status = H5D.write(_datasetId, _datatype, H5S.ALL, H5S.ALL, H5P.DEFAULT,
+            status = H5D.write(datasetId, datatype, H5S.ALL, H5S.ALL, H5P.DEFAULT,
                 hnd.AddrOfPinnedObject());
-            if (_status < 0)
+            if (status < 0)
             {
                 Hdf5Utils.LogMessage("Unable to write Dataset", Hdf5LogLevel.Error);
             }
 
             hnd.Free();
-            H5S.close(_spaceId);
-            _spaceId = -1;
+            H5S.close(spaceId);
+            spaceId = -1;
         }
 
         public void AppendOrCreateDataset(Array dataset)
         {
-            if (_chunkDims == null)
+            if (chunkDims == null)
             {
                 if (dataset.Rank < 1)
                 {
@@ -116,29 +123,31 @@ namespace HDF5CSharp
                         return;
                     }
                 }
-                _chunkDims = new[]
-                    {Convert.ToUInt64(dataset.GetLongLength(0)), Convert.ToUInt64(dataset.GetLongLength(1))};
+                chunkDims = new[]
+                    {
+                        Convert.ToUInt64(dataset.GetLongLength(0)), Convert.ToUInt64(dataset.GetLongLength(1)),
+                    };
 
                 Rank = dataset.Rank;
-                _currentDims = GetDims(dataset);
+                currentDims = GetDims(dataset);
 
                 /* Create the data space with unlimited dimensions. */
-                _spaceId = H5S.create_simple(Rank, _currentDims, _maxDims);
+                spaceId = H5S.create_simple(Rank, currentDims, maxDims);
 
                 /* Modify dataset creation properties, i.e. enable chunking  */
-                _propId = H5P.create(H5P.DATASET_CREATE);
-                _status = H5P.set_chunk(_propId, Rank, _chunkDims);
+                propId = H5P.create(H5P.DATASET_CREATE);
+                status = H5P.set_chunk(propId, Rank, chunkDims);
 
                 /* Create a new dataset within the file using chunk creation properties.  */
-                _datasetId = Hdf5Utils.GetDatasetId(GroupId, Hdf5Utils.NormalizedName(Datasetname), _datatype, _spaceId,_propId);
+                datasetId = Hdf5Utils.GetDatasetId(GroupId, Hdf5Utils.NormalizedName(Datasetname), datatype, spaceId, propId);
 
                 /* Write data to dataset */
                 GCHandle hnd = GCHandle.Alloc(dataset, GCHandleType.Pinned);
-                _status = H5D.write(_datasetId, _datatype, H5S.ALL, H5S.ALL, H5P.DEFAULT,
+                status = H5D.write(datasetId, datatype, H5S.ALL, H5S.ALL, H5P.DEFAULT,
                     hnd.AddrOfPinnedObject());
                 hnd.Free();
-                H5S.close(_spaceId);
-                _spaceId = -1;
+                H5S.close(spaceId);
+                spaceId = -1;
             }
             else
             {
@@ -147,7 +156,7 @@ namespace HDF5CSharp
         }
         public void AppendDataset(Array dataset)
         {
-            if (!Hdf5Utils.GetRealName(GroupId, Datasetname, string.Empty).valid)
+            if (!Hdf5Utils.GetRealName(GroupId, Datasetname, string.Empty).Valid)
             {
                 string msg = "call constructor or FirstDataset first before appending.";
                 Hdf5Utils.LogMessage(msg, Hdf5LogLevel.Error);
@@ -156,32 +165,32 @@ namespace HDF5CSharp
                     throw new Hdf5Exception(msg);
                 }
             }
-            _oldDims = _currentDims;
-            _currentDims = GetDims(dataset);
+            oldDims = currentDims;
+            currentDims = GetDims(dataset);
             int rank = dataset.Rank;
             ulong[] zeros = Enumerable.Range(0, rank).Select(z => (ulong)0).ToArray();
 
             /* Extend the dataset. Dataset becomes 10 x 3  */
-            var size = new[] { _oldDims[0] + _currentDims[0] }.Concat(_oldDims.Skip(1)).ToArray();
+            var size = new[] { oldDims[0] + currentDims[0] }.Concat(oldDims.Skip(1)).ToArray();
 
-            _status = H5D.set_extent(_datasetId, size);
-            ulong[] offset = new[] { _oldDims[0] }.Concat(zeros.Skip(1)).ToArray();
+            status = H5D.set_extent(datasetId, size);
+            ulong[] offset = new[] { oldDims[0] }.Concat(zeros.Skip(1)).ToArray();
 
             /* Select a hyperslab in extended portion of dataset  */
-            var filespaceId = H5D.get_space(_datasetId);
-            _status = H5S.select_hyperslab(filespaceId, H5S.seloper_t.SET, offset, null,
-                                          _currentDims, null);
+            var filespaceId = H5D.get_space(datasetId);
+            status = H5S.select_hyperslab(filespaceId, H5S.seloper_t.SET, offset, null,
+                                          currentDims, null);
 
             /* Define memory space */
-            var memId = H5S.create_simple(Rank, _currentDims, null);
+            var memId = H5S.create_simple(Rank, currentDims, null);
 
             /* Write the data to the extended portion of dataset  */
             GCHandle hnd = GCHandle.Alloc(dataset, GCHandleType.Pinned);
-            _status = H5D.write(_datasetId, _datatype, memId, filespaceId,
+            status = H5D.write(datasetId, datatype, memId, filespaceId,
                                H5P.DEFAULT, hnd.AddrOfPinnedObject());
             hnd.Free();
 
-            _currentDims = size;
+            currentDims = size;
             H5S.close(memId);
             H5S.close(filespaceId);
         }
@@ -190,13 +199,14 @@ namespace HDF5CSharp
         {
             try
             {
-                H5D.flush(_datasetId);
+                H5D.flush(datasetId);
             }
             catch (Exception e)
             {
                 Hdf5Utils.LogMessage($"Unable to flash dataset: {e}", Hdf5LogLevel.Error);
             }
         }
+
         /// <summary>
         /// Finalizer of object
         /// </summary>
@@ -212,25 +222,25 @@ namespace HDF5CSharp
         /// <param name="itIsSafeToAlsoFreeManagedObjects"></param>
         protected virtual void Dispose(bool itIsSafeToAlsoFreeManagedObjects)
         {
-            if (!Hdf5Utils.GetRealName(GroupId, Datasetname, string.Empty).valid)
+            if (!Hdf5Utils.GetRealName(GroupId, Datasetname, string.Empty).Valid)
             {
                 Hdf5Utils.LogMessage($"Dataset {Datasetname} does not exist.", Hdf5LogLevel.Warning);
                 return;
             }
 
-            if (_datasetId >= 0)
+            if (datasetId >= 0)
             {
-                H5D.close(_datasetId);
+                H5D.close(datasetId);
             }
 
-            if (_propId >= 0)
+            if (propId >= 0)
             {
-                H5P.close(_propId);
+                H5P.close(propId);
             }
 
-            if (_spaceId >= 0)
+            if (spaceId >= 0)
             {
-                H5S.close(_spaceId);
+                H5S.close(spaceId);
             }
 
             if (itIsSafeToAlsoFreeManagedObjects)

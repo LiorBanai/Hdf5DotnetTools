@@ -20,7 +20,6 @@ namespace HDF5CSharp.UnitTests
                     walk_cb, IntPtr.Zero) >= 0);
         }
 
-
         [TestMethod]
         public void H5EwalkTest2()
         {
@@ -42,13 +41,13 @@ namespace HDF5CSharp.UnitTests
                     walk_cb, IntPtr.Zero) >= 0);
         }
 
-        public static int ErrorDelegateMethod(long estack, IntPtr client_data)
+        public static int ErrorDelegateMethod(long estack, IntPtr clientData)
         {
             H5E.walk(estack, H5E.direction_t.H5E_WALK_DOWNWARD, WalkDelegateMethod, IntPtr.Zero);
             return 0;
         }
 
-        public static int WalkDelegateMethod(uint n, ref H5E.error_t err_desc, IntPtr client_data)
+        public static int WalkDelegateMethod(uint n, ref H5E.error_t errDesc, IntPtr clientData)
         {
             // log your error, e.g. logger.LogInformation(err_desc.desc);
             return 0;

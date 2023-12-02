@@ -11,11 +11,11 @@ namespace HDF5CSharp.Example.DataTypes
         public string SystemNewHWContent { get; set; }
         public string PatchBoxCalibrationPath { get; set; }
         public string PatchBoxCalibrationContent { get; set; }
-        public List<(string filePath, string fileContent)> Configurations { get; set; }
+        public List<(string FilePath, string FileContent)> Configurations { get; set; }
 
         public CalibrationsSystemInformation()
         {
-            Configurations = new List<(string filePath, string fileContent)>();
+            Configurations = new List<(string FilePath, string FileContent)>();
             SystemNewHWContent = string.Empty;
             SystemNewHWPath = string.Empty;
             PatchBoxCalibrationPath = string.Empty;

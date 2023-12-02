@@ -17,7 +17,6 @@ namespace HDF5CSharp.UnitTests
 
                 string filename = Path.Combine(folder, "testOneStringList.H5");
 
-
                 // Open file and write the strings
                 var fileId = Hdf5.CreateFile(filename);
                 Assert.IsTrue(fileId > 0);
@@ -25,7 +24,7 @@ namespace HDF5CSharp.UnitTests
 
                 // Read the strings and close file
                 Assert.IsTrue(fileId > 0);
-                IEnumerable<string> strs2 = Hdf5.ReadStrings(fileId, "/test", "", true).result;
+                IEnumerable<string> strs2 = Hdf5.ReadStrings(fileId, "/test", "", true).Result;
                 Assert.IsTrue(strs2.Count() == 1);
                 foreach (var s in strs2)
                 {
@@ -55,7 +54,6 @@ namespace HDF5CSharp.UnitTests
 
                 string filename = Path.Combine(folder, "testStringList.H5");
 
-
                 // Open file and write the strings
                 var fileId = Hdf5.CreateFile(filename);
                 Assert.IsTrue(fileId > 0);
@@ -63,7 +61,7 @@ namespace HDF5CSharp.UnitTests
 
                 // Read the strings and close file
                 Assert.IsTrue(fileId > 0);
-                IEnumerable<string> strs2 = Hdf5.ReadStrings(fileId, "/test", "", true).result;
+                IEnumerable<string> strs2 = Hdf5.ReadStrings(fileId, "/test", "", true).Result;
                 Assert.IsTrue(strs.Count() == strs2.Count());
                 foreach (var item in strs2.Select((str, i) => new { i, str }))
                 {
@@ -85,7 +83,6 @@ namespace HDF5CSharp.UnitTests
             {
                 string test = "This is a test string";
                 string filename = Path.Combine(folder, "testOneString.H5");
-
 
                 var fileId = Hdf5.CreateFile(filename);
                 Hdf5.WriteAsciiString(fileId, "/test", test);
@@ -110,14 +107,13 @@ namespace HDF5CSharp.UnitTests
                 string test = "Γαζέες καὶ μυρτιὲς δὲν θὰ βρῶ πιὰ στὸ χρυσαφὶ ξέφωτο";
                 string filename = Path.Combine(folder, "testUnicodeString.H5");
 
-
                 var fileId = Hdf5.CreateFile(filename);
                 Hdf5.WriteUnicodeString(fileId, "/test", test);
                 Assert.IsTrue(Hdf5.CloseFile(fileId) >= 0);
 
-
                 fileId = Hdf5.OpenFile(filename);
                 string readStr = Hdf5.ReadUnicodeString(fileId, "/test");
+
                 //var readStr = Hdf5.ReadStrings(fileId, "/test");
                 Assert.IsTrue(test == readStr);
                 Assert.IsTrue(Hdf5.CloseFile(fileId) >= 0);

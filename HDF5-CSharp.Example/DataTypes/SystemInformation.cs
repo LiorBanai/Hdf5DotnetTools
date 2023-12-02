@@ -36,7 +36,6 @@ namespace HDF5CSharp.Example.DataTypes
             SystemType = string.Empty;
         }
 
-
         public SystemInformation()
         {
             BoardIds = Array.Empty<string>();

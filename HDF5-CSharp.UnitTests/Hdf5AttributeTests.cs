@@ -65,7 +65,6 @@ namespace HDF5CSharp.UnitTests
             File.Delete(filename);
         }
 
-
         [TestMethod]
         public void WriteAndReadAttributeByPath()
         {
@@ -79,8 +78,8 @@ namespace HDF5CSharp.UnitTests
             var result = Hdf5Utils.WriteAttributeByPath(filename, path, "VALID", attributeValue);
             Assert.IsTrue(result);
             var write = Hdf5Utils.ReadAttributeByPath(filename, path, "VALID");
-            Assert.IsTrue(write.success);
-            Assert.IsTrue(write.value == attributeValue);
+            Assert.IsTrue(write.Success);
+            Assert.IsTrue(write.Value == attributeValue);
             Assert.IsTrue(H5G.close(groupId) == 0);
             Assert.IsTrue(Hdf5.CloseFile(fileId) == 0);
         }
@@ -260,13 +259,13 @@ namespace HDF5CSharp.UnitTests
                 var fileId = Hdf5.OpenFile(filename);
                 Assert.IsTrue(fileId > 0);
                 var groupId = H5G.open(fileId, groupStr);
-                IEnumerable<int> readInts = (int[])Hdf5.ReadAttributes<int>(groupId, intName, true).result;
+                IEnumerable<int> readInts = (int[])Hdf5.ReadAttributes<int>(groupId, intName, true).Result;
                 Assert.IsTrue(intValues.SequenceEqual(readInts));
                 double readDbl = Hdf5.ReadAttribute<double>(groupId, dblName);
                 Assert.IsTrue(dblValue == readDbl);
                 string readStr = Hdf5.ReadAttribute<string>(groupId, strName);
                 Assert.IsTrue(strValue == readStr);
-                IEnumerable<string> readStrs = (string[])Hdf5.ReadAttributes<string>(groupId, strNames, true).result;
+                IEnumerable<string> readStrs = (string[])Hdf5.ReadAttributes<string>(groupId, strNames, true).Result;
                 Assert.IsTrue(strValues.SequenceEqual(readStrs));
                 bool readBool = Hdf5.ReadAttribute<bool>(groupId, boolName);
                 Assert.IsTrue(boolValue == readBool);

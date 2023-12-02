@@ -11,7 +11,7 @@ namespace HDF5CSharp
 {
     public static partial class Hdf5
     {
-        public static (bool success, IEnumerable<string> result) ReadStrings(long groupId, string name, string alternativeName, bool mandatory)
+        public static (bool Success, IEnumerable<string> Result) ReadStrings(long groupId, string name, string alternativeName, bool mandatory)
         {
             long datasetId = OpenDatasetIfExists(groupId, Hdf5Utils.NormalizedName(name),
                                                 Hdf5Utils.NormalizedName(alternativeName));
@@ -58,8 +58,7 @@ namespace HDF5CSharp
             return (true, strs);
         }
 
-
-        public static (int success, long CreatedgroupId) WriteStrings(long groupId, string name, IEnumerable<string> strs)
+        public static (int Success, long CreatedgroupId) WriteStrings(long groupId, string name, IEnumerable<string> strs)
         {
             // create UTF-8 encoded test datasets
 
@@ -119,6 +118,7 @@ namespace HDF5CSharp
             ulong[] dims = { (ulong)strLength, 1 };
 
             /* Create the dataset. */
+
             //name = ToHdf5Name(name);
 
             var spaceId = H5S.create_simple(1, dims, null);
@@ -158,6 +158,7 @@ namespace HDF5CSharp
             ulong[] dims = new ulong[rank];
             ulong[] chunkDims = new ulong[rank];
             var memId_n = H5S.get_simple_extent_dims(spaceId, dims, null);
+
             // we write from C and must provide null-terminated strings
 
             byte[] wdata = new byte[dims[0] * 2];

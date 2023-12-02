@@ -16,16 +16,16 @@ namespace HDF5CSharp
         public static Action<string> LogWarning;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static (bool valid, string name) GetRealName(long id, string name, string alternativeName)
+        internal static (bool Valid, string Name) GetRealName(long id, string name, string alternativeName)
         {
             string normalized = NormalizedName(name);
-            if (!String.IsNullOrEmpty(normalized) && H5L.exists(id, normalized) > 0)
+            if (!string.IsNullOrEmpty(normalized) && H5L.exists(id, normalized) > 0)
             {
                 return (true, normalized);
             }
 
             normalized = NormalizedName(alternativeName);
-            if (!String.IsNullOrEmpty(normalized) && H5L.exists(id, normalized) > 0)
+            if (!string.IsNullOrEmpty(normalized) && H5L.exists(id, normalized) > 0)
             {
                 return (true, normalized);
             }
@@ -34,7 +34,7 @@ namespace HDF5CSharp
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static (bool valid, string name) GetRealAttributeName(long id, string name, string alternativeName)
+        internal static (bool Valid, string Name) GetRealAttributeName(long id, string name, string alternativeName)
         {
             string normalized = NormalizedName(name);
             if (!string.IsNullOrEmpty(normalized) && H5A.exists(id, normalized) > 0)
@@ -185,8 +185,7 @@ namespace HDF5CSharp
             return GetEnumerableType(iface);
         }
 
-
-        public static (string value, bool success) ReadAttributeByPath(string fileName, string xpath, string attributeName)
+        public static (string Value, bool Success) ReadAttributeByPath(string fileName, string xpath, string attributeName)
         {
             long fileId = -1;
 
@@ -259,7 +258,7 @@ namespace HDF5CSharp
                 }
 
                 var result = Hdf5.WriteAttribute(groupAccessId, attributeName, value);
-                return result.success >= 0;
+                return result.Success >= 0;
             }
             catch (Exception e)
             {

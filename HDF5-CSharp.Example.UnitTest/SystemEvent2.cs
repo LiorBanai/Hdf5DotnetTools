@@ -12,7 +12,6 @@ namespace HDF5CSharp.UnitTests.Core
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 200000)][Hdf5EntryName("data")] public string data;
         [Hdf5EntryName("error")] public int isError;
 
-  
         public SystemEvent(long timestamp, string type, string description, string data, bool isError)
         {
             this.timestamp = timestamp;
@@ -23,7 +22,6 @@ namespace HDF5CSharp.UnitTests.Core
         }
 
         public bool GetErrorAsBoolean() => isError == 1;
-
 
         public bool Equals(SystemEvent other)
         {

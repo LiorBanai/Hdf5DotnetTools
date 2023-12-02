@@ -10,20 +10,20 @@ namespace HDF5CSharp
 {
     public class Hdf5Dataset : IHdf5ReaderWriter
     {
-        public (bool success, Array result) ReadToArray<T>(long groupId, string name, string alternativeName, bool mandatory)
+        public (bool Success, Array Result) ReadToArray<T>(long groupId, string name, string alternativeName, bool mandatory)
         {
             return Hdf5.ReadDatasetToArray<T>(groupId, name, alternativeName, mandatory);
         }
 
-        public (int success, long CreatedgroupId) WriteFromArray<T>(long groupId, string name, Array dset)
+        public (int Success, long CreatedgroupId) WriteFromArray<T>(long groupId, string name, Array dset)
         {
             return Hdf5.WriteDatasetFromArray<T>(groupId, name, dset);
         }
-        public (int success, long CreatedgroupId) WriteStrings(long groupId, string name, IEnumerable<string> collection, string datasetName = null)
+        public (int Success, long CreatedgroupId) WriteStrings(long groupId, string name, IEnumerable<string> collection, string datasetName = null)
         {
             return Hdf5.WriteStrings(groupId, name, collection.ToArray());
         }
-        public (int success, long CreatedgroupId) WriteNumericAttributes<T>(long groupId, string name, IEnumerable<T> collection, string datasetName = null) where T: struct
+        public (int Success, long CreatedgroupId) WriteNumericAttributes<T>(long groupId, string name, IEnumerable<T> collection, string datasetName = null) where T: struct
         {
             return Hdf5.WriteIntegerAttributes(groupId, name, collection.ToArray());
         }
@@ -33,14 +33,14 @@ namespace HDF5CSharp
             return Hdf5.ReadCompounds<T>(groupId, name, alternativeName, mandatory).ToArray();
         }
 
-        public (bool success, IEnumerable<string>) ReadStrings(long groupId, string name, string alternativeName, bool mandatory)
+        public (bool Success, IEnumerable<string>) ReadStrings(long groupId, string name, string alternativeName, bool mandatory)
         {
             return Hdf5.ReadStrings(groupId, name, alternativeName, mandatory);
         }
     }
     public static partial class Hdf5
     {
-        static Hdf5ReaderWriter dsetRW = new Hdf5ReaderWriter(new Hdf5Dataset());
+        private static readonly Hdf5ReaderWriter dsetRW = new Hdf5ReaderWriter(new Hdf5Dataset());
 
         public static long OpenDatasetIfExists(long fileOrGroupId, string name, string alternativeName)
         {
@@ -71,6 +71,7 @@ namespace HDF5CSharp
         }
         [Obsolete("Use ItemExists")]
         public static bool DatasetExists(long groupId, string datasetName) => Hdf5Utils.ItemExists(groupId, datasetName, Hdf5ElementType.Dataset);
+
         /// <summary>
         /// Reads an n-dimensional dataset.
         /// </summary>
@@ -79,7 +80,7 @@ namespace HDF5CSharp
         /// <param name="name">name of the dataset</param>
         /// <param name="alternativeName">Alternative name</param>
         /// <returns>The n-dimensional dataset</returns>
-        public static (bool success, Array result) ReadDatasetToArray<T>(long groupId, string name, string alternativeName = "", bool mandatory = false) //where T : struct
+        public static (bool Success, Array Result) ReadDatasetToArray<T>(long groupId, string name, string alternativeName = "", bool mandatory = false) //where T : struct
         {
             var (valid, datasetName) = Hdf5Utils.GetRealName(groupId, name, alternativeName);
             if (!valid)
@@ -110,6 +111,7 @@ namespace HDF5CSharp
                 long simpleId = H5S.get_simple_extent_dims(spaceId, dims, maxDims);
                 long[] lengths = dims.Select(d => Convert.ToInt64(d)).ToArray();
                 result = Array.CreateInstance(type, lengths);
+
                 //var typeId = H5D.get_type(datasetId);
                 //var mem_type = H5T.copy(datatype);
                 if (datatype == H5T.C_S1)
@@ -168,7 +170,6 @@ namespace HDF5CSharp
 
             var status = H5S.select_hyperslab(spaceId, H5S.seloper_t.SET, start, stride, count, block);
 
-
             // Define the memory dataspace.
             T[,] dset = new T[count[0], count[1]];
             var memId = H5S.create_simple(rank, count, null);
@@ -220,7 +221,6 @@ namespace HDF5CSharp
             var status = H5S.select_hyperslab(spaceId, H5S.seloper_t.SET, start, stride, count, block);
             var memId = H5S.create_simple(rank, count, null);
 
-
             // Define memory hyperslab.
             status = H5S.select_hyperslab(memId, H5S.seloper_t.SET, offsetOut, null,
             count, null);
@@ -258,12 +258,12 @@ namespace HDF5CSharp
         public static T ReadOneValue<T>(long groupId, string name, string alternativeName = "", bool mandatory = false)
         {
             var dset = dsetRW.ReadArray<T>(groupId, name, alternativeName, mandatory);
-            int[] first = new int[dset.result.Rank].Select(f => 0).ToArray();
-            T result = (T)dset.result.GetValue(first);
+            int[] first = new int[dset.Result.Rank].Select(f => 0).ToArray();
+            T result = (T)dset.Result.GetValue(first);
             return result;
         }
 
-        public static (bool success, Array result) ReadDataset<T>(long groupId, string name, string alternativeName = "", bool mandatory = false)
+        public static (bool Success, Array Result) ReadDataset<T>(long groupId, string name, string alternativeName = "", bool mandatory = false)
         {
             return dsetRW.ReadArray<T>(groupId, name, alternativeName, mandatory);
         }
@@ -276,9 +276,10 @@ namespace HDF5CSharp
         /// <param name="name">name of the dataset</param>
         /// <param name="dset">The dataset</param>
         /// <returns>status of the write method</returns>
-        public static (int success, long CreatedgroupId) WriteOneValue<T>(long groupId, string name, T dset, Dictionary<string, List<string>> attributes)
+        public static (int Success, long CreatedgroupId) WriteOneValue<T>(long groupId, string name, T dset, Dictionary<string, List<string>> attributes)
         {
             if (typeof(T) == typeof(string))
+
             //WriteStrings(groupId, name, new string[] { dset.ToString() });
             {
                 return dsetRW.WriteArray(groupId, name, new T[1] { dset }, attributes);
@@ -293,8 +294,7 @@ namespace HDF5CSharp
             dsetRW.WriteArray(groupId, name, collection, new Dictionary<string, List<string>>());
         }
 
-
-        public static (int success, long CreatedgroupId) WriteDatasetFromArray<T>(long groupId, string name, Array dset) //where T : struct
+        public static (int Success, long CreatedgroupId) WriteDatasetFromArray<T>(long groupId, string name, Array dset) //where T : struct
         {
             int rank = dset.Rank;
             ulong[] dims = Enumerable.Range(0, rank).Select(i => { return (ulong)dset.GetLength(i); }).ToArray();
@@ -342,7 +342,6 @@ namespace HDF5CSharp
             ulong[] dimsChunk = new[] { chunkX }.Concat(dimsExtend.Skip(1)).ToArray();
             ulong[] zeros = Enumerable.Range(0, rank).Select(z => (ulong)0).ToArray();
             long status, spaceId, datasetId;
-
 
             // name = ToHdf5Name(name);
             var datatype = GetDatatype(typeof(T));
@@ -403,6 +402,7 @@ namespace HDF5CSharp
                 H5P.close(propId);
                 H5D.close(filespaceId);
             }
+
             //todo: close?
             H5T.close(datatype);
             H5D.close(datasetId);
