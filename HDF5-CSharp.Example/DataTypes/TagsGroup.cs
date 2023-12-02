@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace HDF5CSharp.Example.DataTypes
 {
-
     [Hdf5GroupName("tags")]
     public class TagsGroup : Hdf5BaseFile, IDisposable
     {
@@ -15,13 +14,11 @@ namespace HDF5CSharp.Example.DataTypes
         public TagsGroup(long fileId, long groupRoot, ILogger logger) : base(fileId, groupRoot, "tags", logger)
         {
             TagsData = new List<string>();
-
         }
 
 
         public void Enqueue(string tagJson)
         {
-
             if (record)
             {
                 TagsData.Add(string.IsNullOrEmpty(tagJson) ? "[]" : tagJson);
@@ -49,7 +46,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     Hdf5.CloseGroup(GroupId);
                 }
-
             }
             catch (Exception)
             {

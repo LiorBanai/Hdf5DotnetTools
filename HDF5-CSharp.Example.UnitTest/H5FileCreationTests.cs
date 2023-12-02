@@ -48,7 +48,6 @@ namespace HDF5_CSharp.Example.UnitTest
     [TestClass]
     public class H5FileCreationTests : BaseClass
     {
-
         private string calibrationPath = "CalibrationInfoTest.json";
 
         [TestMethod]
@@ -71,7 +70,7 @@ namespace HDF5_CSharp.Example.UnitTest
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
                     PatientAge = 26
-                }
+                },
             };
 
             kama.SavePatientInfo(info.Patient, info.ExamDate);
@@ -131,7 +130,7 @@ namespace HDF5_CSharp.Example.UnitTest
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
                     PatientAge = 26
-                }
+                },
             };
 
             kama.SavePatientInfo(info.Patient, info.ExamDate);
@@ -163,7 +162,7 @@ namespace HDF5_CSharp.Example.UnitTest
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
                     PatientAge = 26
-                }
+                },
             };
             kama.SavePatientInfo(info.Patient, info.ExamDate);
             kama.UpdateSystemInformation("32423423", new[] { "11", "12" });
@@ -182,11 +181,10 @@ namespace HDF5_CSharp.Example.UnitTest
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
                     PatientAge = 26
-                }
+                },
             };
 
             file.SavePatientInfo(info.Patient, info.ExamDate);
-
         }
 
         private void UpdateSystemInformation(KamaAcquisitionFile file)
@@ -206,13 +204,13 @@ namespace HDF5_CSharp.Example.UnitTest
                     var unFilteredData = new List<List<float>>
                        {
                            Enumerable.Range(0, count).Select(i => 0.0f + index * 100 + i).ToList(),
-                           Enumerable.Range(0, count).Select(i => 50.0f + index * 100 + i).ToList()
+                           Enumerable.Range(0, count).Select(i => 50.0f + index * 100 + i).ToList(),
                        };
 
                     var filteredData = new List<List<float>>
                        {
                            Enumerable.Range(0, count).Select(i => 1000.0f + index * 100 + i).ToList(),
-                           Enumerable.Range(0, count).Select(i => 1050.0f + index * 100 + i).ToList()
+                           Enumerable.Range(0, count).Select(i => 1050.0f + index * 100 + i).ToList(),
                        };
 
                     var timestamps = Enumerable.Range(0, count).Select(i => DateTimeOffset.Now.ToUnixTimeMilliseconds()).ToList();
@@ -232,7 +230,6 @@ namespace HDF5_CSharp.Example.UnitTest
         private async Task<List<EITEntry>> WriteEITData(AcquisitionProtocolParameters parameters,
             KamaAcquisitionFile file, int loop, int sleepsBetweenWritesMilliseconds)
         {
-
             var result = await Task.Factory.StartNew(() =>
             {
                 Random random = new Random();
@@ -266,7 +263,7 @@ namespace HDF5_CSharp.Example.UnitTest
                     CurrentsIm = new float[samples.Count, samples[0].ComplexVoltageMatrix.Length],
                     CurrentsReal = new float[samples.Count, samples[0].ComplexVoltageMatrix.Length],
                     Saturation = new ulong[samples.Count, 1],
-                    Timestamps = new long[samples.Count, 1]
+                    Timestamps = new long[samples.Count, 1],
                 };
 
                 for (var i = 0; i < samples.Count; i++)
@@ -293,7 +290,7 @@ namespace HDF5_CSharp.Example.UnitTest
             });
             return new List<EITEntry>
             {
-                result
+                result,
             };
         }
 
@@ -352,7 +349,7 @@ namespace HDF5_CSharp.Example.UnitTest
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
                     PatientAge = 26
-                }
+                },
             };
 
             kama.SavePatientInfo(info.Patient, info.ExamDate);
@@ -377,7 +374,7 @@ namespace HDF5_CSharp.Example.UnitTest
             var userEventsData = new List<UserEventRecord>()
             {
                 new UserEventRecord("research1", "button1", "none",DateTimeOffset.Now.ToUnixTimeMilliseconds()),
-                new UserEventRecord("research1", "button2", "none", DateTimeOffset.Now.ToUnixTimeMilliseconds() + 10)
+                new UserEventRecord("research1", "button2", "none", DateTimeOffset.Now.ToUnixTimeMilliseconds() + 10),
             };
             var fileId = Hdf5.CreateFile(filename);
             Hdf5UserEvents hdf5UserEvents = new Hdf5UserEvents(userEventsData);

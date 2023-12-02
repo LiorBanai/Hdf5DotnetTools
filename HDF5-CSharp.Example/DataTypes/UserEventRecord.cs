@@ -1,8 +1,8 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using HDF5CSharp.DataTypes;
 
 namespace HDF5CSharp.Example.DataTypes
 {
@@ -25,6 +25,5 @@ namespace HDF5CSharp.Example.DataTypes
             Timestamp = timestamp;
         }
         public override string ToString() => $"time: {Timestamp}: {nameof(Route)}: {Route}, {nameof(Event)}: {Event}.";
-
     }
 }

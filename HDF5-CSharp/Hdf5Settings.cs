@@ -1,6 +1,6 @@
 ﻿using HDF.PInvoke;
-using System;
 using HDF5CSharp.DataTypes;
+using System;
 
 namespace HDF5CSharp
 {
@@ -12,7 +12,6 @@ namespace HDF5CSharp
         static Hdf5()
         {
             Settings = new Settings();
-
         }
     }
 
@@ -68,7 +67,6 @@ namespace HDF5CSharp
             }
 
             return H5E.set_auto(H5E.DEFAULT, null, IntPtr.Zero) >= 0;
-
         }
 
         public void EnableLogging(bool enable)
@@ -91,6 +89,6 @@ namespace HDF5CSharp
     {
         Ticks,
         UnixTimeSeconds,
-        UnixTimeMilliseconds
+        UnixTimeMilliseconds,
     }
 }

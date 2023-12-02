@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using HDF5CSharp.DataTypes;
+﻿using HDF5CSharp.DataTypes;
+using System.Runtime.InteropServices;
 
 namespace HDF5CSharp.UnitTests.Core
 {

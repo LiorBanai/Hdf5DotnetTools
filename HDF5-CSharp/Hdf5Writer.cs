@@ -9,8 +9,6 @@ namespace HDF5CSharp
 {
     public partial class Hdf5
     {
-
-
         public static object WriteObject(long groupId, object writeValue, string groupName = null)
         {
             if (writeValue == null)
@@ -66,7 +64,6 @@ namespace HDF5CSharp
             {
                 WriteAttributes<string>(groupId, attribute.Key, attribute.Value.ToArray());
             }
-
         }
 
         private static void WriteFields(Type tyObject, object writeValue, long groupId)
@@ -123,7 +120,6 @@ namespace HDF5CSharp
                     if (attr is Hdf5EntryNameAttribute hdf5EntryNameAttribute)
                     {
                         name = hdf5EntryNameAttribute.Name;
-
                     }
                 }
                 WriteField(infoVal, attributes, groupId, name);
@@ -178,7 +174,6 @@ namespace HDF5CSharp
                 {
                     CallByReflection<(int, long)>(nameof(WriteCompounds), elType, new[] { groupId, name, infoVal, attributes });
                 }
-
             }
 #if NET
             else if (ty == typeof(Half) || ty == typeof(TimeOnly) || ty == typeof(DateOnly))
@@ -186,7 +181,6 @@ namespace HDF5CSharp
                 (int success, long CreatedgroupId) =// WriteOneValue(groupId, name, infoVal);
 
                     CallByReflection<(int, long)>(nameof(WriteOneValue), ty, new[] { groupId, name, infoVal, attributes });
-
             }
 #endif
             else if (primitiveTypes.Contains(code) || ty == typeof(TimeSpan))
@@ -223,8 +217,6 @@ namespace HDF5CSharp
             MethodInfo method = typeof(Hdf5).GetMethod(name);
             MethodInfo generic = method.MakeGenericMethod(typeArg);
             return (T)generic.Invoke(null, values);
-
         }
-
     }
 }

@@ -315,7 +315,6 @@ namespace HDF5CSharp
                 H5D.close(groupId);
             }
             return (result, attributeId);
-
         }
 
         public static (int success, long CreatedId) WriteStringAttributes(long groupId, string name, IEnumerable<string> values, string groupOrDatasetName = null)
@@ -412,6 +411,4 @@ namespace HDF5CSharp
             return (result, attributeId);
         }
     }
-
-
 }

@@ -104,7 +104,6 @@ namespace HDF5CSharp.Example.DataTypes
                    DataFormatVersion == other.DataFormatVersion && SoftwareVersion == other.SoftwareVersion &&
                    MachineName == other.MachineName && MacAddress == other.MacAddress && IPAddress == other.IPAddress &&
                    SystemType == other.SystemType;
-
         }
 
         public override bool Equals(object obj)
@@ -129,7 +128,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public override int GetHashCode()
         {
-
             return (SystemId.GetHashCode() * 397) ^ (DataFormatVersion.GetHashCode() * 397) ^
                    (SoftwareVersion.GetHashCode() * 397) ^ (MachineName.GetHashCode() * 397) ^
                    (MacAddress.GetHashCode() * 397) ^ (IPAddress.GetHashCode() * 397);

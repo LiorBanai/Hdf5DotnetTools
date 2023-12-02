@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MessagePack;
+using System;
 using System.Runtime.CompilerServices;
-using MessagePack;
 
 namespace HDF5CSharp.Example.DataTypes
 {
@@ -41,6 +41,5 @@ namespace HDF5CSharp.Example.DataTypes
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ElectrodeFrame Deserialize(byte[] array) => MessagePackSerializer.Deserialize<ElectrodeFrame>(array);
-
     }
 }

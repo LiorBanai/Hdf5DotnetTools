@@ -61,24 +61,42 @@ namespace HDF5CSharp.Example.DataTypes
 
         public ProcedureInformation()
         {
-
         }
 
         public bool Equals(ProcedureInformation other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return ProcedureDirectory == other.ProcedureDirectory && ProcedureType == other.ProcedureType &&
                    StartDateTime.EqualsUpToMilliseconds(other.StartDateTime) && EndDateTime.EqualsUpToMilliseconds(other.EndDateTime) &&
                    guid == other.guid;
-
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((ProcedureInformation)obj);
         }
 

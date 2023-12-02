@@ -37,6 +37,4 @@ namespace HDF5CSharp.DataTypes
 
         public long DurationTicks;
     }
-
-
 }

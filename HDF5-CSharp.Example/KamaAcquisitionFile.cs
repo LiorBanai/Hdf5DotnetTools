@@ -64,7 +64,7 @@ namespace HDF5CSharp.Example
             {
                 ProcedureDirectory = Path.GetDirectoryName(filename),
                 StartDateTime = DateTime.Now,
-                EndDateTime = DateTime.Now
+                EndDateTime = DateTime.Now,
             };
 
             SystemInformation = new SystemInformation(fileId, groupRoot, logger);
@@ -115,7 +115,6 @@ namespace HDF5CSharp.Example
 
         private async Task CloseHandles()
         {
-
             ProcedureInformation.FlushDataAndCloseObject();
             SystemInformation.FlushDataAndCloseObject();
             CalibrationGroup.FlushDataAndCloseObject();
@@ -210,7 +209,7 @@ namespace HDF5CSharp.Example
                 Type = p.Type ?? "Unknown",
                 ExamDate = examDate,
                 Height = p.PatientHeight,
-                Weight = p.PatientWeight
+                Weight = p.PatientWeight,
             };
             PatientInfo.FlushDataAndCloseObject();
         }
@@ -261,7 +260,5 @@ namespace HDF5CSharp.Example
         public void AppendRPosition(RPositionsMessagePack rPositions) => RPosition.Enqueue(rPositions);
         public void AppendMean(long timestamp, string data) => MeansData.Enqueue(timestamp, data);
         public void AppendMeans(List<(long timestamp, string data)> data) => MeansData.EnqueueRange(data);
-
     }
-
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using HDF5CSharp.DataTypes;
+﻿using HDF5CSharp.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.IO;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -75,7 +75,7 @@ namespace HDF5CSharp.UnitTests
                 {
                     TestStrings = new string[0],
                     TestDoubles = null,
-                    TestDouble = double.NaN
+                    TestDouble = double.NaN,
                 };
 
                 readObject = Hdf5.ReadObject(fileId, readObject, "objectWithTwoArrays");
@@ -95,7 +95,6 @@ namespace HDF5CSharp.UnitTests
         public class Coordinate
         {
             [Hdf5EntryName("COORDINATES")] public double[,] COORDINATES { get; set; }
-
         }
 
 
@@ -103,7 +102,6 @@ namespace HDF5CSharp.UnitTests
         {
             [Hdf5EntryName("STEP_0")] public double[,] STEP0 { get; set; }
             [Hdf5EntryName("STEP_1")] public double[,] STEP1 { get; set; }
-
         }
         //[TestMethod]
         public void ReadObject()

@@ -1,6 +1,6 @@
-﻿using System;
-using HDF.PInvoke;
+﻿using HDF.PInvoke;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -40,7 +40,6 @@ namespace HDF5CSharp.UnitTests
             Assert.IsTrue(
                 H5E.walk(H5E.DEFAULT, H5E.direction_t.H5E_WALK_DOWNWARD,
                     walk_cb, IntPtr.Zero) >= 0);
-           
         }
 
         public static int ErrorDelegateMethod(long estack, IntPtr client_data)

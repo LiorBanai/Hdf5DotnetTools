@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Bogus;
+using HDF.PInvoke;
+using HDF5CSharp.UnitTests.Types;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -7,10 +11,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Bogus;
-using HDF.PInvoke;
-using HDF5CSharp.UnitTests.Types;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -78,13 +78,11 @@ namespace HDF5CSharp.UnitTests
             var cmpList = Hdf5.Read2DTable<Data>(fileId, "/SurfaceCurrent/SurfaceCurrent.01/Group_009/values");
             Hdf5.CloseFile(fileId);
             // CollectionAssert.AreEqual(wData2List, cmpList);
-
         }
 
         [TestMethod]
         public void TestMemory()
         {
-
             Hdf5.Settings.EnableH5InternalErrorReporting(true);
             string fn = $"{nameof(TestMemory)}.h5";
             var data = TestCreateFile(fn).ToList();
@@ -92,7 +90,6 @@ namespace HDF5CSharp.UnitTests
             {
                 TestReadAndCompare(fn, data);
             }
-
         }
 
         private void TestReadAndCompare(string fn, List<HDF5DataClass> original)
@@ -119,7 +116,7 @@ namespace HDF5CSharp.UnitTests
                 yield return new HDF5DataClass
                 {
                     Location = i * 10,
-                    Image = random.Bytes(10048576)
+                    Image = random.Bytes(10048576),
                 };
             }
         }
@@ -296,7 +293,6 @@ namespace HDF5CSharp.UnitTests
             Hdf5.CloseGroup(lastGroup);
             Hdf5.CloseFile(fid);
             File.Delete(fileName);
-
         }
         [TestMethod]
         public void FileNotCloseAfterCreateGroupRecursivelyCloseAllTest()
@@ -306,8 +302,6 @@ namespace HDF5CSharp.UnitTests
             var lastGroup = Hdf5.CreateGroupRecursively(fid, "/1/2/3/4", true, true);
             Hdf5.CloseFile(fid);
             File.Delete(fileName);
-
         }
-
     }
 }

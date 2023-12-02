@@ -5,7 +5,6 @@ namespace HDF5CSharp.DataTypes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public sealed class Hdf5GroupName : Attribute
     {
-
         public Hdf5GroupName(string name)
         {
             Name = name;
@@ -23,11 +22,9 @@ namespace HDF5CSharp.DataTypes
             Values = values;
             Key = key;
         }
-
     }
     public sealed class Hdf5Attributes : Attribute
     {
-
         public Hdf5Attributes(string[] names)
         {
             Names = names;
@@ -38,7 +35,6 @@ namespace HDF5CSharp.DataTypes
 
     public sealed class Hdf5Attribute : Attribute
     {
-
         public Hdf5Attribute(string name)
         {
             Name = name;
@@ -55,7 +51,6 @@ namespace HDF5CSharp.DataTypes
         {
             MandatoryRead = readKind;
         }
-
     }
 
     [AttributeUsage(AttributeTargets.All)]
@@ -66,7 +61,6 @@ namespace HDF5CSharp.DataTypes
         {
             ReadKind = readKind;
         }
-
     }
     [Obsolete("Recommended Attribute is Hdf5ReadWriteAttribute")]
     [AttributeUsage(AttributeTargets.All)]
@@ -77,7 +71,6 @@ namespace HDF5CSharp.DataTypes
         {
             SaveKind = saveKind;
         }
-
     }
 
     [AttributeUsage(AttributeTargets.All)]
@@ -88,7 +81,5 @@ namespace HDF5CSharp.DataTypes
         {
             Name = name;
         }
-
     }
-
 }

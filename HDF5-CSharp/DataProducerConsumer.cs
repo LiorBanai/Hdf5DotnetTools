@@ -16,7 +16,7 @@ namespace HDF5CSharp
 
             var thread = new Thread(StartConsuming)
             {
-                IsBackground = true
+                IsBackground = true,
             };
             thread.Start();
         }
@@ -57,7 +57,6 @@ namespace HDF5CSharp
                         Debug.WriteLine($"item {_queue.Count + 1} in queue will be processed");
                         _action(data);
                     }
-
                 }
                 catch (InvalidOperationException ex)
                 {

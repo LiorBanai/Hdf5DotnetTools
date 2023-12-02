@@ -24,5 +24,4 @@ namespace HDF5CSharp.Example.DataTypes
             }
         }
     }
-
 }

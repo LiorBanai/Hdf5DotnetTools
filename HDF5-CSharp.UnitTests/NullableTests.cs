@@ -29,9 +29,21 @@ namespace HDF5CSharp.UnitTests
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((TestInnerClassWithArrayWithNulls)obj);
         }
 
@@ -91,9 +103,21 @@ namespace HDF5CSharp.UnitTests
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((TestClassWithArrayWithNulls)obj);
         }
 
@@ -131,7 +155,7 @@ namespace HDF5CSharp.UnitTests
                 TestFieldBooleanNonNull = true,
                 TestFieldBooleanNull = false,
                 TestFieldBooleanNullableNonNull = true,
-                TestFieldBooleanNullableNull = null
+                TestFieldBooleanNullableNull = null,
             };
 
             testClass.InnerClassWithArrayWithNullsNonNull = new TestInnerClassWithArrayWithNulls
@@ -143,7 +167,7 @@ namespace HDF5CSharp.UnitTests
                 TestFieldBooleanNonNull = true,
                 TestFieldBooleanNull = false,
                 TestFieldBooleanNullableNonNull = true,
-                TestFieldBooleanNullableNull = null
+                TestFieldBooleanNullableNull = null,
             };
             testClass.innerFieldClassWithArrayWithNullsNonNull = new TestInnerClassWithArrayWithNulls
             {
@@ -154,7 +178,7 @@ namespace HDF5CSharp.UnitTests
                 TestFieldBooleanNonNull = true,
                 TestFieldBooleanNull = false,
                 TestFieldBooleanNullableNonNull = true,
-                TestFieldBooleanNullableNull = null
+                TestFieldBooleanNullableNull = null,
             };
 
 #if NET
@@ -167,7 +191,7 @@ namespace HDF5CSharp.UnitTests
                 TestFieldBooleanNonNull = true,
                 TestFieldBooleanNull = false,
                 TestFieldBooleanNullableNonNull = true,
-                TestFieldBooleanNullableNull = null
+                TestFieldBooleanNullableNull = null,
             };
             testClass.innerFieldClassWithArrayWithNulls = new TestInnerClassWithArrayWithNulls
             {
@@ -178,7 +202,7 @@ namespace HDF5CSharp.UnitTests
                 TestFieldBooleanNonNull = true,
                 TestFieldBooleanNull = false,
                 TestFieldBooleanNullableNonNull = true,
-                TestFieldBooleanNullableNull = null
+                TestFieldBooleanNullableNull = null,
             };
 #endif
             var fileID = Hdf5.CreateFile(fn);

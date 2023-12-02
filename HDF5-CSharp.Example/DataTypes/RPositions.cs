@@ -1,11 +1,11 @@
-﻿using System;
+﻿using MessagePack;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using MessagePack;
-using Newtonsoft.Json;
 using UnityEngine;
 namespace HDF5CSharp.Example.DataTypes
 {
@@ -86,7 +86,6 @@ namespace HDF5CSharp.Example.DataTypes
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static RPositionsOld TranslateDictionary(Dictionary<object, object> data)
         {
-
             IEnumerable<(string Key, object Value)> IterateOver(KeyValuePair<object, object> item)
             {
                 var key = string.Empty;
@@ -106,7 +105,6 @@ namespace HDF5CSharp.Example.DataTypes
                     foreach (KeyValuePair<object, object> itm in dic)
                     {
                         innerItems.AddRange(IterateOver(itm).ToList());
-
                     }
 
                     yield return (key, innerItems);
@@ -125,7 +123,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     result.Add(key, value);
                 }
-
             }
 
             RPositionsOld p = new RPositionsOld();
@@ -146,7 +143,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public RpositionsDataPoints()
         {
-
         }
 
         public RpositionsDataPoints(string name, object[] points)
@@ -157,8 +153,6 @@ namespace HDF5CSharp.Example.DataTypes
             {
                 Points.Add(new Vector3(Convert.ToSingle(p[0]), Convert.ToSingle(p[1]), Convert.ToSingle(p[2])));
             }
-
-
         }
 
         public RpositionsDataPoints(string name, List<Vector3> points)

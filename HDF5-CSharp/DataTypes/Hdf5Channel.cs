@@ -14,6 +14,5 @@ namespace HDF5CSharp.DataTypes
         public double Offset;
         public double SamplingRate;
         public ulong NrOfSamples;
-
     }
 }

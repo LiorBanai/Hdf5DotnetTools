@@ -1,10 +1,10 @@
-﻿using System;
+﻿using HDF.PInvoke;
+using HDF5CSharp.DataTypes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using HDF.PInvoke;
-using HDF5CSharp.DataTypes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -12,7 +12,6 @@ namespace HDF5CSharp.UnitTests
     {
         public class TestAttributeClass
         {
-
             [Hdf5ReadWrite(Hdf5ReadWrite.DoNothing)] public int DoNothing { get; set; }
 
             [Hdf5ReadWrite(Hdf5ReadWrite.WriteOnly)]
@@ -30,7 +29,6 @@ namespace HDF5CSharp.UnitTests
             public int intNoAttribute { get; set; }
             public TestAttributeClass()
             {
-
             }
         }
 
@@ -47,7 +45,6 @@ namespace HDF5CSharp.UnitTests
                 IntReadWrite = 30,
                 intNoAttribute = 40,
                 IntReadOnly = 50,
-
             };
             Hdf5.WriteObject(fileId, testclass, "/");
             Hdf5.CloseFile(fileId);
@@ -141,7 +138,6 @@ namespace HDF5CSharp.UnitTests
                 readTime = Hdf5.ReadAttribute<DateTime>(groupId, "time");
                 Assert.IsTrue(readTime == nowTime);
                 Hdf5.CloseFile(fileId);
-
             }
             catch (Exception ex)
             {
@@ -207,7 +203,6 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(readObject.TestIntReadOnly == 0);
                 Assert.IsTrue(readObject.TestIntNoAttribute == value);
                 Assert.IsTrue(readObject.TestIntReadOnlyOfOtherProperty == value);
-
             }
             catch (Exception ex)
             {
@@ -218,7 +213,6 @@ namespace HDF5CSharp.UnitTests
                 Hdf5.Settings.EnableThrowOnErrors(true);
                 Hdf5.Settings.EnableH5InternalErrorReporting(true);
                 Hdf5.Settings.EnableLogging(true);
-
             }
         }
 

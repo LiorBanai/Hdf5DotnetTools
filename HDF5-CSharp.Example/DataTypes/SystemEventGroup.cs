@@ -1,11 +1,11 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using HDF5CSharp.DataTypes;
-using Microsoft.Extensions.Logging;
 
 namespace HDF5CSharp.Example.DataTypes
 {
@@ -19,7 +19,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public Hdf5SystemEvents()
         {
-
         }
     }
     public class SystemEventGroup : Hdf5BaseFile, IDisposable
@@ -42,7 +41,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     Hdf5.CloseGroup(GroupId);
                 }
-
             }
             catch (Exception e)
             {
@@ -52,7 +50,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public void Enqueue(SystemEventModel systemEvent)
         {
-
             if (record)
             {
                 SystemEvent hdf5SystemEvent = new SystemEvent(systemEvent.TimeStamp, systemEvent.SystemEventType.ToString(), "", systemEvent.EventData, false);
@@ -67,12 +64,10 @@ namespace HDF5CSharp.Example.DataTypes
         {
             try
             {
-
                 record = false;
                 LockSlim.EnterWriteLock();
                 if (!SystemEventSamplesData.Any())
                 {
-
                     Logger.LogWarning("No system events to write to H5 file");
                     return Task.CompletedTask;
                 }
@@ -88,8 +83,6 @@ namespace HDF5CSharp.Example.DataTypes
             finally
             {
                 LockSlim.ExitWriteLock();
-
-
             }
         }
 

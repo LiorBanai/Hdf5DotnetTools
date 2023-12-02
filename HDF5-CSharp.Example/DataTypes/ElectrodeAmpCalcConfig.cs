@@ -11,6 +11,4 @@ namespace HDF5CSharp.Example.DataTypes
         public double CurrentAt_0_4_BF { get; set; }
         public double CurrentAt_0_4_CF { get; set; }
     }
-
-
 }

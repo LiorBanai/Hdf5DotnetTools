@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HDF5CSharp.UnitTests
 {
     public partial class Hdf5UnitTests
     {
-
         [TestMethod]
         public void WriteAndReadOneString()
         {
@@ -51,7 +50,7 @@ namespace HDF5CSharp.UnitTests
                     "t",
                     "tst",
                     "test1",
-                    "small test"
+                    "small test",
                 };
 
                 string filename = Path.Combine(folder, "testStringList.H5");
@@ -128,6 +127,5 @@ namespace HDF5CSharp.UnitTests
                 CreateExceptionAssert(ex);
             }
         }
-
     }
 }

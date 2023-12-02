@@ -1,13 +1,13 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using HDF5CSharp.DataTypes;
 
 namespace HDF5CSharp.UnitTests
 {
     [Hdf5Attributes(new[] { "some info", "more info" })]
-    class AttributeSimpleClass : IEquatable<AttributeSimpleClass>
+    internal class AttributeSimpleClass : IEquatable<AttributeSimpleClass>
     {
         public class InnerClass : IEquatable<InnerClass>
         {
@@ -121,7 +121,7 @@ namespace HDF5CSharp.UnitTests
     }
     [Hdf5Attributes(new[] { "some info", "more info" })]
     [Hdf5GroupName("test_object")]
-    class SaveReadAttributeClass
+    internal class SaveReadAttributeClass
     {
         [Hdf5EntryName("test_int_read_only")]
         [Hdf5ReadWrite(Hdf5ReadWrite.ReadOnly)] public int TestIntReadOnly { get; set; }
@@ -139,7 +139,6 @@ namespace HDF5CSharp.UnitTests
 
         public SaveReadAttributeClass()
         {
-
         }
         public SaveReadAttributeClass(int value)
         {
@@ -153,9 +152,21 @@ namespace HDF5CSharp.UnitTests
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((SaveReadAttributeClass)obj);
         }
 
@@ -173,7 +184,7 @@ namespace HDF5CSharp.UnitTests
     }
 
     [Hdf5Attributes(new[] { "some info", "more info" })]
-    class AttributeClass
+    internal class AttributeClass
     {
         [Hdf5KeyValuesAttributes("Key", new[] { "NestedInfo some info", "NestedInfo more info" })]
         public class NestedInfo
@@ -192,7 +203,7 @@ namespace HDF5CSharp.UnitTests
         public NestedInfo nested = new NestedInfo();
     }
 
-    class AllTypesClass
+    internal class AllTypesClass
     {
         public bool aBool = true;
         public byte aByte = 10;
@@ -294,10 +305,9 @@ namespace HDF5CSharp.UnitTests
                    other.TestDoubles.SequenceEqual(TestDoubles) &&
                    other.testDoublesField.SequenceEqual(testDoublesField) &&
                    other.testStringsField.SequenceEqual(testStringsField);
-
         }
     }
-    class TestClassWithStructs
+    internal class TestClassWithStructs
     {
         public TestClassWithStructs()
         {
@@ -307,15 +317,14 @@ namespace HDF5CSharp.UnitTests
     [Serializable]
     public class TestClassWithArrayOfFloats : IEquatable<TestClassWithArrayOfFloats>
     {
-        public float[] floats { get; set; }
+        public float[] Floats { get; set; }
 
         public TestClassWithArrayOfFloats()
         {
-
         }
         public TestClassWithArrayOfFloats(float seed)
         {
-            floats = new[] { 1f + seed, 2 + seed, 3f + seed, 4f + seed };
+            Floats = new[] { 1f + seed, 2 + seed, 3f + seed, 4f + seed };
         }
 
         public bool Equals(TestClassWithArrayOfFloats other)
@@ -330,7 +339,7 @@ namespace HDF5CSharp.UnitTests
                 return true;
             }
 
-            return floats.SequenceEqual(other.floats);
+            return Floats.SequenceEqual(other.Floats);
         }
 
         public override bool Equals(object obj)
@@ -355,20 +364,20 @@ namespace HDF5CSharp.UnitTests
 
         public override int GetHashCode()
         {
-            return (floats != null ? floats.GetHashCode() : 0);
+            return (Floats != null ? Floats.GetHashCode() : 0);
         }
     }
     public struct TestStructWithArrayOfFloats : IEquatable<TestStructWithArrayOfFloats>
     {
-        public float[] floats { get; set; }
+        public float[] Floats { get; set; }
         public TestStructWithArrayOfFloats(float seed)
         {
-            floats = new[] { 1f + seed, 2 + seed, 3f + seed, 4f + seed };
+            Floats = new[] { 1f + seed, 2 + seed, 3f + seed, 4f + seed };
         }
 
         public bool Equals(TestStructWithArrayOfFloats other)
         {
-            return floats.SequenceEqual(other.floats);
+            return Floats.SequenceEqual(other.Floats);
         }
 
         public override bool Equals(object obj)
@@ -388,11 +397,11 @@ namespace HDF5CSharp.UnitTests
 
         public override int GetHashCode()
         {
-            return (floats != null ? floats.GetHashCode() : 0);
+            return (Floats != null ? Floats.GetHashCode() : 0);
         }
     }
 
-    class TestClassWithJaggedArray : IEquatable<TestClassWithJaggedArray>
+    internal class TestClassWithJaggedArray : IEquatable<TestClassWithJaggedArray>
     {
         public List<int[][]> Data { get; set; }
         public List<int[][]> dataField;
@@ -400,13 +409,13 @@ namespace HDF5CSharp.UnitTests
         {
             Data = new List<int[][]>()
             {
-                new[] {new[] {1, 2, 3, 4, 5}},
-                new[] {new[] {11, 12, 13, 14, 15}}
+                new[] { new[] { 1, 2, 3, 4, 5}},
+                new[] { new[] { 11, 12, 13, 14, 15}},
             };
             dataField = new List<int[][]>()
             {
-                new[] {new[] {1, 2, 3, 4, 5}},
-                new[] {new[] {11, 12, 13, 14, 15}}
+                new[] { new[] { 1, 2, 3, 4, 5}},
+                new[] { new[] { 11, 12, 13, 14, 15}},
             };
         }
 
@@ -458,7 +467,7 @@ namespace HDF5CSharp.UnitTests
         }
     }
 
-    class TestClassListOfList
+    internal class TestClassListOfList
     {
         public List<int[]> Data { get; set; }
         public List<int[]> dataField;
@@ -469,7 +478,7 @@ namespace HDF5CSharp.UnitTests
             dataField = new List<int[]>(21) { new[] { 2 }, new[] { 4, 5 } };
         }
     }
-    class TestClassWithLists : IEquatable<TestClassWithLists>
+    internal class TestClassWithLists : IEquatable<TestClassWithLists>
     {
         public DateTime time;
         public List<int> numbers;
@@ -484,9 +493,9 @@ namespace HDF5CSharp.UnitTests
         {
             time = DateTime.Now;
             times = new List<DateTime>
-                {DateTime.Now.AddSeconds(10), DateTime.Now.AddSeconds(20), DateTime.Now.AddSeconds(30)};
+                { DateTime.Now.AddSeconds(10), DateTime.Now.AddSeconds(20), DateTime.Now.AddSeconds(30)};
             TimesProperty = new List<DateTime>
-                {DateTime.Now.AddSeconds(10), DateTime.Now.AddSeconds(20), DateTime.Now.AddSeconds(30)};
+                { DateTime.Now.AddSeconds(10), DateTime.Now.AddSeconds(20), DateTime.Now.AddSeconds(30)};
             numbers = new List<int> { 1, 2, 3 };
             TimeProperty = DateTime.Now;
             NumbersProperty = new List<int> { 4, 5, 6 };
@@ -510,7 +519,6 @@ namespace HDF5CSharp.UnitTests
             return numbers.SequenceEqual(other.numbers) && time.Equals(other.time) &&
                    NumbersProperty.SequenceEqual(other.NumbersProperty) && TimeProperty.Equals(other.TimeProperty) &&
                    times.SequenceEqual(other.times) && TimesProperty.SequenceEqual(other.TimesProperty);
-            //floats.SequenceEqual(other.floats) && FloatsProperties.SequenceEqual(other.FloatsProperties);
         }
 
         public override bool Equals(object obj)
@@ -535,5 +543,4 @@ namespace HDF5CSharp.UnitTests
 
         public override int GetHashCode() => (numbers != null ? numbers.GetHashCode() : 0);
     }
-
 }

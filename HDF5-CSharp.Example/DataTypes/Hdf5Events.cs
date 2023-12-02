@@ -1,6 +1,6 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using System;
 using System.Collections.Generic;
-using HDF5CSharp.DataTypes;
 
 namespace HDF5CSharp.Example.DataTypes
 {

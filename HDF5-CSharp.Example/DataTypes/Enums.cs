@@ -8,6 +8,6 @@ namespace HDF5CSharp.Example.DataTypes
     {
         Kalpa,
         Kx,
-        Simulator
+        Simulator,
     }
 }

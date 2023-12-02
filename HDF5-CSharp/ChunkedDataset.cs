@@ -196,7 +196,6 @@ namespace HDF5CSharp
             {
                 Hdf5Utils.LogMessage($"Unable to flash dataset: {e}", Hdf5LogLevel.Error);
             }
-
         }
         /// <summary>
         /// Finalizer of object
@@ -236,7 +235,6 @@ namespace HDF5CSharp
 
             if (itIsSafeToAlsoFreeManagedObjects)
             {
-
             }
         }
 

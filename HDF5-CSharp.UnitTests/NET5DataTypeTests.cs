@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -22,9 +22,21 @@ namespace HDF5CSharp.UnitTests
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((Net5Primitives)obj);
         }
 
@@ -37,7 +49,6 @@ namespace HDF5CSharp.UnitTests
     [TestClass]
     public class NET5DataTypeTests
     {
-
         [TestMethod]
         public void TestNET5Primitives()
         {
@@ -50,7 +61,7 @@ namespace HDF5CSharp.UnitTests
                 TimeOnly = new TimeOnly(23, 23),
                 fieldHalfType = (Half)10.0,
                 fieldDateOnly = new DateOnly(2022, 07, 13),
-                fieldTimeOnly = new TimeOnly(23, 23)
+                fieldTimeOnly = new TimeOnly(23, 23),
             };
 
             var fileID = Hdf5.CreateFile(fn);

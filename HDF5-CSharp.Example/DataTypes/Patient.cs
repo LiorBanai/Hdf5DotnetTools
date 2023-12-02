@@ -28,11 +28,9 @@ namespace HDF5CSharp.Example.DataTypes
             LastName = string.Empty;
             Id = string.Empty;
             Gender = string.Empty;
-
         }
         public Patient()
         {
-
         }
 
         public void Dispose()
@@ -49,7 +47,6 @@ namespace HDF5CSharp.Example.DataTypes
             {
                 Logger?.LogError($"Error closing file: {e}");
             }
-
         }
 
         public bool Equals(Patient other)

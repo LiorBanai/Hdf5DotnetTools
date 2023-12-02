@@ -5,6 +5,5 @@
         public string HDF5Name { get; set; }
         public T[,] Data { get; set; }
         public bool ReadSuccessful { get; set; }
-
     }
 }

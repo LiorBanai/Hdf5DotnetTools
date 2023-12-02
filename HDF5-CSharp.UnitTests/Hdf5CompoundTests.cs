@@ -1,10 +1,10 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using HDF5CSharp.DataTypes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -17,7 +17,6 @@ namespace HDF5CSharp.UnitTests
             var obj = new TestClassWithLists();
             try
             {
-
                 var fileId = Hdf5.CreateFile(filename);
                 Assert.IsTrue(fileId > 0);
                 var status = Hdf5.WriteObject(fileId, obj, "test");
@@ -35,14 +34,11 @@ namespace HDF5CSharp.UnitTests
                 var objWithList = Hdf5.ReadObject<TestClassWithLists>(fileId, "test");
                 Assert.IsTrue(obj.Equals(objWithList));
                 Hdf5.CloseFile(fileId);
-
-
             }
             catch (Exception ex)
             {
                 CreateExceptionAssert(ex);
             }
-
         }
 
         [TestMethod]
@@ -52,7 +48,6 @@ namespace HDF5CSharp.UnitTests
             var obj = new TestClassWithJaggedArray();
             try
             {
-
                 var fileId = Hdf5.CreateFile(filename);
                 Assert.IsTrue(fileId > 0);
                 var status = Hdf5.WriteObject(fileId, obj, "test");
@@ -70,14 +65,11 @@ namespace HDF5CSharp.UnitTests
                 var obj2 = Hdf5.ReadObject<TestClassWithJaggedArray>(fileId, "test");
                 Assert.IsTrue(obj.Equals(obj2));
                 Hdf5.CloseFile(fileId);
-
-
             }
             catch (Exception ex)
             {
                 CreateExceptionAssert(ex);
             }
-
         }
         [TestMethod]
         public void WriteAndReadObjectWithStructs()
@@ -87,7 +79,6 @@ namespace HDF5CSharp.UnitTests
 
             try
             {
-
                 var fileId = Hdf5.CreateFile(filename);
                 Assert.IsTrue(fileId > 0);
                 var status = Hdf5.WriteObject(fileId, classWithStructs, "test");
@@ -106,14 +97,11 @@ namespace HDF5CSharp.UnitTests
                 objWithStructs = Hdf5.ReadObject<TestClassWithStructs>(fileId, "test");
                 CollectionAssert.AreEqual(wDataList, objWithStructs.DataList);
                 Hdf5.CloseFile(fileId);
-
-
             }
             catch (Exception ex)
             {
                 CreateExceptionAssert(ex);
             }
-
         }
         [TestMethod]
         public void WriteAndReadListOfList()
@@ -122,7 +110,6 @@ namespace HDF5CSharp.UnitTests
             TestClassListOfList data = new TestClassListOfList();
             try
             {
-
                 var fileId = Hdf5.CreateFile(filename);
                 Assert.IsTrue(fileId > 0);
                 Hdf5.WriteObject(fileId, data, "test");
@@ -146,7 +133,6 @@ namespace HDF5CSharp.UnitTests
             {
                 CreateExceptionAssert(ex);
             }
-
         }
 
 
@@ -174,7 +160,6 @@ namespace HDF5CSharp.UnitTests
             Dictionary<string, List<string>> attributes = new Dictionary<string, List<string>>();
             try
             {
-
                 se.Add(new SystemEvent(5, "55", "3300000000000000000000000", "555555555555555555555555555555555"));
                 se.Add(new SystemEvent(1, "255", "3d3000000000007777773", "ggggggggggggdf"));
 
@@ -195,13 +180,11 @@ namespace HDF5CSharp.UnitTests
                 var cmpList = Hdf5.ReadCompounds<SystemEvent>(fileId, "/test", "", true).ToArray();
                 Hdf5.CloseFile(fileId);
                 CollectionAssert.AreEqual(se, cmpList);
-
             }
             catch (Exception ex)
             {
                 CreateExceptionAssert(ex);
             }
-
         }
 
         [TestMethod]
@@ -211,7 +194,6 @@ namespace HDF5CSharp.UnitTests
             Dictionary<string, List<string>> attributes = new Dictionary<string, List<string>>();
             try
             {
-
                 var fileId = Hdf5.CreateFile(filename);
                 Assert.IsTrue(fileId > 0);
                 var status = Hdf5.WriteCompounds(fileId, "/test", wData2List, attributes);
@@ -229,13 +211,11 @@ namespace HDF5CSharp.UnitTests
                 var cmpList = Hdf5.ReadCompounds<WData2>(fileId, "/test", "", true).ToArray();
                 Hdf5.CloseFile(fileId);
                 CollectionAssert.AreEqual(wData2List, cmpList);
-
             }
             catch (Exception ex)
             {
                 CreateExceptionAssert(ex);
             }
-
         }
 
         [TestMethod]
@@ -249,13 +229,11 @@ namespace HDF5CSharp.UnitTests
                 var cmpList = Hdf5.ReadCompounds<WData3>(fileId, "/test", "", true).ToArray();
                 Hdf5.CloseFile(fileId);
                 // CollectionAssert.AreEqual(wData2List, cmpList);
-
             }
             catch (Exception ex)
             {
                 CreateExceptionAssert(ex);
             }
-
         }
         [TestMethod]
         public void WriteAndReadStructsWithDatetime()
@@ -264,7 +242,6 @@ namespace HDF5CSharp.UnitTests
             Dictionary<string, List<string>> attributes = new Dictionary<string, List<string>>();
             try
             {
-
                 var fileId = Hdf5.CreateFile(filename);
                 Assert.IsTrue(fileId > 0);
                 var status = Hdf5.WriteCompounds(fileId, "/test", wDataList, attributes);
@@ -282,13 +259,11 @@ namespace HDF5CSharp.UnitTests
                 var cmpList = Hdf5.ReadCompounds<WData>(fileId, "/test", "", true).ToArray();
                 Hdf5.CloseFile(fileId);
                 CollectionAssert.AreEqual(wDataList, cmpList);
-
             }
             catch (Exception ex)
             {
                 CreateExceptionAssert(ex);
             }
-
         }
 
         [TestMethod]
@@ -298,7 +273,6 @@ namespace HDF5CSharp.UnitTests
             Dictionary<string, List<string>> attributes = new Dictionary<string, List<string>>();
             try
             {
-
                 var fileId = Hdf5.CreateFile(filename);
                 Assert.IsTrue(fileId > 0);
                 var status = Hdf5.WriteCompounds(fileId, "/test", responseList, attributes);
@@ -322,13 +296,11 @@ namespace HDF5CSharp.UnitTests
                     r.ResponseValues.Zip(c.ResponseValues, (rr, cr) => rr == cr).All(v => v == true);
                 });
                 Assert.IsTrue(isSame.All(s => s == true));
-
             }
             catch (Exception ex)
             {
                 CreateExceptionAssert(ex);
             }
-
         }
 
 
@@ -368,7 +340,6 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 var status = Hdf5.WriteCompounds(fileId, "/Sample Data", new List<Compound>() { c }, new Dictionary<string, List<string>>());
                 Hdf5.CloseFile(fileId);
-
             }
             catch (Exception ex)
             {

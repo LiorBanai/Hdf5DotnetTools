@@ -1,11 +1,11 @@
 using HDF.PInvoke;
+using HDF5CSharp.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using HDF5CSharp.DataTypes;
 
 namespace HDF5CSharp
 {
@@ -61,7 +61,6 @@ namespace HDF5CSharp
 
         public static (int success, long CreatedgroupId) WriteStrings(long groupId, string name, IEnumerable<string> strs)
         {
-
             // create UTF-8 encoded test datasets
 
             long datatype = H5T.create(H5T.class_t.STRING, H5T.VARIABLE);
@@ -264,5 +263,4 @@ namespace HDF5CSharp
             return Hdf5Utils.ReadStringBuffer(strDest).TrimEnd((char)0);
         }
     }
-
 }

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using HDF.PInvoke;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using HDF.PInvoke;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -154,7 +154,6 @@ namespace HDF5CSharp.UnitTests
         [TestMethod]
         public void WriteAndReadAllPrimitives()
         {
-
             string filename = Path.Combine(folder, "testAllPrimitives.H5");
             //var groupStr = "/test";
             //string concatFunc(string x) => string.Concat(groupStr, "/", x);
@@ -247,7 +246,6 @@ namespace HDF5CSharp.UnitTests
                         chunkedDset.AppendDataset(ds);
                         chunkedDset.Flush();
                         var dsetRead= Hdf5.ReadDatasetToArray<double>(fileId, string.Concat(groupName, "/", datasetName));
-
                     }
                 }
                 Hdf5.CloseFile(fileId);
@@ -296,7 +294,6 @@ namespace HDF5CSharp.UnitTests
             using (var chunkedDset = new ChunkedDataset<double>(datasetName, groupId))
             {
                 chunkedDset.AppendOrCreateDataset(data);
-
             }
 
             Hdf5.CloseFile(fileId);
@@ -326,7 +323,6 @@ namespace HDF5CSharp.UnitTests
                     {
                         chunkedDset.AppendDataset(ds);
                     }
-
                 }
 
                 Hdf5.CloseFile(fileId);
@@ -359,7 +355,6 @@ namespace HDF5CSharp.UnitTests
             {
                 CreateExceptionAssert(ex);
             }
-
         }
 
         [TestMethod]
@@ -382,7 +377,6 @@ namespace HDF5CSharp.UnitTests
                     {
                         chunkedDset.AppendOrCreateDataset(ds);
                     }
-
                 }
                 Hdf5.CloseFile(fileId);
             }
@@ -430,7 +424,6 @@ namespace HDF5CSharp.UnitTests
             Assert.IsTrue(result.Cast<int>().SequenceEqual(blah));
             // loading the hdf5 file shows it only has {1, 2, 4, 5, 0} stored.
             return tef2;
-
         }
         [TestMethod]
         public void WriteAndUpdateDataset()
@@ -461,7 +454,6 @@ namespace HDF5CSharp.UnitTests
             tef2 = Hdf5.OpenFile(filename);
             for (int i = 0; i < 10; i++)
             {
-
                 blah[4] = i + i;
                 Hdf5.WriteDatasetFromArray<int>(tef2, "blah", blah);
             }

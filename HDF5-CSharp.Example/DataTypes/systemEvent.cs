@@ -25,7 +25,7 @@ namespace HDF5CSharp.Example.DataTypes
         NetworkAvailabilityOff,
         ECGBodyLeadConnected,
         ECGBodyLeadDisconnected,
-        FreeSpace
+        FreeSpace,
     }
 
     public class SystemEventModel : IEquatable<SystemEventModel>

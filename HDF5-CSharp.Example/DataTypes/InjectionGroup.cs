@@ -8,7 +8,6 @@ namespace HDF5CSharp.Example.DataTypes
     {
         public InjectionGroup(in long fileId, in long groupRoot, ILogger logger) : base(fileId, groupRoot, "injection", logger)
         {
-
         }
     }
 }

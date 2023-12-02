@@ -21,9 +21,15 @@ internal static class FilePathHelper
     {
         var file = new FileInfo(longPath);
         if (!file.Exists)
+        {
             throw new FileNotFoundException("The path points to a non-existent file. The file must exist in order for the short path translation to work.");
-        if(Environment.OSVersion.Platform != PlatformID.Win32NT)
+        }
+
+        if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+        {
             throw new InvalidOperationException("The extension method ToShortPath(this string longPath) cannot be called in a non-windows operating system context.");
+        }
+
         StringBuilder sb = new(255);
         _ = GetShortPathName(longPath, sb, sb.Capacity);
         return sb.ToString();

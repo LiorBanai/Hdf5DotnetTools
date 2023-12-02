@@ -56,7 +56,6 @@ namespace HDF5CSharp
             if (items == null || !items.Any())
             {
                 throw new Hdf5Exception("empty items");
-
             }
             Type type = typeof(T);
             var count = (ulong)items.LongCount();
@@ -194,7 +193,6 @@ namespace HDF5CSharp
             hnd.Free();
             H5S.close(memId);
             H5S.close(filespaceId);
-
         }
 
         public void Flush()
@@ -207,7 +205,6 @@ namespace HDF5CSharp
             {
                 Hdf5Utils.LogMessage($"Unable to flash {nameof(ChunkedCompound<T>)}: {e}",Hdf5LogLevel.Error);
             }
-
         }
         /// <summary>
         /// Finalizer of object
@@ -246,7 +243,6 @@ namespace HDF5CSharp
 
             if (itIsSafeToAlsoFreeManagedObjects)
             {
-
             }
         }
 

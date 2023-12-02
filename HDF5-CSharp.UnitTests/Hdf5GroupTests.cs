@@ -1,8 +1,8 @@
-﻿using System;
+﻿using HDF.PInvoke;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 using System.Linq;
-using HDF.PInvoke;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -57,7 +57,6 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(Hdf5Utils.ItemExists(fileId, Hdf5Utils.NormalizedName( "A/B/C/D/E/F/I"),DataTypes.Hdf5ElementType.Dataset));
 
                 Assert.IsTrue(Hdf5.CloseFile(fileId) == 0);
-
             }
             catch (Exception ex)
             {

@@ -1,5 +1,7 @@
 ﻿using HDF.PInvoke;
 using HDF5CSharp.DataTypes;
+using PureHDF;
+using PureHDF.VOL.Native;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +10,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using PureHDF;
-using PureHDF.VOL.Native;
 
 namespace HDF5CSharp
 {
@@ -117,7 +117,6 @@ namespace HDF5CSharp
                 {
                     saveAttribute = sa;
                 }
-
             }
 
             if (readWriteAttribute != null)
@@ -152,7 +151,6 @@ namespace HDF5CSharp
                 {
                     saveAttribute = sa;
                 }
-
             }
 
             if (readWriteAttribute != null)
@@ -180,7 +178,6 @@ namespace HDF5CSharp
 
             foreach (FieldInfo info in miMembers)
             {
-
                 bool nextInfo = SkipReadProcessing(Attribute.GetCustomAttributes(info));
                 if (nextInfo)
                 {
@@ -240,7 +237,6 @@ namespace HDF5CSharp
                             foreach (var o in values)
                             {
                                 created.Add(o);
-
                             }
 
                             info.SetValue(targetObjectToFill, created);
@@ -251,7 +247,6 @@ namespace HDF5CSharp
                         var result = CallByReflection<object>(nameof(ReadCompounds), elType,
                             new object[] { groupId, name, alternativeName, mandatoryElement });
                         info.SetValue(targetObjectToFill, result);
-
                     }
                 }
 #if NET
@@ -288,7 +283,6 @@ namespace HDF5CSharp
                     }
                     else
                     {
-
                         var nonNull = Activator.CreateInstance(ty);
                         var result = mandatoryElement
                             ? ReadMandatoryObject(groupId, nonNull, name)
@@ -350,7 +344,6 @@ namespace HDF5CSharp
                         Array.Copy(objArr, values, objArr.Length);
                         info.SetValue(targetObjectToFill, values);
                     }
-
                 }
                 else if (ty.IsGenericType && ty.GetGenericTypeDefinition() == typeof(List<>))
                 {
@@ -369,12 +362,10 @@ namespace HDF5CSharp
                             foreach (var o in values)
                             {
                                 created.Add(o);
-
                             }
 
                             info.SetValue(targetObjectToFill, created);
                         }
-
                     }
                     else
                     {
@@ -511,7 +502,6 @@ namespace HDF5CSharp
                     var val = ReadAttributeData(attr);
                     element.AddAttribute(attr.Name, val, attr.Type.Class.ToString());
                 }
-
             }
             catch (Exception e)
             {
@@ -524,7 +514,6 @@ namespace HDF5CSharp
                     AddAttributes(child, file, true);
                 }
             }
-
         }
 
         private static object ReadAttributeData(IH5Attribute attribute)
@@ -553,7 +542,7 @@ namespace HDF5CSharp
                 // being exposed in the public API. E.g. some types like "Array" or "Enum"
                 // have base type information (e.g. an Enum value could be based on a uint16
                 // value) which would allow you to read these kind of attributes, too.
-                _ => $"The type class {attribute.Type.Class} is currently not supported."
+                _ => $"The type class {attribute.Type.Class} is currently not supported.",
             };
         }
 
@@ -589,8 +578,6 @@ namespace HDF5CSharp
                 H5L.iterate(fileId, H5.index_t.NAME, H5.iter_order_t.INC, ref idx, Callback,
                     Marshal.StringToHGlobalAnsi("/"));
                 Settings.EnableH5InternalErrorReporting(reEnableErrors);
-
-
             }
             catch (Exception e)
             {
@@ -620,7 +607,6 @@ namespace HDF5CSharp
                 groupId = (H5L.exists(elementId, name) >= 0) ? H5G.open(elementId, name) : -1L;
                 if (H5I.is_valid(groupId) > 0)
                 {
-
                     objectType = H5O.type_t.GROUP;
                     elementType = Hdf5ElementType.Group;
                 }
@@ -648,7 +634,6 @@ namespace HDF5CSharp
                     var index = fullName.LastIndexOf("/", StringComparison.Ordinal);
                     var partial = fullName.Substring(0, index);
                     return partial.Equals(e.Name);
-
                 });
 
                 if (parent == null)
@@ -721,7 +706,6 @@ namespace HDF5CSharp
                     Array.Copy(objArr, values, objArr.Length);
                     table.Data = (T[,])values;
                 }
-
             }
 
             return table;

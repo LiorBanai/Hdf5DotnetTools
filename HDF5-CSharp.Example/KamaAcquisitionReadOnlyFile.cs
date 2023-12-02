@@ -1,8 +1,8 @@
 ﻿using HDF5CSharp.Example.DataTypes;
+using HDF5CSharp.Example.DataTypes.HDF5Store.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HDF5CSharp.Example.DataTypes.HDF5Store.DataTypes;
 
 namespace HDF5CSharp.Example
 {
@@ -104,7 +104,6 @@ namespace HDF5CSharp.Example
         }
         public void ReadEITData()
         {
-
             int index = 1;
             string rootGroup = rootName + eitName;
             if (!Hdf5.GroupExists(fileId, rootGroup))
@@ -171,7 +170,6 @@ namespace HDF5CSharp.Example
                 {
                     Console.WriteLine("Error reading events: " + exception);
                 }
-
             }
             return Events;
         }

@@ -39,7 +39,6 @@ namespace HDF5CSharp
                         writer.Write(GetBytes(strct));
                     }
                     bytes = ms.ToArray();
-
                 }
                 catch (Exception e)
                 {
@@ -85,7 +84,6 @@ namespace HDF5CSharp
                     {
                         WriteStringAttributes(datasetId,kvp.Key, kvp.Value);
                     }
-
                 }
                 hnd.Free();
                 /*
@@ -159,7 +157,6 @@ namespace HDF5CSharp
                 {
                     current += cu.Count();
                     AppendCompound(cu, current, datasetId);
-
                 }
                 foreach (KeyValuePair<string, List<string>> keyValuePair in attributes)
                 {
@@ -357,7 +354,7 @@ namespace HDF5CSharp
                     type = fldType,
                     datatype = datatype,
                     size = fldType == typeof(string) ? StringLength(x) : !fldType.IsArray ? Marshal.SizeOf(fldType) : size * Marshal.SizeOf(fldType.GetElementType()),
-                    offset = 0 + curSize
+                    offset = 0 + curSize,
                 };
                 if (oi.datatype == H5T.C_S1)
                 {
@@ -418,7 +415,6 @@ namespace HDF5CSharp
             }*/
 
             return offsets;
-
         }
 
         private static int StringLength(MemberInfo fld)
@@ -471,7 +467,6 @@ namespace HDF5CSharp
                 // if more than 100 MB
                 if (datasetStorageSize < Hdf5.MaxMemoryAllocationOnRead)
                 {
-
                     byte[] bytes = new byte[(int)rows * compoundSize];
                     // Read the data.
                     GCHandle hnd = GCHandle.Alloc(bytes, GCHandleType.Pinned);
@@ -492,7 +487,6 @@ namespace HDF5CSharp
                      */
                     H5D.vlen_reclaim(typeId, spaceId, H5P.DEFAULT, hndAddr);
                     hnd.Free();
-
                 }
                 else // data is overflow and need to read the data in chunks 
                 {
@@ -510,7 +504,6 @@ namespace HDF5CSharp
                     }
 
                     strcts = strcts2;
-
                 }
 
 
@@ -525,8 +518,5 @@ namespace HDF5CSharp
             var result = ReadCompounds<byte>(groupId, name, alternativeName,mandatory);
             return (IEnumerable<T>)ByteArrayToObject(result.ToArray());
         }
-
-
-
     }
 }

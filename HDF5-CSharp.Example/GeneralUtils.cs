@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 
 namespace HDF5CSharp.Example
 {
-
     public class DateTimeComparerUpToMilliseconds : IEqualityComparer<DateTime>
     {
         public bool Equals(DateTime x, DateTime y) => x.EqualsUpToMilliseconds(y);

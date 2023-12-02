@@ -1,6 +1,5 @@
 ﻿namespace HDF5CSharp.DataTypes
 {
-
     [Hdf5GroupName("Channels")]
     public class Hdf5Channels
     {
@@ -19,6 +18,5 @@
         public double[] Offsets { get; set; }
         public double[] SamplingRates { get; set; }
         public int[] NrOfSamples { get; set; }
-
     }
 }

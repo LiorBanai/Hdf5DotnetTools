@@ -1,11 +1,11 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using HDF5CSharp.DataTypes;
-using Microsoft.Extensions.Logging;
 
 namespace HDF5CSharp.Example.DataTypes
 {
@@ -19,7 +19,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public Hdf5RPositionEvents()
         {
-
         }
     }
     public class RPositionGroup : Hdf5BaseFile, IDisposable
@@ -42,7 +41,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     Hdf5.CloseGroup(GroupId);
                 }
-
             }
             catch (Exception e)
             {
@@ -53,7 +51,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public void Enqueue(RPositionsMessagePack rPosition)
         {
-
             if (record)
             {
                 var positions = rPosition.NavigationData.SelectMany(r =>
@@ -71,7 +68,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     LockSlim.ExitWriteLock();
                 }
-
             }
         }
 

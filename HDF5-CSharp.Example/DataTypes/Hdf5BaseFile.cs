@@ -20,11 +20,9 @@ namespace HDF5CSharp.Example.DataTypes
             GroupName = groupName;
             Logger = logger;
             GroupId = Hdf5.CreateOrOpenGroup(groupRoot, GroupName);
-
         }
         protected Hdf5BaseFile()
         {
-
         }
 
         public void FlushData()

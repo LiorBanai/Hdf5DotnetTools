@@ -1,10 +1,10 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HDF5CSharp.DataTypes;
-using Microsoft.Extensions.Logging;
 
 namespace HDF5CSharp.Example.DataTypes
 {
@@ -18,7 +18,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public Hdf5UserEvents()
         {
-
         }
     }
 
@@ -59,7 +58,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     Hdf5.CloseGroup(GroupId);
                 }
-
             }
             catch (Exception)
             {

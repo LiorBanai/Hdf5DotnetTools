@@ -24,7 +24,6 @@ namespace HDF5CSharp
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime ToDateTime(long value, DateTimeType type)
         {
-         
             switch (type)
             {
                 case DateTimeType.Ticks:

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using HDF5CSharp.Example.DataTypes.HDF5Store.DataTypes;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HDF5CSharp.DataTypes;
-using HDF5CSharp.Example.DataTypes.HDF5Store.DataTypes;
-using Microsoft.Extensions.Logging;
 
 namespace HDF5CSharp.Example.DataTypes
 {
@@ -65,7 +65,6 @@ namespace HDF5CSharp.Example.DataTypes
             catch (Exception e)
             {
                 Logger.LogError(e, $"Error appending means events: {e.Message}");
-
             }
             finally
             {
@@ -84,7 +83,6 @@ namespace HDF5CSharp.Example.DataTypes
                     ChunkedMeansSystemEvents?.Dispose();
                     Hdf5.CloseGroup(GroupId);
                 }
-
             }
             catch (Exception e)
             {
@@ -95,7 +93,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public void Enqueue(long timestamp, string data)
         {
-
             if (record)
             {
                 try
@@ -113,7 +110,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     LockSlim.ExitWriteLock();
                 }
-
             }
         }
 
@@ -154,7 +150,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     LockSlim.ExitWriteLock();
                 }
-
             }
         }
     }

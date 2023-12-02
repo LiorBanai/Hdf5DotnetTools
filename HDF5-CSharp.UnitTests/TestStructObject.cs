@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -42,9 +42,21 @@ namespace HDF5CSharp.UnitTests
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((TestClassWithStructMembers)obj);
         }
 
@@ -63,7 +75,6 @@ namespace HDF5CSharp.UnitTests
         [TestMethod]
         public void TestStructMembers()
         {
-
             Hdf5.Settings.EnableH5InternalErrorReporting(true);
             string fn = $"{nameof(TestStructMembers)}.h5";
             var fileID = Hdf5.CreateFile(fn);
@@ -72,7 +83,7 @@ namespace HDF5CSharp.UnitTests
                 structDataField = new StructData()
                 { location = "loc", pressure = 10, serial_no = 50, temperature = 50.4 },
                 StructData = new StructData()
-                { location = "loc_prop", pressure = 20, serial_no = 60, temperature = 950.4 }
+                { location = "loc_prop", pressure = 20, serial_no = 60, temperature = 950.4 },
             };
             Hdf5.WriteObject(fileID, testClass, "testObject");
             Hdf5.CloseFile(fileID);

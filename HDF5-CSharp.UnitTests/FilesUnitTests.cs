@@ -1,9 +1,9 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using HDF5CSharp.DataTypes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -17,7 +17,6 @@ namespace HDF5CSharp.UnitTests
         {
             Errors = new List<string>();
             folder = AppDomain.CurrentDomain.BaseDirectory;
-
         }
         [TestMethod]
         public void TestReadStructure()
@@ -88,8 +87,6 @@ namespace HDF5CSharp.UnitTests
             Assert.IsTrue(data.Count == 10,$"Actual: {data.Count}");
             Hdf5.CloseFile(fileId);
             File.Delete(fileName);
-
         }
     }
 }
-

@@ -1,6 +1,5 @@
 ﻿namespace HDF5CSharp.DataTypes
 {
-
     /// <summary>
     /// Character set to use for text strings.
     /// </summary>
@@ -39,20 +38,19 @@
     public enum Hdf5Save
     {
         Save,
-        DoNotSave
+        DoNotSave,
     }
     public enum Hdf5ReadWrite
     {
         DoNothing,
         ReadOnly,
         WriteOnly,
-        ReadWrite
-
+        ReadWrite,
     }
     public enum Hdf5MandatoryReadElement
     {
         CanSkipRead,
-        MandatoryForRead
+        MandatoryForRead,
     }
     public enum Hdf5LogLevel
     {
@@ -61,5 +59,4 @@
         Warning,
         Error,
     }
-
 }

@@ -1,12 +1,11 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using System;
 using System.Linq;
-using HDF5CSharp.DataTypes;
 
 namespace HDF5CSharp.Example.DataTypes
 {
     public class ECGData : IEquatable<ECGData>
     {
-
         [Hdf5EntryName("start_datetime")] public DateTime StartDateTime { get; set; }
         [Hdf5EntryName("end_datetime")] public DateTime EndDateTime { get; set; }
         [Hdf5EntryName("sampling_rate")] public int SamplingRate { get; set; }

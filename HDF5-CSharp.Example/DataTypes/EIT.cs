@@ -57,7 +57,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     EndDateTime = buffer[count - 1].timestamp;
                     AppendSample(buffer, count);
-
                 }
                 FlushData();//end of data samples. flush data
                 pool.Return(buffer);
@@ -96,7 +95,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     packetIdData[i, 0] = electrodeFrame.PacketId;
                 }
-
             }
             VoltagesReal.AppendOrCreateDataset(vReData);
             VoltagesIm.AppendOrCreateDataset(vImData);
@@ -108,8 +106,6 @@ namespace HDF5CSharp.Example.DataTypes
             {
                 PacketIds.AppendOrCreateDataset(packetIdData);
             }
-
-
         }
 
         public void Dispose()
@@ -134,7 +130,6 @@ namespace HDF5CSharp.Example.DataTypes
             {
                 Logger.LogError($"Error during dispose of EIT: {e.Message}");
             }
-
         }
 
         public void Enqueue(ElectrodeFrame sample)

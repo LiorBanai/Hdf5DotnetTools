@@ -15,7 +15,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public AcquisitionInformation()
         {
-
         }
     }
 }

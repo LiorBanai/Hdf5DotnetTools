@@ -1,5 +1,5 @@
-﻿using System;
-using HDF.PInvoke;
+﻿using HDF.PInvoke;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +11,7 @@ namespace HDF5CSharp.DataTypes
         Group,
         Dataset,
         Attribute,
-        CommitedDatatype
+        CommitedDatatype,
     }
 
     public class Hdf5AttributeElement
@@ -54,8 +54,6 @@ namespace HDF5CSharp.DataTypes
         }
 
         public override string ToString() => $"{nameof(Name)}: {Name} ({Type}) ID:{Id}";
-
- 
     }
 
     public class Hdf5Element : Hdf5ElementBase

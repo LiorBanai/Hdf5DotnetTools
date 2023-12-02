@@ -10,7 +10,6 @@ namespace HDF5CSharp
 {
     public class Hdf5Dataset : IHdf5ReaderWriter
     {
-
         public (bool success, Array result) ReadToArray<T>(long groupId, string name, string alternativeName, bool mandatory)
         {
             return Hdf5.ReadDatasetToArray<T>(groupId, name, alternativeName, mandatory);
@@ -38,7 +37,6 @@ namespace HDF5CSharp
         {
             return Hdf5.ReadStrings(groupId, name, alternativeName, mandatory);
         }
-
     }
     public static partial class Hdf5
     {
@@ -134,7 +132,6 @@ namespace HDF5CSharp
                 H5S.close(memId);
                 H5P.close(propId);
                 hnd.Free();
-
             }
             H5D.close(datasetId);
             H5S.close(spaceId);
@@ -356,7 +353,6 @@ namespace HDF5CSharp
                creation properties.  */
             if (!datasetExists)
             {
-
                 spaceId = H5S.create_simple(dset.Rank, dimsExtend, maxDimsExtend);
                 datasetId = Hdf5Utils.GetDatasetId(groupId, Hdf5Utils.NormalizedName(name), typeId, spaceId, H5P.DEFAULT);
 
@@ -413,6 +409,5 @@ namespace HDF5CSharp
             H5S.close(spaceId);
             return status;
         }
-
     }
 }

@@ -1,12 +1,12 @@
 ﻿using HDF.PInvoke;
+using HDF5CSharp.DataTypes;
+using HDF5CSharp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using HDF5CSharp.DataTypes;
 using System.Text.RegularExpressions;
-using HDF5CSharp.Helpers;
 
 namespace HDF5CSharp
 {
@@ -126,7 +126,6 @@ namespace HDF5CSharp
 
         internal static long GetDatatype(Type type)
         {
-
             long dataType;
 
             var typeCode = Type.GetTypeCode(type);

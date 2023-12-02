@@ -1,6 +1,6 @@
-﻿using System;
+﻿using HDF5CSharp.Interfaces;
+using System;
 using System.Collections.Generic;
-using HDF5CSharp.Interfaces;
 
 namespace HDF5CSharp
 {
@@ -30,6 +30,5 @@ namespace HDF5CSharp
         {
             return Hdf5.WriteAsciiStringAttributes(groupId, name, (string[])collection, datasetName);
         }
-        
     }
 }

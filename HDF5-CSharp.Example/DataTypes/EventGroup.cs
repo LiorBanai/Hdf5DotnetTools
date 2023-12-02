@@ -9,7 +9,6 @@ namespace HDF5CSharp.Example.DataTypes
     [Hdf5GroupName("events")]
     public class EventGroup : Hdf5BaseFile, IDisposable
     {
-
         private Hdf5Events events;
         [Hdf5ReadWrite(Hdf5ReadWrite.DoNothing)] private List<SystemEvent> SystemEventSamplesData { get; set; }
         [Hdf5ReadWrite(Hdf5ReadWrite.DoNothing)] private bool record;
@@ -41,7 +40,6 @@ namespace HDF5CSharp.Example.DataTypes
                 {
                     Hdf5.CloseGroup(GroupId);
                 }
-
             }
             catch (Exception)
             {
@@ -51,7 +49,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public void Enqueue(SystemEventModel systemEvent)
         {
-
             if (record)
             {
                 SystemEvent hdf5SystemEvent = new SystemEvent(systemEvent.TimeStamp, systemEvent.SystemEventType.ToString(), "", systemEvent.EventData, false);

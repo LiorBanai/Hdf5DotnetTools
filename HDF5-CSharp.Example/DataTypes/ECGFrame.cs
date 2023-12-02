@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MessagePack;
+using System;
 using System.Collections.Generic;
-using MessagePack;
 
 namespace HDF5CSharp.Example.DataTypes
 {
@@ -9,7 +9,6 @@ namespace HDF5CSharp.Example.DataTypes
 
     public class ECGFrame
     {
-
         [Key("packetId")] public UInt64 PacketId { get; set; }
         [Key("timestamp")] public long Timestamp { get; set; }
         [Key("KalpaClock")] public UInt64 KalpaClock { get; set; }
@@ -33,9 +32,6 @@ namespace HDF5CSharp.Example.DataTypes
             FrameData = unFilteredData;
             IsTriggerToInjection = false;
             Timestamp = timestamp;
-
-
         }
-
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Bogus;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Bogus;
 
 namespace HDF5CSharp.Winforms.Tests
 {
@@ -35,7 +35,6 @@ namespace HDF5CSharp.Winforms.Tests
             bool readOK = true;
             do
             {
-
                 var dataClass = Hdf5.ReadObject<HDF5DataClass>(fileID, $"testObject{i++}");
                 if (dataClass != null)
                 {
@@ -45,7 +44,6 @@ namespace HDF5CSharp.Winforms.Tests
                 {
                     readOK = false;
                 }
-
             } while (readOK);
 
             if (cbPopup.Checked)
@@ -86,7 +84,7 @@ namespace HDF5CSharp.Winforms.Tests
                 Data.Add(new HDF5DataClass
                 {
                     Location = i * 10,
-                    Image = random.Bytes(30000)
+                    Image = random.Bytes(30000),
                 });
             }
 
@@ -104,12 +102,10 @@ namespace HDF5CSharp.Winforms.Tests
             {
                 MessageBox.Show($"After Data Creation: {Convert.ToInt32(PC.NextValue()) / 1024 / 1024}");
             }
-
         }
 
         private void btnCompare_Click(object sender, EventArgs e)
         {
-
             var result = ReadFile(ceCompare.Checked);
             if (cbPopup.Checked)
             {
@@ -121,10 +117,8 @@ namespace HDF5CSharp.Winforms.Tests
                 if (!Data.SequenceEqual(result))
                 {
                     MessageBox.Show($"Not The same object:");
-
                 }
             }
-
         }
 
         private void timer1_Tick(object sender, EventArgs e)

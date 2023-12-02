@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -23,10 +23,7 @@ namespace HDF5CSharp.UnitTests
                 //var chunkSize = new ulong[] { 5, 5 };
                 using (var chunkedDset = new ChunkedCompound<WData>(datasetName, groupId, wDataList.Take(2)))
                 {
-                    
                     chunkedDset.AppendCompound(wDataList.Skip(2));
-                    
-
                 }
                 Hdf5.CloseFile(fileId);
             }

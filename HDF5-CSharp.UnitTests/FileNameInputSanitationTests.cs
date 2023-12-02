@@ -12,11 +12,9 @@ namespace HDF5CSharp.UnitTests
     [TestClass]
     public class FileNameInputSanitationTests
     {
-
         [TestInitialize]
         public void Init()
         {
-
         }
 
         private static readonly Regex _illegalCharacterValidator = new("[æøåöäïë€]+", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant);
@@ -122,7 +120,11 @@ namespace HDF5CSharp.UnitTests
         {
             string path = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + "_vælidfïlënæïm.h5");
             FileInfo fileInfo = new FileInfo(path);
-            if (fileInfo.Exists) fileInfo.Delete();
+            if (fileInfo.Exists)
+            {
+                fileInfo.Delete();
+            }
+
             try
             {
                 var id = Hdf5.OpenFile(path, attemptShortPath: true);

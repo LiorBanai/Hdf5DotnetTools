@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HDF5CSharp.UnitTests
 {
@@ -18,7 +18,6 @@ namespace HDF5CSharp.UnitTests
             Errors = new List<string>();
             Warning = new List<string>();
             EnableErrors();
-
         }
         [TestCleanup]
         public void Cleanup()
@@ -60,26 +59,26 @@ namespace HDF5CSharp.UnitTests
             dsets = new List<double[,]> {
                 CreateDataset(),
                 CreateDataset(10),
-                CreateDataset(20) };
+                CreateDataset(20), };
 
             wDataList = new WData[4] {
                 new WData() { serial_no = 1153, location = "Exterior (static)", temperature = 53.23, pressure = 24.57, Time=new DateTime(2000,1,1) },
                 new WData() { serial_no = 1184, location = "Intake",  temperature = 55.12, pressure = 22.95, Time=new DateTime(2000,1,2) },
                 new WData() { serial_no = 1027, location = "Intake manifold", temperature = 103.55, pressure = 31.23, Time=new DateTime(2000,1,3) },
-                new WData() { serial_no = 1313, location = "Exhaust manifold", temperature = 1252.89, pressure = 84.11, Time=new DateTime(2000,1,4) }
+                new WData() { serial_no = 1313, location = "Exhaust manifold", temperature = 1252.89, pressure = 84.11, Time=new DateTime(2000,1,4) },
             };
 
             wData2List = new WData2[4] {
                 new WData2() { serial_no = 1153, location = "Exterior (static)", label="V",temperature = 53.23, pressure = 24.57 },
                 new WData2() { serial_no = 1184, location = "Intake", label="uV", temperature = 55.12, pressure = 22.95 },
                 new WData2() { serial_no = 1027, location = "Intake manifold", label="V",temperature = 103.55, pressure = 31.23 },
-                new WData2() { serial_no = 1313, location = "Exhaust manifold", label="mV", temperature = 1252.89, pressure = 84.11 }
+                new WData2() { serial_no = 1313, location = "Exhaust manifold", label="mV", temperature = 1252.89, pressure = 84.11 },
             };
             responseList = new Responses[4] {
-                new Responses() { MCID=1,PanelIdx=5,ResponseValues=new short[4]{ 1,2,3,4} },
-                new Responses() { MCID=2,PanelIdx=6,ResponseValues=new short[4]{ 5,6,7,8}},
-                new Responses() { MCID=3,PanelIdx=7,ResponseValues=new short[4]{ 1,2,3,4}},
-                new Responses() { MCID=4,PanelIdx=8,ResponseValues=new short[4]{ 5,6,7,8}}
+                new Responses() { MCID=1,PanelIdx=5,ResponseValues=new short[4] { 1,2,3,4} },
+                new Responses() { MCID=2,PanelIdx=6,ResponseValues=new short[4] { 5,6,7,8}},
+                new Responses() { MCID=3,PanelIdx=7,ResponseValues=new short[4] { 1,2,3,4}},
+                new Responses() { MCID=4,PanelIdx=8,ResponseValues=new short[4] { 5,6,7,8}},
             };
 
             classWithStructs = new TestClassWithStructs { DataList = wDataList };
@@ -98,7 +97,6 @@ namespace HDF5CSharp.UnitTests
                 {
                     Console.WriteLine(e);
                 }
-
             }
         }
 
@@ -107,7 +105,6 @@ namespace HDF5CSharp.UnitTests
         {
             Errors = new List<string>();
             EnableErrors();
-
         }
         [TestCleanup]
         public void Cleanup()
@@ -162,8 +159,6 @@ namespace HDF5CSharp.UnitTests
             var failStr = "Unexpected exception of type {0} caught: {1}";
             failStr = string.Format(failStr, ex.GetType(), ex.Message);
             Assert.Fail(failStr);
-
         }
     }
-
 }

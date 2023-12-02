@@ -1,21 +1,20 @@
-﻿using System;
+﻿using HDF5CSharp.DataTypes;
+using HDF5CSharp.Example;
+using HDF5CSharp.Example.DataTypes;
+using HDF5CSharp.Example.DataTypes.HDF5Store.DataTypes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HDF5CSharp.DataTypes;
-using HDF5CSharp.Example;
-using HDF5CSharp.Example.DataTypes;
-using HDF5CSharp.Example.DataTypes.HDF5Store.DataTypes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HDF5_CSharp.Example.UnitTest
 {
     [TestClass]
     public class MeansChunkedTests : BaseClass
     {
-
         [TestMethod]
         public async Task MeansChunkedTest()
         {
@@ -36,7 +35,7 @@ namespace HDF5_CSharp.Example.UnitTest
                     PatientFamilyName = "PArker",
                     PatientFirstName = "Peter",
                     PatientAge = 26
-                }
+                },
             };
 
             kama.SavePatientInfo(info.Patient, info.ExamDate);

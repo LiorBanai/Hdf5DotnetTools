@@ -16,7 +16,6 @@ namespace HDF5CSharp
 
         public (int success, long CreatedId) WriteArray(long groupId, string name, Array collection, Dictionary<string, List<string>> attributes)
         {
-
             Type type = collection.GetType();
             Type elementType = type.GetElementType();
             TypeCode typeCode = Type.GetTypeCode(elementType);
@@ -99,7 +98,6 @@ namespace HDF5CSharp
                     {
                         var tss = collection.ConvertArray<Half, float>(h => (float)h);
                         result = rw.WriteFromArray<float>(groupId, name, tss);
-
                     }
                     else if (elementType == typeof(DateOnly))
                     {
@@ -126,7 +124,6 @@ namespace HDF5CSharp
                 {
                     Hdf5.WriteStringAttribute(groupId, entry.Key, string.Join("',", entry.Value), name);
                 }
-
             }
 
             return result;
@@ -201,7 +198,6 @@ namespace HDF5CSharp
                     {
                         (success, result) = rw.ReadToArray<float>(groupId, name, alternativeName, mandatoryElement);
                         return (success, result.ConvertArray<float, Half>(f16 => (Half)f16));
-
                     }
                     if (elementType == typeof(DateOnly))
                     {
@@ -224,6 +220,5 @@ namespace HDF5CSharp
                     throw new NotSupportedException(str + elementType.FullName);
             }
         }
-
     }
 }

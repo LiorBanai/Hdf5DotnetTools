@@ -14,6 +14,5 @@ namespace HDF5CSharp.DataTypes
             Times = new DateTime[length];
             Durations = new TimeSpan[length];
         }
-
     }
 }

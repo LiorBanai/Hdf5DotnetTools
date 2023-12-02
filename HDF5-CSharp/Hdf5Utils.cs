@@ -341,7 +341,5 @@ namespace HDF5CSharp
                 list = list.Skip(chunkSize);
             }
         }
-
     }
-
 }

@@ -14,7 +14,6 @@ namespace HDF5CSharp.Example.DataTypes
         [Hdf5EntryName("ManyPatientsField")] public List<Patient[]> PatientsField;
         public PatientsContainer()
         {
-
         }
         public PatientsContainer(long fileId, long groupRoot, ILogger logger) : base(fileId, groupRoot, "patients",
             logger)
@@ -25,12 +24,12 @@ namespace HDF5CSharp.Example.DataTypes
                 new Patient()
                 {
                     Age = 20, ExamDate = DateTime.Now.AddDays(-10), FirstName = "first1", Gender = "F", Height = 1.65,
-                    Id = "000", LastName = "last1", Weight = 60
+                    Id = "000", LastName = "last1", Weight = 60,
                 },
                 new Patient()
                 {
                     Age = 20, ExamDate = DateTime.Now.AddDays(-10), FirstName = "first2", Gender = "M", Height = 1.85,
-                    Id = "111", LastName = "last2", Weight = 90
+                    Id = "111", LastName = "last2", Weight = 90,
                 },
             });
 
@@ -40,12 +39,12 @@ namespace HDF5CSharp.Example.DataTypes
                 new Patient()
                 {
                     Age = 20, ExamDate = DateTime.Now.AddDays(-10), FirstName = "first1", Gender = "F", Height = 1.65,
-                    Id = "000", LastName = "last1", Weight = 60
+                    Id = "000", LastName = "last1", Weight = 60,
                 },
                 new Patient()
                 {
                     Age = 20, ExamDate = DateTime.Now.AddDays(-10), FirstName = "first2", Gender = "M", Height = 1.85,
-                    Id = "111", LastName = "last2", Weight = 90
+                    Id = "111", LastName = "last2", Weight = 90,
                 },
             });
         }
@@ -64,7 +63,6 @@ namespace HDF5CSharp.Example.DataTypes
             {
                 Logger?.LogError($"Error closing file: {e}");
             }
-
         }
 
         public bool Equals(PatientsContainer other)

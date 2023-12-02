@@ -1,6 +1,6 @@
 ﻿using HDF.PInvoke;
-using System;
 using HDF5CSharp.DataTypes;
+using System;
 
 namespace HDF5CSharp
 {

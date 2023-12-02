@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 
 namespace HDF5CSharp.Example.DataTypes
 {
@@ -20,7 +20,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public AcquisitionProtocolParameters()
         {
-
         }
 
         public AcquisitionProtocolParameters(string protocolName, ScanDescription scan)
@@ -124,7 +123,6 @@ namespace HDF5CSharp.Example.DataTypes
                             ElectrodeParams.C_Amplitude = amplitude;
                             ElectrodeParams.C_Frequencies = frequency;
                             ElectrodeParams.C_Phase = phases;
-
                         }
                         continue;
                     case ElectrodeAcquisitionProtocolParameters.DId:
@@ -134,7 +132,6 @@ namespace HDF5CSharp.Example.DataTypes
                             ElectrodeParams.D_Amplitude = amplitude;
                             ElectrodeParams.D_Frequencies = frequency;
                             ElectrodeParams.D_Phase = phases;
-
                         }
                         continue;
                     case ElectrodeAcquisitionProtocolParameters.EId:
@@ -144,7 +141,6 @@ namespace HDF5CSharp.Example.DataTypes
                             ElectrodeParams.E_Amplitude = amplitude;
                             ElectrodeParams.E_Frequencies = frequency;
                             ElectrodeParams.E_Phase = phases;
-
                         }
                         continue;
                     default:
@@ -228,7 +224,7 @@ namespace HDF5CSharp.Example.DataTypes
                         VoltageAmplitudeMilliVolt = isKalpa
                             ? (float)CalculateAmpKalpa(elecData.Channel, elecData.Frequency, elecData.Amplitude)
                             : (float)CalculateAmp(ampCalcConfig, elecData.Channel, elecData.Frequency,
-                                elecData.Amplitude)
+                                elecData.Amplitude),
                     });
                 }
             }
@@ -460,7 +456,6 @@ namespace HDF5CSharp.Example.DataTypes
             E_Amplitude = new double[ESize];
             E_Frequencies = Enumerable.Range(0, ESize).Select(i => double.MaxValue).ToArray();
             E_Phase = Enumerable.Range(0, ESize).Select(i => 0.0).ToArray();
-
         }
 
         public string AsJson() => JsonConvert.SerializeObject(this);
@@ -644,7 +639,6 @@ namespace HDF5CSharp.Example.DataTypes
 
         public EcgParams()
         {
-
         }
         public EcgParams(List<string> bsChannels, List<string> icChannels, ECGFilterParamsDef ecgFilter, bool leadOffDetection)
         {
@@ -709,7 +703,6 @@ namespace HDF5CSharp.Example.DataTypes
             Time = DateTime.Now;
             HostName = Environment.MachineName;
         }
-
     }
     public class ECGFilterParamsDef
     {
