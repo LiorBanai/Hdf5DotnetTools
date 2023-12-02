@@ -1,15 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <RootNamespace>HDF5CSharp.Example</RootNamespace>
     <AssemblyName>HDF5CSharp.Example</AssemblyName>
+	  <NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MessagePack" Version="2.5.124" />
-    <PackageReference Include="MessagePack.UnityShims" Version="2.5.124" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="MessagePack" Version="2.5.140" />
+    <PackageReference Include="MessagePack.UnityShims" Version="2.5.140" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

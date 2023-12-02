@@ -193,8 +193,7 @@ namespace HDF5CSharp.UnitTests
                     foreach (var ds in dsets.Skip(1))
                     {
                         chunkedDset.AppendDataset(ds);
-                    };
-
+                    }
                 }
                 Hdf5.CloseFile(fileId);
             }
@@ -249,8 +248,7 @@ namespace HDF5CSharp.UnitTests
                         chunkedDset.Flush();
                         var dsetRead= Hdf5.ReadDatasetToArray<double>(fileId, string.Concat(groupName, "/", datasetName));
 
-                    };
-
+                    }
                 }
                 Hdf5.CloseFile(fileId);
             }
@@ -327,7 +325,7 @@ namespace HDF5CSharp.UnitTests
                     foreach (var ds in dsets.Skip(1))
                     {
                         chunkedDset.AppendDataset(ds);
-                    };
+                    }
 
                 }
 
@@ -383,7 +381,7 @@ namespace HDF5CSharp.UnitTests
                     foreach (var ds in dsets)
                     {
                         chunkedDset.AppendOrCreateDataset(ds);
-                    };
+                    }
 
                 }
                 Hdf5.CloseFile(fileId);

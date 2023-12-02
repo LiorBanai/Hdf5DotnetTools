@@ -13,7 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HDF5-CSharp.UnitTests", "HD
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "HDF5-CSharp.UnitTests.VB", "HDF5-CSharp.UnitTests.VB\HDF5-CSharp.UnitTests.VB.vbproj", "{A1BA5354-C784-43A1-AA7A-D5C8D4E8C746}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDF5-CSharp.Winforms.Tests", "HDF5-CSharp.Winforms.Tests\HDF5-CSharp.Winforms.Tests.csproj", "{F3D9FC6D-0BD0-4AF3-9CA3-857761A7C579}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HDF5-CSharp.Winforms.Tests", "HDF5-CSharp.Winforms.Tests\HDF5-CSharp.Winforms.Tests.csproj", "{F3D9FC6D-0BD0-4AF3-9CA3-857761A7C579}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E6FD9E69-0318-4B0C-8106-785141EC768E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		.github\workflows\dotnet-core-desktop.yml = .github\workflows\dotnet-core-desktop.yml
+		nuget.config = nuget.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

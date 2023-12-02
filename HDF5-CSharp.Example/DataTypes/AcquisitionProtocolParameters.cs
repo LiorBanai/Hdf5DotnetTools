@@ -483,7 +483,7 @@ namespace HDF5CSharp.Example.DataTypes
         {
             ElectrodeParams = new ElectrodeParams();
             BodySensorDescription = new BodySensorDescription();
-            DevicesDescription = new List<DeviceDescription>(); ;
+            DevicesDescription = new List<DeviceDescription>();
             EcgParams = new EcgParams();
         }
         public ScanDescription(bool isKalpa, ElectrodeParams electrodeParams, BodySensorDescription bodySensorDescription, List<DeviceDescription> devicesDescription, EcgParams ecgParams)

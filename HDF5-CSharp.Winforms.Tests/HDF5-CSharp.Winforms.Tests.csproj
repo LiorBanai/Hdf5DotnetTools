@@ -2,10 +2,11 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<RootNamespace>HDF5CSharp.Winforms.Tests</RootNamespace>
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
+		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

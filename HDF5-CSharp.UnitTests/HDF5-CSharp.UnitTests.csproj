@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net48;net472;net6.0-windows;net7.0-windows</TargetFrameworks>
+		<TargetFrameworks>net48;net472;net6.0-windows;net7.0-windows;net8.0-windows</TargetFrameworks>
 		<IsPackable>false</IsPackable>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<AssemblyName>HDF5CSharp.UnitTests</AssemblyName>
 		<RootNamespace>HDF5CSharp.UnitTests</RootNamespace>
+		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,8 +21,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="HDF.PInvoke.1.10" Version="1.10.612" />
-		<PackageReference Include="Microsoft.CodeCoverage" Version="17.7.2" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+		<PackageReference Include="Microsoft.CodeCoverage" Version="17.8.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
 		<PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
 		<PackageReference Include="coverlet.collector" Version="6.0.0">

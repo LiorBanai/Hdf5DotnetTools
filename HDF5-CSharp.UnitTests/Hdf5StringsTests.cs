@@ -31,7 +31,7 @@ namespace HDF5CSharp.UnitTests
                 foreach (var s in strs2)
                 {
                     Assert.IsTrue(str[0] == s);
-                };
+                }
 
                 Hdf5.CloseFile(fileId);
             }
