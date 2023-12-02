@@ -110,68 +110,51 @@ namespace HDF5CSharp
 
         public static int WriteAsciiString(long groupId, string name, string str)
         {
-            var spaceNullId = H5S.create(H5S.class_t.NULL);
-            var spaceScalarId = H5S.create(H5S.class_t.SCALAR);
+			var spaceScalarId = H5S.create(H5S.class_t.SCALAR);
 
-            // create two datasets of the extended ASCII character set
-            // store as H5T.FORTRAN_S1 -> space padding
+			int strLength = str.Length;
 
-            int strLength = str.Length;
-            ulong[] dims = { (ulong)strLength, 1 };
+			var memId = H5T.copy(H5T.C_S1);
+			// Set the size needed for the string. Leave one extra space for a null-terminated string
+			H5T.set_size(memId, new IntPtr(strLength + 1));
 
-            /* Create the dataset. */
-            //name = ToHdf5Name(name);
+			var datasetId = H5D.create(groupId, Hdf5Utils.NormalizedName(name), memId, spaceScalarId);
 
-            var spaceId = H5S.create_simple(1, dims, null);
-            var datasetId = H5D.create(groupId, Hdf5Utils.NormalizedName(name), H5T.FORTRAN_S1, spaceId);
-            H5S.close(spaceId);
+			byte[] wdata = new byte[strLength];
+			// Write the string to the buffer, with the last element being 0 as the string terminator
+			for (int i = 0; i < strLength; ++i)
+			{
+				wdata[i] = Convert.ToByte(str[i]);
+			}
 
-            // we write from C and must provide null-terminated strings
+			GCHandle hnd = GCHandle.Alloc(wdata, GCHandleType.Pinned);
 
-            byte[] wdata = new byte[strLength * 2];
-            
-            for (int i = 0; i < strLength; ++i)
-            {
-                wdata[2 * i] = Convert.ToByte(str[i]);
-            }
-
-            var memId = H5T.copy(H5T.C_S1);
-            H5T.set_size(memId, new IntPtr(2));
-            GCHandle hnd = GCHandle.Alloc(wdata, GCHandleType.Pinned);
-            int result = H5D.write(datasetId, memId, H5S.ALL,
-                        H5S.ALL, H5P.DEFAULT, hnd.AddrOfPinnedObject());
-            hnd.Free();
-            H5T.close(memId);
-            H5D.close(datasetId);
-            return result;
-        }
+			int result = H5D.write(datasetId, memId, H5S.ALL, H5S.ALL, H5P.DEFAULT, hnd.AddrOfPinnedObject());
+			hnd.Free();
+			H5S.close(spaceScalarId);
+			H5T.close(memId);
+			H5D.close(datasetId);
+			return result;
+		}
 
         public static string ReadAsciiString(long groupId, string name)
         {
-            var datatype = H5T.FORTRAN_S1;
-
-            //name = ToHdf5Name(name);
-
             var datasetId = H5D.open(groupId, Hdf5Utils.NormalizedName(name));
             var spaceId = H5D.get_space(datasetId);
-            int rank = H5S.get_simple_extent_ndims(spaceId);
-            ulong[] maxDims = new ulong[rank];
-            ulong[] dims = new ulong[rank];
-            ulong[] chunkDims = new ulong[rank];
-            var memId_n = H5S.get_simple_extent_dims(spaceId, dims, null);
-            // we write from C and must provide null-terminated strings
+            
+            ulong spaceNeeded = H5D.get_storage_size(datasetId);
+			byte[] wdata = new byte[spaceNeeded];
 
-            byte[] wdata = new byte[dims[0] * 2];
-
-            var memId = H5T.copy(H5T.C_S1);
-            H5T.set_size(memId, new IntPtr(2));
             GCHandle hnd = GCHandle.Alloc(wdata, GCHandleType.Pinned);
-            int resultId = H5D.read(datasetId, memId, H5S.ALL,
+			var memId = H5T.copy(H5T.C_S1);
+			H5T.set_size(memId, new IntPtr((int)spaceNeeded));
+
+			int resultId = H5D.read(datasetId, memId, H5S.ALL,
                         H5S.ALL, H5P.DEFAULT, hnd.AddrOfPinnedObject());
             hnd.Free();
 
-            wdata = wdata.Where((b, i) => i % 2 == 0).
-                Select(b => (b == 0) ? (byte)32 : b).ToArray();
+            // Remove the null termination of the string
+            wdata = wdata.Where(b => b != 0).ToArray();
             string result = Encoding.ASCII.GetString(wdata);
 
             H5T.close(memId);
