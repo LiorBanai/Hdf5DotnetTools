@@ -8,7 +8,10 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
 	</PropertyGroup>
-
+	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
+		<DefineConstants>$(DefineContants);DEBUG</DefineConstants>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\HDF5-CSharp\HDF5-CSharp.csproj" />
 	</ItemGroup>

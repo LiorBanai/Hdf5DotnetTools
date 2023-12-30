@@ -6,7 +6,10 @@
 		<IsPackable>false</IsPackable>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
 	</PropertyGroup>
-
+	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
+		<DefineConstants>$(DefineContants);DEBUG</DefineConstants>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="coverlet.msbuild" Version="6.0.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -36,7 +39,7 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="SingleMeanResult.txt">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 

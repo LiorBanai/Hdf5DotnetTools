@@ -1,21 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net8.0-windows</TargetFrameworks>
-    <RootNamespace>HDF5CSharp.Example</RootNamespace>
-    <AssemblyName>HDF5CSharp.Example</AssemblyName>
-	  <NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net8.0-windows</TargetFrameworks>
+		<RootNamespace>HDF5CSharp.Example</RootNamespace>
+		<AssemblyName>HDF5CSharp.Example</AssemblyName>
+		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MessagePack" Version="2.5.140" />
-    <PackageReference Include="MessagePack.UnityShims" Version="2.5.140" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\HDF5-CSharp\HDF5-CSharp.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MessagePack" Version="2.5.140" />
+		<PackageReference Include="MessagePack.UnityShims" Version="2.5.140" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
+		<DefineConstants>$(DefineContants);DEBUG</DefineConstants>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\HDF5-CSharp\HDF5-CSharp.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -9,7 +9,10 @@
 		<RootNamespace>HDF5CSharp.UnitTests</RootNamespace>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
 	</PropertyGroup>
-
+	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
+		<DefineConstants>$(DefineContants);DEBUG</DefineConstants>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<PlatformTarget>AnyCPU</PlatformTarget>
 	</PropertyGroup>

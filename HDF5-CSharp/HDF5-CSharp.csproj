@@ -36,7 +36,10 @@
 		<PackageTags>Hdf5</PackageTags>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
 	</PropertyGroup>
-
+	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
+		<DefineConstants>$(DefineContants);DEBUG</DefineConstants>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DefineConstants>DEBUG;TRACE;TRACE,HDF5_VER1_10</DefineConstants>
 	</PropertyGroup>
@@ -62,105 +65,105 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|x86'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|x86'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|x64'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|x64'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|x86'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|x86'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|x64'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|x64'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard20|AnyCPU'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard20|AnyCPU'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard20|x86'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard20|x86'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard20|x64'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard20|x64'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard21|AnyCPU'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard21|AnyCPU'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard21|x86'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard21|x86'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard21|x64'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard21|x64'">
-	  <DebugType>portable</DebugType>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="HDF.PInvoke.1.10" Version="1.10.612" />
 		<PackageReference Include="PureHDF" Version="1.0.0-beta.2" />

@@ -16,10 +16,6 @@
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
-		<DefineConstants>$(DefineContants);DEBUG</DefineConstants>
-		<Optimize>false</Optimize>
-	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Release'))">
 		<Optimize>true</Optimize>
 	</PropertyGroup>
@@ -34,7 +30,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Meziantou.Analyzer" Version="2.0.131">
+		<PackageReference Include="Meziantou.Analyzer" Version="2.0.132">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
