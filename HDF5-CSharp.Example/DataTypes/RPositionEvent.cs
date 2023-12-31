@@ -10,7 +10,7 @@ namespace HDF5CSharp.Example.DataTypes
     public struct RPositionEvent
     {
         [Hdf5EntryName("timestamp")] public ulong timestamp;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 100)] [Hdf5EntryName("name")] public string name;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 100)][Hdf5EntryName("name")] public string name;
         [Hdf5EntryName("x")] public float x;
         [Hdf5EntryName("y")] public float y;
         [Hdf5EntryName("z")] public float z;

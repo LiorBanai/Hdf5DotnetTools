@@ -137,9 +137,9 @@ namespace HDF5CSharp.UnitTests
         public struct SystemEvent
         {
             [Hdf5EntryName("timestamp")] public long timestamp;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)] [Hdf5EntryName("type")] public string type;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 200)] [Hdf5EntryName("data")] public string data;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 200)] [Hdf5EntryName("description")] public string description;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)][Hdf5EntryName("type")] public string type;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 200)][Hdf5EntryName("data")] public string data;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 200)][Hdf5EntryName("description")] public string description;
 
             public SystemEvent(long timestamp, string type, string description, string data)
             {

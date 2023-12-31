@@ -61,7 +61,6 @@ namespace HDF5CSharp
         public static (int Success, long CreatedgroupId) WriteStrings(long groupId, string name, IEnumerable<string> strs)
         {
             // create UTF-8 encoded test datasets
-
             long datatype = H5T.create(H5T.class_t.STRING, H5T.VARIABLE);
             H5T.set_cset(datatype, Hdf5Utils.GetCharacterSet(Settings.CharacterSetType));
             H5T.set_strpad(datatype, Hdf5Utils.GetCharacterPadding(Settings.CharacterPaddingType));
@@ -113,22 +112,19 @@ namespace HDF5CSharp
 
             // create two datasets of the extended ASCII character set
             // store as H5T.FORTRAN_S1 -> space padding
-
             int strLength = str.Length;
             ulong[] dims = { (ulong)strLength, 1 };
 
             /* Create the dataset. */
 
             //name = ToHdf5Name(name);
-
             var spaceId = H5S.create_simple(1, dims, null);
             var datasetId = H5D.create(groupId, Hdf5Utils.NormalizedName(name), H5T.FORTRAN_S1, spaceId);
             H5S.close(spaceId);
 
             // we write from C and must provide null-terminated strings
-
             byte[] wdata = new byte[strLength * 2];
-            
+
             for (int i = 0; i < strLength; ++i)
             {
                 wdata[2 * i] = Convert.ToByte(str[i]);
@@ -150,7 +146,6 @@ namespace HDF5CSharp
             var datatype = H5T.FORTRAN_S1;
 
             //name = ToHdf5Name(name);
-
             var datasetId = H5D.open(groupId, Hdf5Utils.NormalizedName(name));
             var spaceId = H5D.get_space(datasetId);
             int rank = H5S.get_simple_extent_ndims(spaceId);
@@ -160,7 +155,6 @@ namespace HDF5CSharp
             var memId_n = H5S.get_simple_extent_dims(spaceId, dims, null);
 
             // we write from C and must provide null-terminated strings
-
             byte[] wdata = new byte[dims[0] * 2];
 
             var memId = H5T.copy(H5T.C_S1);

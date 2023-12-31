@@ -146,7 +146,7 @@ namespace HDF5CSharp.Example
 
             return new List<MeansFullECGEvent>(0);
         }
-        
+
         public List<SystemEvent> ReadSystemEvents()
         {
             if (Events.Any())

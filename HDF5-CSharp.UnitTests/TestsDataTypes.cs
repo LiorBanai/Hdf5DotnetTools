@@ -131,7 +131,7 @@ namespace HDF5CSharp.UnitTests
 
         [Hdf5EntryName("test_int_read_write")]
         [Hdf5ReadWrite(Hdf5ReadWrite.ReadWrite)] public int TestIntReadWrite { get; set; }
-      
+
         [Hdf5EntryName("test_int_save_only")]
         [Hdf5ReadWrite(Hdf5ReadWrite.ReadOnly)] public int TestIntReadOnlyOfOtherProperty { get; set; }
 

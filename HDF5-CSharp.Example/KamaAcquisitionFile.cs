@@ -58,7 +58,7 @@ namespace HDF5CSharp.Example
             RecordNumber = 1;
             H5E.set_auto(H5E.DEFAULT, null, IntPtr.Zero);
             fileId = Hdf5.CreateFile(filename);
-            groupRoot = fileId; 
+            groupRoot = fileId;
             MeansData = new MeansGroup(fileId, groupRoot, logger);
 
             groupEIT = Hdf5.CreateOrOpenGroup(groupRoot, "eit");

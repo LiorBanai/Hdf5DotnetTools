@@ -249,7 +249,7 @@ namespace HDF5CSharp.UnitTests
                     {
                         chunkedDset.AppendDataset(ds);
                         chunkedDset.Flush();
-                        var dsetRead= Hdf5.ReadDatasetToArray<double>(fileId, string.Concat(groupName, "/", datasetName));
+                        var dsetRead = Hdf5.ReadDatasetToArray<double>(fileId, string.Concat(groupName, "/", datasetName));
                     }
                 }
                 Hdf5.CloseFile(fileId);

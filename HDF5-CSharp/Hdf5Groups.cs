@@ -59,7 +59,7 @@ namespace HDF5CSharp
             {
                 foreach (var id in toplevelIds)
                 {
-                    if (id == gid) 
+                    if (id == gid)
                     {
                         if (!closeAlsoLastGroup)//don't close the returned one as it can be used by user
                         {

@@ -16,8 +16,8 @@ namespace HDF5CSharp.Example.DataTypes
         {
             timestamps = Array.Empty<long>();
             type = Array.Empty<string>();
-            description= Array.Empty<string>();
-            data= Array.Empty<string>();
+            description = Array.Empty<string>();
+            data = Array.Empty<string>();
         }
         public Hdf5Events(List<SystemEvent> eventsData)
         {

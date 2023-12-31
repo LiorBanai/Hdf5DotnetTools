@@ -626,7 +626,6 @@ namespace HDF5CSharp
                     {
                         //objectType = H5O.type_t.UNKNOWN;
                         //elementType = Hdf5ElementType.Unknown;
-
                         objectType = H5O.type_t.NAMED_DATATYPE;
                         elementType = Hdf5ElementType.CommitedDatatype;
                     }

@@ -177,7 +177,6 @@ namespace HDF5CSharp.UnitTests
         //    var fileId = Hdf5.CreateFile("c:/测试/test测试.h5");
         //    Hdf5.CloseFile(fileId);
         //}
-
         [TestMethod]
         public void WriteAndReadAttributesWithBothSaveAndReadAttributes()
         {

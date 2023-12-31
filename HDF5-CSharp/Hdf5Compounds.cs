@@ -129,7 +129,6 @@ namespace HDF5CSharp
                 var spaceId = H5S.create_simple(dims.Length, dims, maxDims);
 
                 // Create the dataset and write the compound data to it.
-
                 var datasetId = Hdf5Utils.GetDatasetId(groupId, Hdf5Utils.NormalizedName(name), typeId, spaceId, H5P.DEFAULT);
 
                 var ms = new MemoryStream();

@@ -23,7 +23,7 @@ namespace HDF5CSharp
         {
             return Hdf5.WriteStrings(groupId, name, collection.ToArray());
         }
-        public (int Success, long CreatedgroupId) WriteNumericAttributes<T>(long groupId, string name, IEnumerable<T> collection, string datasetName = null) where T: struct
+        public (int Success, long CreatedgroupId) WriteNumericAttributes<T>(long groupId, string name, IEnumerable<T> collection, string datasetName = null) where T : struct
         {
             return Hdf5.WriteIntegerAttributes(groupId, name, collection.ToArray());
         }

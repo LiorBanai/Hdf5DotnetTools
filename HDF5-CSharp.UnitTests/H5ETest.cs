@@ -23,9 +23,9 @@ namespace HDF5CSharp.UnitTests
         [TestMethod]
         public void H5EwalkTest2()
         {
-           // H5E.set_auto(H5E.DEFAULT, ErrorDelegateMethod, IntPtr.Zero);
-           Assert.IsTrue(
-                H5E.set_auto(H5E.DEFAULT, ErrorDelegateMethod, IntPtr.Zero) >= 0);
+            // H5E.set_auto(H5E.DEFAULT, ErrorDelegateMethod, IntPtr.Zero);
+            Assert.IsTrue(
+                 H5E.set_auto(H5E.DEFAULT, ErrorDelegateMethod, IntPtr.Zero) >= 0);
 
             H5E.walk_t walk_cb = WalkDelegateMethod;
             Assert.IsTrue(

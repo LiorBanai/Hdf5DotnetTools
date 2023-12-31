@@ -53,7 +53,7 @@ namespace HDF5CSharp.UnitTests
             var result = Hdf5Utils.ItemExists(fileId, "/A/B/C", Hdf5ElementType.Dataset);
             Assert.IsFalse(result);
             var id = Hdf5.OpenDatasetIfExists(fileId, "/A/B/C", "");
-            Assert.IsTrue(id==-1);
+            Assert.IsTrue(id == -1);
         }
 
         //[TestMethod]

@@ -195,7 +195,6 @@ namespace HDF5CSharp
 
             //H5S.close(memId);
             //H5P.close(propId);
-
             return (true, attributes);
         }
 
@@ -279,7 +278,6 @@ namespace HDF5CSharp
 
             // create two datasets of the extended ASCII character set
             // store as H5T.FORTRAN_S1 -> space padding
-
             int strLength = str.Length;
             ulong[] dims = { (ulong)strLength, 1 };
 

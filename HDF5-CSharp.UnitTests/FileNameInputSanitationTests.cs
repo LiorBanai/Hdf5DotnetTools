@@ -22,8 +22,8 @@ namespace HDF5CSharp.UnitTests
         [TestMethod]
         public void TestValidFileName()
         {
-            string path = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + "_validfilename.h5"); 
-            if(_illegalCharacterValidator.IsMatch(path))
+            string path = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + "_validfilename.h5");
+            if (_illegalCharacterValidator.IsMatch(path))
             {
                 Assert.Inconclusive("Cannot conclude this as Path.GetTempPath() returns path with forbidden characters in it."); // TheBaronOfDubstep: I have an ø in my username, therefore.. 
             }

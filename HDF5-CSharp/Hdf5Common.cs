@@ -123,7 +123,6 @@ namespace HDF5CSharp
         //{
         //    return string.Concat(@"/", name);
         //}
-
         internal static long GetDatatype(Type type)
         {
             long dataType;

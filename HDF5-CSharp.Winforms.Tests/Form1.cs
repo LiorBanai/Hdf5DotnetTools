@@ -38,7 +38,7 @@ namespace HDF5CSharp.Winforms.Tests
                 var dataClass = Hdf5.ReadObject<HDF5DataClass>(fileID, $"testObject{i++}");
                 if (dataClass != null)
                 {
-                   read.Add(dataClass);
+                    read.Add(dataClass);
                 }
                 else
                 {

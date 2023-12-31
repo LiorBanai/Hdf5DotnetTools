@@ -19,7 +19,6 @@ namespace HDF5_CSharp.Example.UnitTest
             string meanContent = File.ReadAllText("SingleMeanResult.txt", Encoding.UTF8);
 
             // 1- we will load the h5 file and create a new one base on this one 
-
             string filename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test3.h5");
 
             Console.WriteLine(filename);
