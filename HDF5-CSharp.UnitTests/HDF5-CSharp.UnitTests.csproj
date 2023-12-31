@@ -8,6 +8,7 @@
 		<AssemblyName>HDF5CSharp.UnitTests</AssemblyName>
 		<RootNamespace>HDF5CSharp.UnitTests</RootNamespace>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
 		<DefineConstants>$(DefineContants);DEBUG</DefineConstants>

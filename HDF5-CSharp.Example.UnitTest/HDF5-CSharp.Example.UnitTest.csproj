@@ -5,6 +5,7 @@
 		<RootNamespace>HDF5_CSharp.Example.UnitTest</RootNamespace>
 		<IsPackable>false</IsPackable>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
 		<DefineConstants>$(DefineContants);DEBUG</DefineConstants>

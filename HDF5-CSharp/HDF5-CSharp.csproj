@@ -35,6 +35,7 @@
 		<PackageValidationBaselineVersion>1.15.2</PackageValidationBaselineVersion>-->
 		<PackageTags>Hdf5</PackageTags>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
 		<DefineConstants>$(DefineContants);DEBUG</DefineConstants>

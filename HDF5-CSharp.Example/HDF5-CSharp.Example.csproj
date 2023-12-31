@@ -5,6 +5,7 @@
 		<RootNamespace>HDF5CSharp.Example</RootNamespace>
 		<AssemblyName>HDF5CSharp.Example</AssemblyName>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
 	</PropertyGroup>
 
 	<ItemGroup>
