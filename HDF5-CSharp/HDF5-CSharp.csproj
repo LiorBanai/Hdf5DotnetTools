@@ -167,7 +167,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="HDF.PInvoke.1.10" Version="1.10.612" />
-		<PackageReference Include="PureHDF" Version="1.0.0-beta.7" />
+		<PackageReference Include="PureHDF" Version="1.0.0-beta.9" />
 		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)'=='netstandard20'">
