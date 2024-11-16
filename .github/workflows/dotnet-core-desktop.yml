@@ -33,9 +33,9 @@ jobs:
 
     # Install the .NET Core workload
     - name: Install .NET Core
-      uses: actions/setup-dotnet@v3.2.0
+      uses: actions/setup-dotnet@v4.1.0
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
@@ -58,7 +58,7 @@ jobs:
 
     # Publish Artifacts 
     - name: 'Publish Artifacts'   
-      uses: actions/upload-artifact@v1.0.0
+      uses: actions/upload-artifact@v4.4.3
       with:
         name: 'artifactory'
         path: ./HDF5-CSharp/bin/${{ matrix.configuration }}
@@ -69,7 +69,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: 'Download Artifact'
-        uses: actions/download-artifact@v4.1.7
+        uses: actions/download-artifact@v4.1.8
         with:
           name: 'artifactory'
       - name: 'Dotnet NuGet Push'
@@ -80,7 +80,7 @@ jobs:
         shell: pwsh
                 
       - name: Setup NuGet.exe for use with actions
-        uses: NuGet/setup-nuget@v1.0.5
+        uses: NuGet/setup-nuget@v2.0.1
 
       - name: Add private GitHub registry to NuGet
         run: nuget sources add -name "GPR" -Source https://nuget.pkg.github.com/LiorBanai/index.json -Username LiorBanai -Password ${{ secrets.GITHUB_TOKEN }}
