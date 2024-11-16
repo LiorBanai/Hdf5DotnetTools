@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net7.0;net6.0;netstandard20;netstandard21</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0;netstandard20;netstandard21</TargetFrameworks>
 		<AssemblyName>HDF5CSharp</AssemblyName>
 		<RootNamespace>HDF5CSharp</RootNamespace>
 		<SignAssembly>false</SignAssembly>
@@ -162,21 +162,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="HDF.PInvoke.1.10" Version="1.10.612" />
-		<PackageReference Include="PureHDF" Version="1.0.0" />
-		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+		<PackageReference Include="PureHDF" Version="1.0.1" />
+		<PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)'=='netstandard20'">
-		<PackageReference Include="System.Memory" Version="4.5.5" />
-		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+		<PackageReference Include="System.Memory" Version="4.6.0" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='netstandard21'">
-		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
