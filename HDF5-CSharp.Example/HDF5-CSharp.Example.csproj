@@ -9,8 +9,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MessagePack" Version="3.0.300" />
-		<PackageReference Include="MessagePack.UnityShims" Version="3.0.300" />
+		<PackageReference Include="MessagePack" Version="3.0.308" />
+		<PackageReference Include="MessagePack.UnityShims" Version="3.0.308" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="PureHDF" Version="2.1.1" />
