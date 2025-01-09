@@ -1,6 +1,5 @@
 <h1 align="center">HDF5-CSharp: C# Wrapper for HDF5 library <img src="./Assets/hdf5Wrapper.png" align="right" width="155px" height="155px"></h1> 
 
-![CodeQL](https://github.com/LiorBanai/HDF5-CSharp/workflows/CodeQL/badge.svg) ![.NET Core Desktop](https://github.com/LiorBanai/HDF5-CSharp/workflows/.NET%20Core%20Desktop/badge.svg)
 <a href="https://github.com/LiorBanai/HDF5-CSharp/issues">
     <img src="https://img.shields.io/github/issues/LiorBanai/HDF5-CSharp"  alt="Issues"/>
 </a> ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/LiorBanai/HDF5-CSharp)
