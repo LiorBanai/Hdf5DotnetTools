@@ -60,7 +60,7 @@ jobs:
     - name: 'Publish Artifacts'   
       uses: actions/upload-artifact@v4.4.3
       with:
-        name: 'artifactory'
+        name: artifactory_${{ matrix.configuration }}
         path: ./HDF5-CSharp/bin/${{ matrix.configuration }}
   push-nuget:
     name: 'Push NuGet Packages'
@@ -71,10 +71,10 @@ jobs:
       - name: 'Download Artifact'
         uses: actions/download-artifact@v4.1.8
         with:
-          name: 'artifactory'
+          name: artifactory_Release
       - name: 'Dotnet NuGet Push'
         run: |
-          Get-ChildItem .\artifactory -Filter *.nupkg |
+          Get-ChildItem ./ -Filter *.nupkg |
           Where-Object { !$_.Name.Contains('preview') } |
           ForEach-Object { dotnet nuget push $_ --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key ${{secrets.NUGET_API_KEY}} }
         shell: pwsh
