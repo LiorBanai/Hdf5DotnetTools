@@ -87,7 +87,7 @@ jobs:
       
       - name: 'Dotnet NuGet Push to github registry'     
         run: |
-          Get-ChildItem ./ artifactory -Filter *.nupkg |
+          Get-ChildItem ./ -Recurse -Filter *.nupkg |
           Where-Object { !$_.Name.Contains('preview') } |
           ForEach-Object { nuget push $_  -Source "GPR" -SkipDuplicate }
 
