@@ -130,9 +130,7 @@ namespace HDF5CSharp.UnitTests
                 Hdf5.CloseDataSet(datasetId);
                 Hdf5.CloseFile(fileId);
 
-                using (var file = File.Open(filename, FileMode.Open))
-                {
-                }
+                using var file = File.Open(filename, FileMode.Open);
             }
             catch (Exception ex)
             {
