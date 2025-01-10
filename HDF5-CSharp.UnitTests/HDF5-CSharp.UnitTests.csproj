@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
 		<IsPackable>false</IsPackable>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<AssemblyName>HDF5CSharp.UnitTests</AssemblyName>

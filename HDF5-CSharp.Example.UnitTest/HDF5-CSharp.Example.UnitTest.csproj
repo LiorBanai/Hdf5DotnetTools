@@ -4,6 +4,7 @@
 		<TargetFrameworks>net8.0-windows</TargetFrameworks>
 		<RootNamespace>HDF5_CSharp.Example.UnitTest</RootNamespace>
 		<IsPackable>false</IsPackable>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
 		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
 	</PropertyGroup>

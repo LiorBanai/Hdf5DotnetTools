@@ -5,6 +5,8 @@
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<RootNamespace>HDF5CSharp.Winforms.Tests</RootNamespace>
 		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<UseWindowsForms>true</UseWindowsForms>
 		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
 	</PropertyGroup>
