@@ -102,6 +102,43 @@ namespace HDF5CSharp.UnitTests
         }
 
         [TestMethod]
+        public void WriteOpenDatasetCloseDataset()
+        {
+            string filename = Path.Combine(folder, "testDataset.H5");
+            string datasetName = "/test";
+
+            try
+            {
+                var fileId = Hdf5.CreateFile(filename);
+                Assert.IsTrue(fileId > 0);
+                var datasetId = Hdf5.WriteDataset(fileId, datasetName, dsets.First());
+                Assert.IsTrue(datasetId > 0);
+                Hdf5.CloseFile(fileId);
+            }
+            catch (Exception ex)
+            {
+                CreateExceptionAssert(ex);
+            }
+
+            try
+            {
+                var fileId = Hdf5.OpenFile(filename);
+                Assert.IsTrue(fileId > 0);
+                var datasetId = Hdf5.OpenDatasetIfExists(fileId, datasetName, string.Empty);
+                Assert.IsTrue(datasetId > 0);
+
+                Hdf5.CloseDataSet(datasetId);
+                Hdf5.CloseFile(fileId);
+
+                using var file = File.Open(filename, FileMode.Open);
+            }
+            catch (Exception ex)
+            {
+                CreateExceptionAssert(ex);
+            }
+        }
+
+        [TestMethod]
         public void WriteAndReadPrimitives()
         {
             string filename = Path.Combine(folder, "testPrimitives.H5");

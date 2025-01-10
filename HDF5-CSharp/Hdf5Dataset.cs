@@ -56,6 +56,16 @@ namespace HDF5CSharp
             return -1;
         }
 
+        public static int CloseDataSet(long dataSetId)
+        {
+            return H5D.close(dataSetId);
+        }
+
+        public static int CloseAttribute(long attributeId)
+        {
+            return H5A.close(attributeId);
+        }
+
         public static long OpenAttributeIfExists(long fileOrGroupId, string name, string alternativeName)
         {
             if (Hdf5Utils.ItemExists(fileOrGroupId, name, Hdf5ElementType.Attribute))
@@ -69,6 +79,7 @@ namespace HDF5CSharp
 
             return -1;
         }
+
         [Obsolete("Use ItemExists")]
         public static bool DatasetExists(long groupId, string datasetName) => Hdf5Utils.ItemExists(groupId, datasetName, Hdf5ElementType.Dataset);
 
@@ -289,9 +300,15 @@ namespace HDF5CSharp
             return dsetRW.WriteArray(groupId, name, oneVal, attributes);
         }
 
-        public static void WriteDataset(long groupId, string name, Array collection)
+        public static long WriteDataset(long groupId, string name, Array collection)
         {
-            dsetRW.WriteArray(groupId, name, collection, new Dictionary<string, List<string>>());
+            var (success, createdId) = dsetRW.WriteArray(groupId, name, collection, new Dictionary<string, List<string>>());
+            if (success < 0)
+            {
+                return success;
+            }
+
+            return createdId;
         }
 
         public static (int Success, long CreatedgroupId) WriteDatasetFromArray<T>(long groupId, string name, Array dset) //where T : struct
