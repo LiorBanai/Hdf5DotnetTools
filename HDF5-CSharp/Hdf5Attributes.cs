@@ -376,7 +376,7 @@ namespace HDF5CSharp
             return WriteAttributes<T>(groupId, name, new T[1] { attribute });
         }
 
-        public static (int Success, long CreatedId) WriteAttributes<T>(long groupId, string name, Array attributes) //
+        public static (int Success, long CreatedId) WriteAttributes<T>(long groupId, string name, Array attributes)
         {
             return attrRW.WriteArray(groupId, name, attributes, new Dictionary<string, List<string>>());
 
@@ -411,6 +411,120 @@ namespace HDF5CSharp
                 H5D.close(groupId);
             }
             return (result, attributeId);
+        }
+
+        public static bool CreateStringAttribute(long groupId, string name, string value)
+        {
+            long attributeSpace = 0;
+            long stringId = 0;
+            long attributeId = 0;
+
+            try
+            {
+                attributeSpace = H5S.create(H5S.class_t.SCALAR);
+                stringId = H5T.copy(H5T.C_S1);
+                H5T.set_size(stringId, new IntPtr(value.Length));
+                attributeId = H5A.create(groupId, name, stringId, attributeSpace);
+
+                IntPtr descriptionArray = Marshal.StringToHGlobalAnsi(value);
+                H5A.write(attributeId, stringId, descriptionArray);
+
+                Marshal.FreeHGlobal(descriptionArray);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (attributeId != 0)
+                {
+                    H5A.close(attributeId);
+                }
+
+                if (stringId != 0)
+                {
+                    H5T.close(stringId);
+                }
+
+                if (attributeSpace != 0)
+                {
+                    H5S.close(attributeSpace);
+                }
+            }
+        }
+
+        public static bool CreateStringAttribute<T>(long groupId, string name, T value) where T : struct
+        {
+            long attributeSpace = 0;
+            long typeId = 0;
+            long attributeId = 0;
+
+            try
+            {
+                attributeSpace = H5S.create(H5S.class_t.SCALAR);
+                typeId = H5T.copy(GetHdfType(value));
+                H5T.set_size(typeId, new IntPtr(Marshal.SizeOf<T>()));
+                attributeId = H5A.create(groupId, name, typeId, attributeSpace);
+
+                GCHandle handle = GCHandle.Alloc(value, GCHandleType.Pinned);
+                IntPtr ptr = handle.AddrOfPinnedObject();
+                H5A.write(attributeId, typeId, ptr);
+
+                handle.Free();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (attributeId != 0)
+                {
+                    H5A.close(attributeId);
+                }
+
+                if (typeId != 0)
+                {
+                    H5T.close(typeId);
+                }
+
+                if (attributeSpace != 0)
+                {
+                    H5S.close(attributeSpace);
+                }
+            }
+        }
+
+        private static long GetHdfType<T>(T value)
+        {
+            return value switch
+            {
+                /*
+                 * bool
+                 * char
+                 * decimal
+                 */
+
+                bool => H5T.NATIVE_HBOOL,
+                byte => H5T.NATIVE_UINT8,
+                sbyte => H5T.NATIVE_INT8,
+                char => H5T.NATIVE_CHAR,
+                double => H5T.NATIVE_DOUBLE,
+                decimal => H5T.NATIVE_LDOUBLE,
+                float => H5T.NATIVE_FLOAT,
+                int => H5T.NATIVE_INT,
+                uint => H5T.NATIVE_UINT,
+                long => H5T.NATIVE_LLONG,
+                ulong => H5T.NATIVE_ULLONG,
+                short => H5T.NATIVE_SHORT,
+                ushort => H5T.NATIVE_USHORT,
+                _ => H5T.C_S1,
+            };
         }
     }
 }
