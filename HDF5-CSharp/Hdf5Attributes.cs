@@ -371,7 +371,7 @@ namespace HDF5CSharp
             return (result, attributeId);
         }
 
-        public static (int Success, long CreatedId) WriteAttribute<T>(long groupId, string name, T attribute) //where T : struct
+        public static (int Success, long CreatedId) WriteAttributes<T>(long groupId, string name, T attribute) //where T : struct
         {
             return WriteAttributes<T>(groupId, name, new T[1] { attribute });
         }
@@ -413,7 +413,7 @@ namespace HDF5CSharp
             return (result, attributeId);
         }
 
-        public static bool CreateStringAttribute(long groupId, string name, string value)
+        public static (int Success, long CreatedId) WriteAttribute(long groupId, string name, string value)
         {
             long attributeSpace = 0;
             long stringId = 0;
@@ -427,15 +427,15 @@ namespace HDF5CSharp
                 attributeId = H5A.create(groupId, name, stringId, attributeSpace);
 
                 IntPtr descriptionArray = Marshal.StringToHGlobalAnsi(value);
-                H5A.write(attributeId, stringId, descriptionArray);
+                var result = H5A.write(attributeId, stringId, descriptionArray);
 
                 Marshal.FreeHGlobal(descriptionArray);
 
-                return true;
+                return (result, attributeId);
             }
             catch (Exception ex)
             {
-                return false;
+                return (-1, attributeId);
             }
             finally
             {
@@ -456,7 +456,8 @@ namespace HDF5CSharp
             }
         }
 
-        public static bool CreateStringAttribute<T>(long groupId, string name, T value) where T : struct
+        public static (int Success, long CreatedId) WriteAttribute<T>(long groupId, string name, T value)
+            where T : struct
         {
             long attributeSpace = 0;
             long typeId = 0;
@@ -471,15 +472,15 @@ namespace HDF5CSharp
 
                 GCHandle handle = GCHandle.Alloc(value, GCHandleType.Pinned);
                 IntPtr ptr = handle.AddrOfPinnedObject();
-                H5A.write(attributeId, typeId, ptr);
+                var result = H5A.write(attributeId, typeId, ptr);
 
                 handle.Free();
 
-                return true;
+                return (result, attributeId);
             }
             catch (Exception ex)
             {
-                return false;
+                return (-1, attributeId);
             }
             finally
             {

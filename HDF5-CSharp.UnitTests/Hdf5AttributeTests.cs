@@ -80,7 +80,12 @@ namespace HDF5CSharp.UnitTests
             Assert.IsTrue(result);
             var write = Hdf5Utils.ReadAttributeByPath(filename, path, "VALID");
             Assert.IsTrue(write.Success);
-            Assert.IsTrue(write.Value == attributeValue);
+            Assert.Equals(attributeValue, write.Value);
+            var result2 = Hdf5Utils.WriteAttributesByPath(filename, path, "VALID_2", attributeValue);
+            Assert.IsTrue(result);
+            var write2 = Hdf5Utils.ReadAttributesByPath(filename, path, "VALID_2");
+            Assert.IsTrue(write2.Success);
+            Assert.Equals(attributeValue, write2.Values.First());
             Assert.IsTrue(H5G.close(groupId) == 0);
             Assert.IsTrue(Hdf5.CloseFile(fileId) == 0);
         }
@@ -95,19 +100,19 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 var groupId = Hdf5.CreateOrOpenGroup(fileId, "test");
                 DateTime nowTime = DateTime.Now;
-                Hdf5.WriteAttribute(groupId, "time", nowTime);
+                Hdf5.WriteAttributes(groupId, "time", nowTime);
                 Hdf5.WriteAttributes<DateTime>(groupId, "times", new List<DateTime> { nowTime, nowTime.AddDays(1) }.ToArray());
-                Hdf5.CreateStringAttribute(groupId, "str attribute", "some string");
-                Hdf5.CreateStringAttribute(groupId, "byte attribute", (byte)255);
-                Hdf5.CreateStringAttribute(groupId, "sbyte attribute", (sbyte)-128);
-                Hdf5.CreateStringAttribute(groupId, "double attribute", 42.42d);
-                Hdf5.CreateStringAttribute(groupId, "float attribute", 42.42f);
-                Hdf5.CreateStringAttribute(groupId, "int attribute", 42);
-                Hdf5.CreateStringAttribute(groupId, "uint attribute", uint.MaxValue);
-                Hdf5.CreateStringAttribute(groupId, "long attribute", long.MinValue);
-                Hdf5.CreateStringAttribute(groupId, "ulong attribute", ulong.MaxValue);
-                Hdf5.CreateStringAttribute(groupId, "short attribute", short.MinValue);
-                Hdf5.CreateStringAttribute(groupId, "ushort attribute", ushort.MaxValue);
+                Hdf5.WriteAttribute(groupId, "str attribute", "some string");
+                Hdf5.WriteAttribute(groupId, "byte attribute", (byte)255);
+                Hdf5.WriteAttribute(groupId, "sbyte attribute", (sbyte)-128);
+                Hdf5.WriteAttribute(groupId, "double attribute", 42.42d);
+                Hdf5.WriteAttribute(groupId, "float attribute", 42.42f);
+                Hdf5.WriteAttribute(groupId, "int attribute", 42);
+                Hdf5.WriteAttribute(groupId, "uint attribute", uint.MaxValue);
+                Hdf5.WriteAttribute(groupId, "long attribute", long.MinValue);
+                Hdf5.WriteAttribute(groupId, "ulong attribute", ulong.MaxValue);
+                Hdf5.WriteAttribute(groupId, "short attribute", short.MinValue);
+                Hdf5.WriteAttribute(groupId, "ushort attribute", ushort.MaxValue);
 
                 DateTime readTime = Hdf5.ReadAttribute<DateTime>(groupId, "time");
                 var allTimes = Hdf5.ReadAttributes<DateTime>(groupId, "times", true);
@@ -131,7 +136,7 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 var groupId = Hdf5.CreateOrOpenGroup(fileId, "test");
                 DateTime nowTime = DateTime.Now;
-                Hdf5.WriteAttribute(groupId, "time", nowTime);
+                Hdf5.WriteAttributes(groupId, "time", nowTime);
                 DateTime readTime = Hdf5.ReadAttribute<DateTime>(groupId, "time");
                 Assert.IsTrue(readTime == nowTime);
                 Hdf5.CloseFile(fileId);
@@ -140,7 +145,7 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(readTime == nowTime);
 
                 nowTime = DateTime.Now;
-                Hdf5.WriteAttribute(groupId, "time", nowTime);
+                Hdf5.WriteAttributes(groupId, "time", nowTime);
                 readTime = Hdf5.ReadAttribute<DateTime>(groupId, "time");
                 Assert.IsTrue(readTime == nowTime);
                 Hdf5.CloseFile(fileId);
@@ -253,11 +258,11 @@ namespace HDF5CSharp.UnitTests
                 Assert.IsTrue(fileId > 0);
                 var groupId = Hdf5.CreateOrOpenGroup(fileId, groupStr);
                 Hdf5.WriteAttributes<int>(groupId, intName, intValues);
-                Hdf5.WriteAttribute(groupId, dblName, dblValue);
-                Hdf5.WriteAttribute(groupId, strName, strValue);
+                Hdf5.WriteAttributes(groupId, dblName, dblValue);
+                Hdf5.WriteAttributes(groupId, strName, strValue);
                 Hdf5.WriteAttributes<string>(groupId, strNames, strValues);
-                Hdf5.WriteAttribute(groupId, boolName, boolValue);
-                Hdf5.WriteAttribute(groupId, dateName, dateValue);
+                Hdf5.WriteAttributes(groupId, boolName, boolValue);
+                Hdf5.WriteAttributes(groupId, dateName, dateValue);
                 H5G.close(groupId);
                 Hdf5.CloseFile(fileId);
             }
@@ -400,102 +405,24 @@ namespace HDF5CSharp.UnitTests
         }
 
         [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeString()
+        [DataRow("str attribute", "some string")]
+        [DataRow("byte attribute", byte.MaxValue)]
+        [DataRow("sbyte attribute", sbyte.MinValue)]
+        [DataRow("double attribute", 42.42d)]
+        [DataRow("float attribute", 42.42f)]
+        [DataRow("int attribute", 42)]
+        [DataRow("uint attribute", uint.MaxValue)]
+        [DataRow("long attribute", long.MinValue)]
+        [DataRow("ulong attribute", ulong.MaxValue)]
+        [DataRow("short attribute", short.MinValue)]
+        [DataRow("ushort attribute", ushort.MaxValue)]
+        public void TestReadFullTreeAllAttributeType(string attributeName, object expectedValue)
         {
             var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
             var group = results1.Children.First();
+            var attributeValue = group.Attributes.First(x => x.Name.Equals(attributeName)).Values;
 
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "str attribute").Values, "some string");
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeByte()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "byte attribute").Values, (byte)255);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeSByte()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "sbyte attribute").Values, (sbyte)-128);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeDouble()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "double attribute").Values, double.MinValue);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeFloat()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "float attribute").Values, 42.42f);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeInt()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "int attribute").Values, 42);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeUInt()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "uint attribute").Values, uint.MaxValue);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeLong()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "long attribute").Values, long.MinValue);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeULong()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "ulong attribute").Values, ulong.MaxValue);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeShort()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "short attribute").Values, short.MinValue);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeUShort()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "ushort attribute").Values, ushort.MaxValue);
+            Assert.AreEqual(expectedValue, attributeValue);
         }
     }
 }

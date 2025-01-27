@@ -55,9 +55,6 @@
 		<None Update="files\table.h5">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="files\testAttribute.HDF5">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
 		<None Update="files\testCompounds_WData2_WData3.H5">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -65,6 +62,9 @@
 
 	<ItemGroup>
 		<None Update="files\testfile2.h5">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="files\testAttribute.HDF5">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="files\TEST_TREE.h5">
