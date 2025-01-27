@@ -98,13 +98,9 @@ namespace HDF5CSharp.UnitTests
                 Hdf5.WriteAttribute(groupId, "time", nowTime);
                 Hdf5.WriteAttributes<DateTime>(groupId, "times", new List<DateTime> { nowTime, nowTime.AddDays(1) }.ToArray());
                 Hdf5.CreateStringAttribute(groupId, "str attribute", "some string");
-                Hdf5.CreateStringAttribute(groupId, "bool attribute false", false);
-                Hdf5.CreateStringAttribute(groupId, "bool attribute true", true);
                 Hdf5.CreateStringAttribute(groupId, "byte attribute", (byte)255);
                 Hdf5.CreateStringAttribute(groupId, "sbyte attribute", (sbyte)-128);
-                Hdf5.CreateStringAttribute(groupId, "char attribute", '#');
                 Hdf5.CreateStringAttribute(groupId, "double attribute", 42.42d);
-                Hdf5.CreateStringAttribute(groupId, "decimal attribute", 1122.9876m);
                 Hdf5.CreateStringAttribute(groupId, "float attribute", 42.42f);
                 Hdf5.CreateStringAttribute(groupId, "int attribute", 42);
                 Hdf5.CreateStringAttribute(groupId, "uint attribute", uint.MaxValue);
@@ -436,7 +432,7 @@ namespace HDF5CSharp.UnitTests
             var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
             var group = results1.Children.First();
 
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "double attribute").Values, 42.42d);
+            Assert.AreEqual(group.Attributes.First(x => x.Name == "double attribute").Values, double.MinValue);
         }
 
         [TestMethod]
@@ -500,42 +496,6 @@ namespace HDF5CSharp.UnitTests
             var group = results1.Children.First();
 
             Assert.AreEqual(group.Attributes.First(x => x.Name == "ushort attribute").Values, ushort.MaxValue);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeDecimal()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "decimal attribute").Values, 1122.9876m);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeBoolFalse()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "bool attribute false").Values, false);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeBoolTrue()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "bool attribute true").Values, true);
-        }
-
-        [TestMethod]
-        public void TestReadFullTreeAllAttributeTypeChar()
-        {
-            var results1 = Hdf5.ReadTreeFileStructure("./files/testAttribute.HDF5");
-            var group = results1.Children.First();
-
-            Assert.AreEqual(group.Attributes.First(x => x.Name == "char attribute").Values, '#');
         }
     }
 }

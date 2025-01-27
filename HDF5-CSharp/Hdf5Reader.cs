@@ -525,7 +525,6 @@ namespace HDF5CSharp
             {
                 (H5DataspaceType.Scalar, H5DataTypeClass.FloatingPoint, 4) => attribute.Read<float>(),
                 (H5DataspaceType.Scalar, H5DataTypeClass.FloatingPoint, 8) => attribute.Read<double>(),
-                (H5DataspaceType.Scalar, H5DataTypeClass.FloatingPoint, 16) => attribute.Read<decimal>(),
                 (H5DataspaceType.Scalar, H5DataTypeClass.FixedPoint, 1) when !attribute.Type.FixedPoint.IsSigned => attribute.Read<byte>(),
                 (H5DataspaceType.Scalar, H5DataTypeClass.FixedPoint, 1) when attribute.Type.FixedPoint.IsSigned => attribute.Read<sbyte>(),
                 (H5DataspaceType.Scalar, H5DataTypeClass.FixedPoint, 2) when !attribute.Type.FixedPoint.IsSigned => attribute.Read<ushort>(),
