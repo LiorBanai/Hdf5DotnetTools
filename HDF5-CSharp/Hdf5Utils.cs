@@ -213,7 +213,7 @@ namespace HDF5CSharp
                     return (string.Empty, false);
                 }
 
-                var value = Hdf5.ReadAttribute<string>(groupAccessId, attributeName);
+                var value = Hdf5.ReadAttribute(groupAccessId, attributeName);
                 return (value, true);
             }
             catch (Exception e)
