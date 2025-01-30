@@ -208,32 +208,6 @@ namespace HDF5CSharp
             }
         }
 
-        public static string ReadAttribute2(long groupId, string name)
-        {
-            Type type = typeof(string);
-            var datatype = GetDatatype(type);
-            var attributeId = OpenAttributeIfExists(groupId, Hdf5Utils.NormalizedName(name), string.Empty);
-
-            if (attributeId <= 0)
-            {
-                string error = $"Error reading {groupId}. Name:{name}";
-                Hdf5Utils.LogMessage(error, Hdf5LogLevel.Warning);
-                if (Settings.ThrowOnNonExistNameWhenReading)
-                {
-                    Hdf5Utils.LogMessage(error, Hdf5LogLevel.Error);
-                    throw new Hdf5Exception(error);
-                }
-                return default;
-            }
-
-            if (datatype == H5T.C_S1)
-            {
-                H5T.set_size(datatype, new IntPtr(2));
-            }
-
-            return string.Empty;
-        }
-
         public static (bool Success, IEnumerable<string> Items) ReadStringAttributes(long groupId, string name, string alternativeName, bool mandatory)
         {
             var nameToUse = Hdf5Utils.GetRealAttributeName(groupId, name, alternativeName);
@@ -641,18 +615,13 @@ namespace HDF5CSharp
         {
             return value switch
             {
-                /*
-                 * bool
-                 * char
-                 * decimal
-                 */
-
-                bool => H5T.NATIVE_HBOOL,
+                // bool, decimal and char does not work for writing
+                //bool => H5T.NATIVE_HBOOL,
+                //decimal => H5T.NATIVE_LDOUBLE,
+                //char => H5T.NATIVE_CHAR,
                 byte => H5T.NATIVE_UINT8,
                 sbyte => H5T.NATIVE_INT8,
-                char => H5T.NATIVE_CHAR,
                 double => H5T.NATIVE_DOUBLE,
-                decimal => H5T.NATIVE_LDOUBLE,
                 float => H5T.NATIVE_FLOAT,
                 int => H5T.NATIVE_INT,
                 uint => H5T.NATIVE_UINT,
@@ -660,7 +629,7 @@ namespace HDF5CSharp
                 ulong => H5T.NATIVE_ULLONG,
                 short => H5T.NATIVE_SHORT,
                 ushort => H5T.NATIVE_USHORT,
-                _ => H5T.C_S1,
+                _ => throw new NotSupportedException(),
             };
         }
     }
