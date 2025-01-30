@@ -2,13 +2,9 @@
 using HDF5CSharp.DataTypes;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
-using static HDF.PInvoke.H5O.hdr_info_t;
 
 namespace HDF5CSharp
 {
@@ -153,7 +149,7 @@ namespace HDF5CSharp
                 byte => (T)(object)byteArray[0],
                 sbyte => (T)(object)(sbyte)byteArray[0],
                 string => (T)(object)System.Text.Encoding.Default.GetString(byteArray),
-                _ => throw new NotSupportedException("HELP ME !!!!"),
+                _ => throw new NotSupportedException($"The type is {typeof(T)} is not currently supported."),
             };
         }
 
@@ -185,9 +181,6 @@ namespace HDF5CSharp
                 H5A.read(attributeId, aTypeMem, pinnedArray.AddrOfPinnedObject());
                 pinnedArray.Free();
                 H5T.close(aTypeMem);
-
-                //var test = H5A.info_t;
-                //H5A.get_info(attributeId);
 
                 var value = System.Text.Encoding.UTF8.GetString(strBuffer);
 
