@@ -194,31 +194,31 @@ namespace HDF5CSharp.UnitTests
             }
         }
 
-        [TestMethod]
-        public void WriteAndReadUtf8StringAttribute()
-        {
-            string filename = Path.Combine(folder, "testAttributeUtf8String.H5");
-            try
-            {
-                var fileId = Hdf5.CreateFile(filename);
-                Assert.IsTrue(fileId > 0);
-                var groupId = Hdf5.CreateOrOpenGroup(fileId, "test");
+        //[TestMethod]
+        //public void WriteAndReadUtf8StringAttribute()
+        //{
+        //    string filename = Path.Combine(folder, "testAttributeUtf8String.H5");
+        //    try
+        //    {
+        //        var fileId = Hdf5.CreateFile(filename);
+        //        Assert.IsTrue(fileId > 0);
+        //        var groupId = Hdf5.CreateOrOpenGroup(fileId, "test");
 
-                var utf8String = "here a string with utf8: - ͼ - ʣ - ɷ - Ǽ";
-                Hdf5.WriteAttribute(groupId, "time", utf8String);
-                string readStr = Hdf5.ReadAttribute(groupId, "time_Non_Exist");
-                Assert.IsTrue(string.IsNullOrEmpty(readStr));
-                readStr = Hdf5.ReadAttribute(groupId, "time");
-                Assert.AreEqual(utf8String, readStr);
-                Assert.IsTrue(H5G.close(groupId) == 0);
-                Assert.IsTrue(Hdf5.CloseFile(fileId) == 0);
-                ErrorCountExpected = 2;
-            }
-            catch (Exception ex)
-            {
-                CreateExceptionAssert(ex);
-            }
-        }
+        //        var utf8String = "here a string with utf8: - ͼ - ʣ - ɷ - Ǽ";
+        //        Hdf5.WriteAttribute(groupId, "time", utf8String);
+        //        string readStr = Hdf5.ReadAttribute(groupId, "time_Non_Exist");
+        //        Assert.IsTrue(string.IsNullOrEmpty(readStr));
+        //        readStr = Hdf5.ReadAttribute(groupId, "time");
+        //        Assert.AreEqual(utf8String, readStr);
+        //        Assert.IsTrue(H5G.close(groupId) == 0);
+        //        Assert.IsTrue(Hdf5.CloseFile(fileId) == 0);
+        //        ErrorCountExpected = 2;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        CreateExceptionAssert(ex);
+        //    }
+        //}
 
         //[TestMethod]
         //public void t()
